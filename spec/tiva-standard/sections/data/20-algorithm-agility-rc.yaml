@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Algorithm agility
+    name: Algorithm agility
+    identifier: /req/algorithm-agility
+    subject: algorithm agility
+    description: Requirements on the algorithm identifier registry, deprecation process, and migration governance.
+    dependencies:
+    - /req/algorithms
+    guidance:
+
+    requirements:
+    - name: Algorithm identifier registry
+      identifier_fragment: algorithm-registry
+      statement: The framework shall maintain an algorithm identifier registry listing recognized
+        algorithms with their names, standard references, parameter sets, and status
+        (active, deprecated, or retired).
+      guidance:
+      - Unregistered identifiers shall not be accepted by conforming verifiers.
+
+    - name: Algorithm deprecation process
+      identifier_fragment: deprecation-process
+      statement: Algorithm deprecation shall follow a published process with announcement,
+        deprecation period with classification downgrade, and retirement with rejection,
+        allowing sufficient time for migration.
+      guidance:
+      - Deprecated algorithms produce a coverage report downgrade during the deprecation period.
+      - Retired algorithms are rejected after the retirement date.
+
+    - name: Migration phase declaration
+      identifier_fragment: migration-declaration
+      statement: A deployment shall declare its active algorithms and migration phase —
+        classical-only, composite, or post-quantum-only — in the deployment manifest.
+      guidance:
+      - Migration between phases shall follow a published schedule.
+
+    - name: Composite phase backward compatibility
+      identifier_fragment: composite-backward-compatibility
+      statement: During the composite migration phase, new artifacts shall use composite
+        signatures while existing classical-only artifacts remain verifiable.
+      guidance:
+      - After migration to post-quantum-only, classical-only signatures shall be rejected.

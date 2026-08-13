@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Delivery and discovery
+    name: Delivery and discovery
+    identifier: /req/delivery
+    subject: delivery and discovery
+    description: Requirements on artifact and certificate delivery, compact barcode encoding, passport format, and chain discovery mechanisms.
+    dependencies:
+    - /req/architecture
+    - /req/artifact-format
+    guidance:
+
+    requirements:
+    - name: Compact barcode encoding
+      identifier_fragment: barcode-encoding
+      statement: A trusted artifact or passport delivered as a two-dimensional barcode shall
+        be self-contained, carry a version identifier, and include error correction
+        sufficient for the expected scanning environment.
+      guidance:
+      - The maximum data capacity of the barcode format constrains artifact size.
+      - For larger artifacts, the barcode may carry a compact reference resolvable by a
+        connected verifier.
+
+    - name: Passport format
+      identifier_fragment: passport-format
+      statement: A passport shall carry the certificate or artifact identifier, key fingerprint,
+        scope summary, and validity period, shall be expressible in a deterministic
+        machine-readable format, and shall be verifiable against the same trust anchor bundle
+        and transparency log as the underlying object.
+      guidance:
+      - A passport is a presentation format, not a separate trust object.
+
+    - name: Embedded chain delivery
+      identifier_fragment: embedded-delivery
+      statement: An artifact delivered with an embedded chain shall carry the full delegation
+        chain inline, requiring no additional network access for chain discovery.
+      guidance:
+
+    - name: Transparency-log reference delivery
+      identifier_fragment: log-reference-delivery
+      statement: An artifact delivered with transparency-log references shall carry sequence
+        number pointers enabling the verifier to fetch referenced certificates from a
+        transparency log or mirror on first encounter.
+      guidance:
+
+    - name: Connected device delivery integrity
+      identifier_fragment: connected-delivery
+      statement: Delivery via network protocols shall authenticate the source, provide integrity
+        protection, and support caching of certificates and transparency log entries.
+      guidance:
+      - The specific transport protocol is out of scope of this document.
+
+    - name: Challenge-response protocol
+      identifier_fragment: challenge-response
+      statement: A challenge-response exchange shall use a nonce with at least 128 bits of entropy,
+        bind the nonce into the canonical payload of the response artifact, and shall be subject to
+        the time freshness window. The verifier shall reject any response whose nonce does not match
+        the challenge or whose timestamp falls outside the freshness window, and shall not accept two
+        responses for the same challenge nonce.
+      guidance:
+      - Challenge-response proves that the signing key is live and the artifact was produced on demand.

@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Governance and mutual recognition
+    name: Governance and mutual recognition
+    identifier: /req/governance
+    subject: governance
+    description: Requirements on trust topology profiles, root trust authority governance, and mutual recognition.
+    dependencies:
+    - /req/architecture
+    - /req/threshold-signing
+    guidance:
+
+    requirements:
+    - name: Topology declaration in manifest
+      identifier_fragment: topology-declaration
+      statement: A deployment shall declare its trust topology profile — hierarchical, federated,
+        cross-recognized, or mesh — in the deployment manifest.
+      guidance:
+      - The topology determines the structure of the trust graph.
+
+    - name: Root trust authority governance requirements
+      identifier_fragment: root-governance
+      statement: A root trust authority shall publish its initial scope and delegation policy,
+        record all root-level operations in a recognized transparency log, operate under
+        threshold or federation, maintain verifiable governance records, publish its
+        aggregate key in a versioned trust anchor bundle, and maintain an information
+        security management system with periodic independent security audits.
+      guidance:
+      - ISO/IEC 27001, WebTrust for CAs, and ETSI EN 319 411 are recognized ISMS frameworks.
+      - Audit attestations shall be published.
+
+    - name: Issuing authority organizational assurance
+      identifier_fragment: issuing-authority-isms
+      statement: A delegated trust authority that issues end certificates shall maintain an
+        information security management system or equivalent organizational assurance
+        framework and shall undergo periodic security audits proportionate to its scope
+        and risk profile.
+      guidance:
+      - The depth and frequency of audits may be determined by the scheme's governance policy.
+
+    - name: Mutual recognition via signed credentials
+      identifier_fragment: mutual-recognition
+      statement: Mutual recognition between two root trust authorities shall be expressed as
+        signed cross-recognition credentials in which each root attests the other's aggregate
+        key and scope, recorded in both roots' transparency logs.
+      guidance:
+      - Mutual recognition does not merge hierarchies; each root retains its own governance.
+
+    - name: Topology conformance
+      identifier_fragment: topology-conformance
+      statement: A deployment claiming a topology conformance profile shall satisfy the
+        structural requirements of that topology as specified in the conformance class.
+      guidance:
+      - Hierarchical requires a single root and linear chains.
+      - Federated requires multiple independent roots and a multi-root anchor bundle.
+      - Cross-recognized requires explicit cross-recognition links.
+      - Mesh requires a general DAG with hierarchy-spanning FTAs.

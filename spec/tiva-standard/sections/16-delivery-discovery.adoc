@@ -1,0 +1,120 @@
+
+[[delivery]]
+== Delivery and discovery
+
+=== General
+
+This clause specifies how {{trusted artifact,trusted artifacts}} and
+certificates are delivered to verifiers, and how delegation chains are
+discovered and resolved. Delivery mechanisms include compact encodings for
+non-connected devices, machine-readable public projections, and chain
+discovery strategies.
+
+Delivery and discovery are distinct from verification: a verifier first
+obtains the artifact (delivery), then resolves its chain (discovery), then
+applies the verification pipeline (<<verification>>).
+
+
+[[delivery-qr]]
+=== Compact encoding (two-dimensional barcode)
+
+For delivery to devices without network connectivity, a {{trusted artifact}}
+or its {{passport}} may be encoded as a two-dimensional barcode (e.g., QR
+code). The encoding shall:
+
+* be self-contained, carrying the artifact or passport data plus the minimum
+  chain necessary for offline verification;
+* include error correction sufficient for the expected scanning environment;
+* carry a version identifier for encoding evolution.
+
+The maximum data capacity of the barcode format constrains the artifact size.
+For larger artifacts, the barcode may carry a compact reference (e.g., a
+transparency log sequence number) that a connected verifier resolves.
+
+
+[[delivery-passport]]
+=== Passport
+
+A {{passport}} is the machine-readable public projection of an {{end
+certificate}} or {{trusted artifact}}, optimized for compact storage and rapid
+presentation. A passport shall:
+
+* carry the certificate or artifact identifier, key fingerprint, scope summary,
+  and validity period;
+* be expressible in a deterministic, machine-readable format (e.g., JSON-LD or
+  CBOR);
+* be verifiable against the same trust anchor bundle and transparency log as
+  the underlying certificate or artifact.
+
+A passport is a presentation format, not a separate trust object. The
+underlying certificate or artifact remains the authoritative source.
+
+
+[[delivery-chain-discovery]]
+=== Chain discovery mechanisms
+
+Chain discovery mechanisms are specified in <<architecture-discovery>>. This
+clause specifies the delivery aspects:
+
+* **Embedded chain delivery.** The artifact carries the full chain inline.
+  No additional network access is required for discovery.
+
+* **Transparency-log reference delivery.** The artifact carries references
+  (transparency-log sequence numbers). The verifier fetches the referenced
+  certificates from a transparency log or mirror on first encounter.
+
+* **Hybrid delivery.** The artifact carries the end certificate and immediate
+  chain, with transparency-log references for the remaining chain.
+
+
+[[delivery-connected]]
+=== Connected device delivery
+
+For connected devices, artifacts and certificates may be delivered via
+network protocols. The delivery protocol shall:
+
+* authenticate the source (e.g., via TLS or equivalent);
+* provide integrity protection for the delivered data;
+* support caching of certificates and transparency log entries to minimize
+  repeated network access.
+
+NOTE: The specific transport protocol is out of scope of this document (see
+<<scope>>). Implementations may use any protocol that satisfies the above
+requirements.
+
+
+[[delivery-challenge-response]]
+=== Challenge-response
+
+A verifier may challenge a device signer to produce a fresh {{trusted artifact}}
+bound to a nonce, proving that the signing key is live and the artifact was
+produced on demand.
+
+A challenge-response exchange shall satisfy the following:
+
+* **Nonce entropy.** The nonce shall have at least 128 bits of entropy and shall
+  be generated using a cryptographically secure random source.
+
+* **Freshness window.** The verifier shall apply a time freshness window
+  (see <<verification-freshness>>) to the challenge-response. A response
+  received outside the window shall be rejected.
+
+* **Nonce binding.** The device shall bind the nonce into the {{canonical
+  payload}} of the response artifact, such that the signature covers the nonce.
+
+* **Replay rejection.** The verifier shall reject any response whose nonce does
+  not match the challenge nonce, or whose timestamp falls outside the freshness
+  window.
+
+* **Single-use nonce.** The verifier shall not accept two responses for the same
+  challenge nonce.
+
+
+[[req-delivery]]
+=== Requirements
+
+[data2text,ar=sections/data/16-delivery-rc.yaml]
+----
+{% assign prefix = "delivery" %}
+include::templates/requirements_class.liquid[]
+----

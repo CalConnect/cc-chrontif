@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Deployment manifest
+    name: Deployment manifest
+    identifier: /req/manifest
+    subject: deployment manifest
+    description: Requirements on deployment manifest format, contents, validation rules, and versioning.
+    dependencies:
+    - /req/architecture
+    - /req/threshold-signing
+    - /req/scope
+    - /req/algorithms
+    - /req/transparency
+    guidance:
+
+    requirements:
+    - name: Manifest format and signing
+      identifier_fragment: manifest-format
+      statement: A deployment manifest shall be expressed in a declarative format, carry a
+        manifest version identifier, and be signed by the root trust authority whose deployment
+        it describes.
+      guidance:
+
+    - name: Manifest topology declaration
+      identifier_fragment: manifest-topology
+      statement: A deployment manifest shall declare the trust topology profile, the trust
+        authorities with their identifiers, aggregate keys or fingerprints, quorum parameters,
+        and parent references.
+      guidance:
+      - Topology profiles are hierarchical, federated, cross-recognized, and mesh.
+
+    - name: Manifest algorithm declaration
+      identifier_fragment: manifest-algorithms
+      statement: A deployment manifest shall declare the signature algorithms recognized by
+        the deployment from the framework's algorithm registry.
+      guidance:
+
+    - name: Manifest transparency declaration
+      identifier_fragment: manifest-transparency
+      statement: A deployment manifest shall declare the recognized transparency logs and
+        mirrors with their endpoints and public keys, and the multi-log attestation policy
+        parameters if applicable.
+      guidance:
+
+    - name: Manifest validation — acyclic graph
+      identifier_fragment: manifest-validation-acyclic
+      statement: A deployment manifest shall be validated to ensure all declared authorities
+        form a valid trust graph with no cycles, and every delegation link satisfies the
+        monotonic narrowing invariant.
+      guidance:
+
+    - name: Manifest validation — quorum consistency
+      identifier_fragment: manifest-validation-quorum
+      statement: A deployment manifest shall be validated to ensure quorum parameters are
+        consistent, with T not exceeding N for any threshold authority.
+      guidance:
+
+    - name: Manifest versioning
+      identifier_fragment: manifest-versioning
+      statement: Manifest versions shall follow semantic compatibility rules, and the most
+        recent signed manifest shall be authoritative for the deployment.
+      guidance:

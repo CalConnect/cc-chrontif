@@ -1,0 +1,115 @@
+
+[[governance]]
+== Governance and mutual recognition
+
+=== General
+
+This clause specifies the governance requirements for {{root trust authority,root
+trust authorities}} and the trust topology profiles that a
+CHRONTIF deployment may adopt. Topology is declared in the deployment manifest
+(see <<manifest>>) and determines the structure of the {{trust graph}}
+(<<fig-topologies>>).
+
+[[fig-topologies]]
+.Trust topology profiles
+image::topology-comparison.svg[]
+
+
+[[governance-topologies]]
+=== Trust topology profiles
+
+==== Hierarchical
+
+A hierarchical topology is a strict tree with a single {{root trust authority}}.
+Every delegation chain is linear from root to {{end certificate}}. This is the
+simplest topology and is suitable for single-organization deployments.
+
+The {{trust anchor bundle}} for a hierarchical deployment carries a single root
+anchor.
+
+==== Federated
+
+A federated topology has multiple independent {{root trust authority,root trust
+authorities}}. No single root controls all paths. {{federated trust authority,federated
+trust authorities}} may span roots, creating cross-hierarchy
+edges.
+
+The trust anchor bundle for a federated deployment carries multiple root
+anchors.
+
+==== Cross-recognized
+
+A cross-recognized topology consists of hierarchical deployments with explicit
+cross-recognition links between roots. Two or more roots mutually recognize
+each other's authority, enabling artifacts from one hierarchy to be verified
+against another's anchors.
+
+Cross-recognition is established by mutual signing: each root signs the other's
+root anchor, creating a cross-recognition edge in the trust graph.
+
+==== Mesh
+
+A mesh topology is a general directed acyclic graph with
+hierarchy-spanning {{federated trust authority,federated trust authorities}}
+and arbitrary cross-domain co-signatures. This is the most general topology
+and supports the highest verification complexity.
+
+Mesh topologies arise naturally when multiple independent organizations form
+federations and when artifacts carry cross-domain co-signatures.
+
+
+[[governance-root]]
+=== Root trust authority governance
+
+A {{root trust authority}} shall satisfy the following governance requirements:
+
+* **Defined scope.** The root shall publish its initial {{scope}} and
+  delegation policy.
+
+* **Transparency.** All root-level operations (delegation, scope changes,
+  key rotation) shall be recorded in a recognized {{transparency log}}.
+
+* **Threshold or federation.** The root shall operate under a threshold scheme
+  or as a {{federated trust authority}} to prevent single-point compromise.
+
+* **Information security management.** The root shall maintain an information
+  security management system (ISMS) or equivalent organizational assurance
+  framework. ISO/IEC 27001, WebTrust for CAs, and ETSI EN 319 411 are
+  recognized frameworks. The root shall undergo periodic independent security
+  audits covering key management, ceremony procedures, personnel controls,
+  and incident response. Audit attestations shall be published.
+
+* **Auditability.** The root shall maintain verifiable records of all
+  governance decisions.
+
+* **Anchor publication.** The root's {{aggregate key}} shall be published in a
+  {{trust anchor bundle}} with a version and validity period.
+
+A {{delegated trust authority}} that issues end certificates shall maintain an
+ISMS or equivalent organizational assurance framework and shall undergo
+periodic security audits. The depth and frequency of audits may be determined
+by the scheme's governance policy, proportionate to the authority's scope and
+risk profile.
+
+
+[[governance-mutual-recognition]]
+=== Mutual recognition
+
+Mutual recognition between two {{root trust authority,root trust authorities}}
+shall be expressed as a signed cross-recognition credential in which each root
+attests the other's aggregate key and scope. The cross-recognition credential
+shall be recorded in both roots' transparency logs.
+
+Mutual recognition does not merge the hierarchies. Each root retains its own
+governance. The recognition enables verifiers holding both roots' anchors to
+accept artifacts from either hierarchy.
+
+
+[[req-governance]]
+=== Requirements
+
+[data2text,ar=sections/data/19-governance-rc.yaml]
+----
+{% assign prefix = "governance" %}
+include::templates/requirements_class.liquid[]
+----

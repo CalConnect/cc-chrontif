@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Ceremony records
+    name: Ceremony records
+    identifier: /req/ceremony
+    subject: ceremony records
+    description: Requirements on ceremony transcript format, signing, persistence, retention, and the audit algorithm.
+    dependencies:
+    - /req/threshold-signing
+    guidance:
+
+    requirements:
+    - name: Transcript contents
+      identifier_fragment: transcript-contents
+      statement: A ceremony transcript shall contain the ceremony type, participant identities
+        with contribution proofs, quorum parameters, the canonical payload hash signed, the
+        resulting aggregate threshold signature, and a timestamp.
+      guidance:
+
+    - name: Transcript signing by participants
+      identifier_fragment: transcript-signing
+      statement: A ceremony transcript shall be signed by each participating member attesting
+        their participation, and shall carry the aggregate threshold signature produced by
+        the ceremony.
+      guidance:
+      - A transcript without all member signatures or the aggregate signature is incomplete
+        and shall not be accepted.
+
+    - name: Transcript persistence and retention
+      identifier_fragment: transcript-persistence
+      statement: Ceremony transcripts shall be persisted to durable storage and retained for
+        the validity period of the artifacts they produced, exceeding the maximum possible
+        artifact lifetime including grace periods.
+      guidance:
+
+    - name: Transcript transparency log cross-reference
+      identifier_fragment: transcript-log-cross-reference
+      statement: A ceremony transcript shall be cross-referenced with the transparency log
+        entry for the artifact or certificate produced by the ceremony.
+      guidance:
+
+    - name: Transcript audit algorithm
+      identifier_fragment: audit-algorithm
+      statement: The ceremony audit algorithm shall verify each member participation signature,
+        verify the aggregate threshold signature, confirm at least T of N members
+        participated, cross-reference the payload with the transparency log entry, and confirm
+        timestamp consistency.
+      guidance:

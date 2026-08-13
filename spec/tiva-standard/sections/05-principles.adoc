@@ -1,0 +1,194 @@
+
+[[principles]]
+== Principles
+
+=== General
+
+The requirements of this document are derived from a set of design principles.
+Each principle distinguishes the trust infrastructure specified here from
+traditional public key infrastructure (PKI) patterns that were designed for
+server-identity authentication and are structurally inadequate for establishing
+the trustworthiness of persistent artifacts.
+
+NOTE: This clause is motivational. The binding normative requirements derived
+from these principles are specified in clauses 8 through 20. In case of any
+apparent conflict, the normative clauses take precedence.
+
+The name CHRONTIF encodes seven architectural properties. These properties are
+not merely descriptive — each maps to normative requirements in this document:
+
+.CHRONTIF architectural properties by letter
+[cols="1,2,4",options="header"]
+|===
+| Letter | Property | Architectural meaning
+
+| C
+| Convergent
+| Multiple independent attestation paths converge into one verifiable record.
+Each {{trust dimension}} (data, person, time, location, environment, and others
+defined by the scheme) produces an independent {{co-signature}} on the same
+{{canonical payload}}. Convergence, not single-signer authority, establishes
+trustworthiness. See <<artifact-multi-dimensional>>.
+
+| H
+| Hierarchical
+| Signing authority flows through a delegation hierarchy — {{root trust
+authority}} through {{delegated trust authority,delegated trust authorities}}
+to {{end certificate}} to {{trusted artifact}} — with {{scope}} narrowing
+monotonically at every link. See <<architecture-authorities>> and
+<<scope-monotonic-narrowing>>.
+
+| R
+| Repudiable
+| Trust is a lifecycle, not a permanent state. Previously-granted trust can be
+formally revoked through {{trust repudiation}} — threshold-gated revocation
+mechanisms that propagate to all artifacts transitively bound to the revoked
+state. This introduces a trust lifecycle concept not present in traditional PKI's certificate-validity model: trust granted under conditions can be withdrawn when those conditions cease to hold. See
+<<revocation-propagation>>.
+
+| O
+| Open
+| Verification requires no phone-home to the issuer. The {{trust anchor
+bundle}} enables fully offline verification. Transparency logs are publicly
+auditable. No proprietary component is required to verify a CHRONTIF artifact.
+See <<architecture-anchors>> and <<transparency>>.
+
+| N
+| Network
+| Authority is exercised through threshold groups and federated trust
+authorities that span organizational boundaries. The {{trust graph}} is a
+directed acyclic graph, not a linear chain. No single entity controls any
+level of the hierarchy. See <<threshold-signing>> and <<threshold-federated>>.
+
+| T
+| Trust
+| The domain of this document is trust: the establishment, assessment, and
+withdrawal of confidence in signed artifacts. Trust is graduated (via the
+{{classification label}}), not binary. See <<verification-classification>>.
+
+| I, F
+| Infrastructure, Framework
+| CHRONTIF is an infrastructure-level framework, not a single product or
+protocol. It defines requirements that independent implementations conform to,
+and that domain-specific profiles instantiate. See <<conformance>>.
+|===
+
+The principles are grouped thematically below. Each principle appears in at
+least one requirements class defined in <<conformance>>.
+
+NOTE: These principles distinguish CHRONTIF from traditional PKI patterns
+optimized for server-identity authentication. They address the persistent-
+artifact trust problem specifically; they are not criticisms of PKI, which
+remains the appropriate and mature technology for TLS, code signing under
+active policy enforcement, and identity binding. See <<annex-b>> for
+use-case suitability guidance.
+
+
+=== Authority and delegation
+
+==== Cryptographic scope enforcement
+
+The {{scope}} of a {{trust authority}} shall be a first-class signed field,
+cryptographically enforced at every chain link. Widening any {{scope dimension}}
+at any delegation point shall cause a hard verification failure. This contrasts with
+traditional PKI, in which a CA's scope is defined by external policy
+(Baseline Requirements) and is not verifiable from the certificate itself.
+
+==== Threshold at every level
+
+A {{quorum}} of cooperating key holders shall be required to exercise the
+signing authority of any {{trust authority}}, including but not limited to the
+{{root trust authority}}. There shall be no single point of cryptographic
+compromise at any level of the {{trust graph}}.
+
+==== Federated trust authorities
+
+A {{federated trust authority}} shall be a threshold group of independent
+organizations sharing a single {{aggregate key}}, such that no single
+organization controls the authority. This contrasts with traditional PKI bridge
+CAs, which are single entities.
+
+==== Topology flexibility
+
+The {{trust graph}} shall admit hierarchical, federated, cross-recognized, and
+mesh topologies as first-class conformance profiles. An implementation shall not
+be required to assume a single-root hierarchy.
+
+
+=== Multi-party and multi-dimensional attestation
+
+==== Multi-party co-signed artifacts
+
+A {{trusted artifact}} shall carry one or more {{co-signature,co-signatures}},
+each from a different signer, attesting the same {{canonical payload}}. The
+artifact shall be a convergence point of independent attestations rather than a
+single-authority assertion.
+
+==== Multi-dimensional reality attestation
+
+Time, location, and environment shall be cryptographic {{trust dimension,trust
+dimensions}}, each backed by its own trust tree and each producing its own
+{{dimension attestation}}. These dimensions shall not be carried as unsigned
+metadata.
+
+==== Cross-domain trust fusion
+
+{{co-signature,co-signatures}} from independent {{trust chain,trust chains}} or
+independent {{root trust authority,root trust authorities}} shall be carried on
+the same {{trusted artifact}}. Cross-domain trust recognition shall occur at the
+artifact level, not solely at the {{trust authority}} level.
+
+
+=== Scope and binding
+
+==== Live scope conditions
+
+A {{scope}} shall include {{scope condition,scope conditions}} — executable
+predicates evaluated at verification time against the content and context of the
+artifact. An artifact signed by a key whose scope conditions are not met shall
+fail verification, regardless of cryptographic signature validity.
+
+==== Revocation propagation
+
+Revocation of a {{trust authority}} state shall propagate to every {{trusted
+artifact}} transitively bound to that state, across all {{trust
+dimension,trust dimensions}} and all {{trust chain,trust chains}}. A revoked
+authority's prior signatures shall not remain valid.
+
+==== Challenge-response authenticity
+
+A verifier shall be able to challenge a device for a fresh {{trusted artifact}}
+bound to a nonce, such that a static copy of a prior artifact cannot satisfy the
+challenge. Authenticity shall be established by the ability to produce a
+timely, nonce-bound response, not by possession of a static credential.
+
+
+=== Transparency and time
+
+==== Mandatory transparency
+
+Inclusion of every {{end certificate}} and every {{trusted artifact}} in a
+{{transparency log}} shall be a verification requirement. Artifacts not provably
+included in a recognized log shall be downgraded or rejected.
+
+==== Multi-log attestation
+
+A {{federated trust authority}} shall require inclusion of its artifacts in at
+least M of K independent {{transparency log,transparency logs}}, such that no
+single log operator controls the record.
+
+==== External time anchoring
+
+The time of signing shall be established by an independent {{time key}} or by
+anchoring to an external, irrefutable time source. The signer's self-asserted
+timestamp shall not be the sole evidence of when an artifact was signed.
+
+
+=== Trust assessment
+
+==== Graduated trust
+
+The {{classification label}} of a {{trusted artifact}} shall reflect the depth and
+breadth of its {{dimensional coverage}}, not merely the binary validity of its
+primary signature. A verifier shall be able to apply risk-based policy to the
+grade.

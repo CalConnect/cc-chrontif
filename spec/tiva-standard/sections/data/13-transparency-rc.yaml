@@ -1,0 +1,82 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Transparency and multi-log attestation
+    name: Transparency and multi-log attestation
+    identifier: /req/transparency
+    subject: transparency
+    description: Requirements on Merkle transparency logs, inclusion proofs, external time anchoring, mirrors, gossip, and multi-log attestation.
+    dependencies:
+    - /req/architecture
+    guidance:
+
+    requirements:
+    - name: Merkle tree append-only structure
+      identifier_fragment: merkle-append-only
+      statement: A transparency log shall be implemented as an append-only log with inclusion proofs, with
+        domain-separated hashing for leaf and internal nodes, and each tree head shall be
+        signed by the log operator.
+      guidance:
+      - Domain separation prevents second-preimage attacks. RFC 6962 uses 0x00
+        prefix for leaves and 0x01 prefix for internal nodes.
+      - The Merkle tree semantics follow RFC 6962.
+
+    - name: Inclusion proof format
+      identifier_fragment: inclusion-proof
+      statement: An inclusion proof shall consist of the leaf hash, the audit path, the tree
+        head (root hash, tree size, timestamp), and the log operator signature over the tree
+        head.
+      guidance:
+      - The verifier validates the proof by recomputing the root from the leaf and audit path.
+
+    - name: External time anchoring of tree heads
+      identifier_fragment: tree-head-anchoring
+      statement: Each tree head shall be anchored to an external irrefutable time source,
+        producing a verifiable proof that the tree head hash was committed to the external
+        source at or near the tree head timestamp.
+      guidance:
+      - The anchoring proves that the log state existed at a specific time, independently
+        of the log operator's own assertion.
+
+    - name: Mirror replication and integrity
+      identifier_fragment: mirror-integrity
+      statement: A mirror shall independently verify the log's append-only property by checking
+        that each new tree head extends the previous one, and shall serve inclusion proofs
+        and log entries to verifiers.
+      guidance:
+      - Mirrors detect log misbehaviour including split views.
+
+    - name: Gossip quorum for tree head consistency
+      identifier_fragment: gossip-quorum
+      statement: A verifier shall confirm that the tree head it relies on is observed by at
+        least a gossip quorum of independent sources before accepting inclusion proofs against
+        that tree head.
+      guidance:
+      - A gossip quorum of at least 2-of-3 independent sources provides strong assurance.
+
+    - name: Mandatory transparency inclusion
+      identifier_fragment: mandatory-inclusion
+      statement: Every end certificate and trusted artifact shall be included in a recognized
+        transparency log, and artifacts not provably included shall be downgraded or rejected.
+      guidance:
+      - Transparency is a verification requirement, not an optional overlay.
+
+    - name: Multi-log attestation quorum
+      identifier_fragment: multi-log-quorum
+      statement: For artifacts issued by a federated trust authority whose policy requires
+        multi-log attestation, the artifact shall carry inclusion proofs from at least M of K
+        independent transparency logs, where M and K are specified by the policy.
+      guidance:
+      - Each inclusion proof is validated independently.
+      - No single log operator controls the record.
+
+    - name: Consistency proofs
+      identifier_fragment: consistency-proofs
+      statement: A transparency log shall support consistency proofs demonstrating that one
+        signed tree head is a prefix of a later signed tree head, consisting of the minimal
+        set of intermediate hashes that allows a verifier to confirm the prefix relationship
+        without downloading the entire log.
+      guidance:
+      - Mirrors shall validate consistency proofs between consecutive tree heads.
+      - Verifiers may request consistency proofs between any two observed tree heads.

@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Key lifecycle
+    name: Key lifecycle
+    identifier: /req/key-lifecycle
+    subject: key lifecycle
+    description: Requirements on key generation, encrypted storage, import and export, hardware security module interfaces, certificate signing requests, and key rotation.
+    dependencies:
+    - /req/algorithms
+    - /req/threshold-signing
+    guidance:
+
+    requirements:
+    - name: Secure key generation
+      identifier_fragment: key-generation
+      statement: Keys shall be generated using a cryptographically secure random number
+        generator with parameters conforming to the chosen algorithm specification.
+      guidance:
+      - Threshold key shares shall be generated using a threshold key generation protocol
+        ensuring no individual member possesses the full signing key.
+
+    - name: Encrypted key storage
+      identifier_fragment: encrypted-storage
+      statement: Private keys shall be stored encrypted at rest using an authenticated
+        encryption algorithm with adequate security strength, with the encryption key
+        derived from a passphrase using a password-based key derivation function resistant
+        to brute-force attacks.
+      guidance:
+      - The choice of specific encryption and derivation algorithms is an implementation
+        decision.
+      - Private keys shall not be stored in plaintext under any circumstances.
+      examples:
+      - AES-256-GCM is an example of a suitable authenticated encryption algorithm.
+      - PBKDF2, Argon2, and scrypt are examples of suitable key derivation functions.
+
+    - name: Key import and export encodings
+      identifier_fragment: import-export
+      statement: Key import and export shall use a recognized, interoperable key encoding
+        format.
+      guidance:
+      - Imported keys shall be validated for format correctness and algorithm consistency
+        before use.
+      - Additional encodings may be registered per Annex C.
+      examples:
+      - PKCS#8 for private keys, SubjectPublicKeyInfo for public keys, and X.509 for
+        certificates are examples of recognized encodings.
+      - JOSE JWK and COSE key format are examples of alternative interoperable encodings.
+
+    - name: Hardware security module interface
+      identifier_fragment: hsm-interface
+      statement: When an HSM is used, the private key shall never leave the HSM in plaintext,
+        signing shall be performed within the HSM, and session management shall use
+        authenticated sessions with PIN or equivalent access control.
+      guidance:
+      - The HSM shall enforce access policies preventing unauthorized key use.
+
+    - name: Certificate signing request with proof of possession
+      identifier_fragment: csr-pop
+      statement: A certificate signing request shall follow a recognized CSR format and
+        shall include a proof-of-possession signature demonstrating the requester holds
+        the corresponding private key.
+      guidance:
+      - The issuing trust authority shall verify the proof-of-possession before issuing
+        a certificate.
+      - Additional CSR formats may be registered per Annex C.
+      examples:
+      - PKCS#10 is an example of a recognized CSR format.
+
+    - name: Key rotation
+      identifier_fragment: key-rotation
+      statement: Keys shall be rotated according to the authority's key rotation policy,
+        with threshold member rotation preserving the aggregate key and end certificate
+        key rotation producing a new certificate under the same or narrower scope.
+      guidance:

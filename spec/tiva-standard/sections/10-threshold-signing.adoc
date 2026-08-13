@@ -1,0 +1,151 @@
+
+[[threshold-signing]]
+== Threshold signing
+
+=== General
+
+In the CHRONTIF framework, {{threshold signing}} is not a property of the root
+alone. Any {{trust authority}} at any level of the {{trust graph}} may operate
+under a threshold scheme, ensuring that no single key compromises any level of
+the delegation hierarchy.
+
+A threshold authority requires at least T of N designated key holders to
+cooperate to produce a valid signature under the authority's {{aggregate key}}.
+No individual holder possesses the full signing capability; the aggregate key
+is composed from member-contributed shares.
+
+
+[[threshold-every-level]]
+=== Threshold at every level
+
+A {{delegated trust authority}} whose members are threshold key holders
+produces signatures under a threshold scheme. The threshold parameters
+propagate through the delegation hierarchy:
+
+.Example threshold parameters by authority level
+[cols="3,3,2"]
+|===
+| Authority | Quorum | Delegates to
+
+| {{root trust authority}}
+| 5-of-7 (example)
+| Delegated trust authority A's aggregate key
+
+| Delegated trust authority A
+| 3-of-5 (example)
+| Delegated trust authority B's aggregate key
+
+| Delegated trust authority B
+| 2-of-3 (example)
+| End certificate (1-of-1)
+|===
+
+Each delegation certificate shall carry the child's aggregate public key, the
+{{quorum}} definition (T, N), and the member identity references. A single-key
+authority (1-of-1) omits the quorum parameters.
+
+
+[[threshold-aggregate-continuity]]
+=== Aggregate key continuity
+
+When a threshold authority rotates a member — adding, removing, or replacing a
+key holder — the {{aggregate key}} shall remain unchanged. The parent's
+delegation shall remain valid without re-issuance.
+
+This is achieved through threshold re-share protocols that preserve the
+aggregate public key while redistributing the secret shares among the new
+member set. Member rotation is transparent to all verifiers and to all parent
+authorities.
+
+[[threshold-nested]]
+=== Nested threshold
+
+A threshold {{delegated trust authority}} whose members are themselves
+threshold authorities forms a nested threshold structure. Signing by the outer
+authority may require the inner authority to first reach its own quorum, then
+contribute a share to the outer authority's threshold.
+
+Nested threshold structures enable arbitrarily deep trust arrangements that
+span multiple organizational layers, each with its own quorum policy.
+
+
+[[threshold-federated]]
+=== Federated trust authorities
+
+==== Definition
+
+A {{federated trust authority}} (FTA) is a threshold {{delegated trust
+authority}} whose members are independent organizations, each potentially a
+threshold authority itself. An FTA has:
+
+* its own {{aggregate key}}, composed from member-contributed shares;
+* its own {{quorum}} (M-of-K member organizations);
+* its own {{scope}}, which may span member hierarchies;
+* its own {{ceremony}} protocol for cross-organization coordination.
+
+No single member organization controls an FTA. The threshold ensures that a
+specified number of independent organizations must cooperate to exercise the
+FTA's signing power.
+
+==== Recursive composition
+
+FTAs may be composed recursively. An FTA may itself be a member of another
+FTA, creating arbitrarily deep trust structures.
+
+[example]
+====
+FTA F₁ (3-of-5: {DTA_A, DTA_B, DTA_C, DTA_D, DTA_E}) is a member of FTA F₂
+(2-of-4: {DTA_F, DTA_G, DTA_H, FTA_F₁}). Signing by F₂ may require F₁ to
+internally reach 3-of-5 among its members, then contribute one share to F₂'s
+2-of-4 threshold.
+====
+
+==== Hierarchy-spanning
+
+An FTA may include members from independent {{root trust authority,root trust
+authorities}}. Artifacts signed by such an FTA are verifiable against the
+FTA's aggregate key, which is recognized by all member hierarchies. This
+creates trust bridges between otherwise independent roots.
+
+==== Lifecycle
+
+An FTA lifecycle consists of:
+
+* **Formation.** Member organizations contribute shares; the aggregate key is
+  computed and published.
+
+* **Delegation.** The FTA delegates to subordinate delegated trust authorities
+  using its aggregate key.
+
+* **Re-share.** Member organizations join or leave without changing the
+  aggregate key (see <<threshold-aggregate-continuity>>).
+
+* **Dissolution.** The aggregate key is retired. Historical artifacts signed
+  before dissolution remain valid if their chains and scope remain valid.
+
+
+[[threshold-ceremony]]
+=== Ceremony protocol
+
+A {{ceremony}} is the protocol by which a {{quorum}} of key holders cooperates
+to produce a {{threshold signing}} signature. The CHRONTIF framework is
+ceremony-protocol-neutral: any protocol that produces a verifiable threshold
+signature under the authority's aggregate key may be used.
+
+A ceremony protocol shall:
+
+* produce a signature verifiable against the authority's published aggregate
+  key;
+* ensure that fewer than T members cannot produce a valid signature;
+* produce a ceremony record (see <<ceremony-records>>) that is
+  independently verifiable.
+
+
+[[req-threshold-signing]]
+=== Requirements
+
+[data2text,ar=sections/data/10-threshold-signing-rc.yaml]
+----
+{% assign prefix = "threshold-signing" %}
+include::templates/requirements_class.liquid[]
+----

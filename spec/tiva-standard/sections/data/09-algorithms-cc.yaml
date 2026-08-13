@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Cryptographic algorithms conformance
+    name: Cryptographic algorithms conformance
+    identifier: /conf/algorithms
+    target: /req/algorithms
+    subject: cryptographic algorithms
+    description: Conformance tests for cryptographic algorithm requirements.
+    dependencies:
+    - /conf/artifact-format
+    guidance:
+    tests:
+
+    - name: Classical algorithm validation
+      identifier_fragment: classical-algorithms
+      targets:
+      - /req/algorithms/classical-algorithms
+      purpose: Verify classical algorithms are recognized with explicit identifiers.
+      method: Produce signatures using at least one classical algorithm from the scheme's
+        registry. Verify the signature wrappers carry explicit algorithm identifiers. Verify
+        the signatures validate correctly.
+      type: Conformance
+
+    - name: Post-quantum algorithm validation
+      identifier_fragment: post-quantum-algorithms
+      targets:
+      - /req/algorithms/post-quantum-algorithms
+      purpose: Verify post-quantum algorithms are recognized.
+      method: Produce signatures using at least one post-quantum algorithm from the scheme's
+        registry. Verify the signatures validate correctly against the specified parameter sets.
+      type: Conformance
+
+    - name: Composite AND semantics test
+      identifier_fragment: composite-and-semantics
+      targets:
+      - /req/algorithms/composite-and-semantics
+      purpose: Verify composite signatures require both components to validate.
+      method: Produce a composite signature (classical + post-quantum). Verify it validates
+        when both components are valid. Tamper with one component and verify the composite
+        fails.
+      type: Conformance
+
+    - name: Migration phases test
+      identifier_fragment: migration-phases
+      targets:
+      - /req/algorithms/migration-phases
+      purpose: Verify the framework supports all three migration phases.
+      method: Configure a deployment for classical-only, composite, and post-quantum-only
+        phases. Verify artifacts are produced and verified in each phase.
+      type: Conformance
+
+    - name: Algorithm agility identifiers test
+      identifier_fragment: algorithm-agility-identifiers
+      targets:
+      - /req/algorithms/algorithm-agility-identifiers
+      purpose: Verify algorithm identifiers enable correct validation method selection.
+      method: Produce artifacts with different algorithm identifiers. Verify the verifier
+        selects the correct validation method for each. Verify unknown identifiers are
+        handled gracefully.
+      type: Conformance
+
+    - name: Encryption at rest validation
+      identifier_fragment: encryption-at-rest
+      targets:
+      - /req/algorithms/encryption-at-rest
+      purpose: Verify keys at rest are encrypted with an authenticated encryption algorithm
+        and a password-based key derivation function.
+      method: Inspect the key storage implementation. Verify an authenticated encryption
+        algorithm with adequate security strength is used. Verify the encryption key is derived
+        using a password-based key derivation function resistant to brute-force attacks.
+        Attempt to read stored keys and verify they are not in plaintext.
+      type: Validation
+
+    - name: Minimum security parameters test
+      identifier_fragment: minimum-security-parameters
+      targets:
+      - /req/algorithms/minimum-security-parameters
+      purpose: Verify implementations use algorithms meeting minimum security strength.
+      method: Attempt to generate or accept keys, signatures, or hashes below 128-bit
+        security strength. Verify all such attempts are rejected. Verify SHA-1 and MD5
+        are rejected.
+      type: Conformance

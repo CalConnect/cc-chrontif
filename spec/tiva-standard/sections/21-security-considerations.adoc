@@ -1,0 +1,535 @@
+
+[[security]]
+== Security considerations
+
+=== General
+
+This clause describes security threats relevant to the CHRONTIF framework and the
+mitigations specified in the normative clauses. The threats are organized by
+attack surface. For each threat, the relevant normative requirements are
+identified.
+
+The security of the CHRONTIF framework depends on the correctness of the
+underlying cryptographic algorithms, the integrity of the {{trust anchor
+bundle}}, the append-only property of {{transparency log,transparency logs}},
+and the threshold properties of {{ceremony}} protocols. Compromise of any of
+these foundations undermines the guarantees of the framework.
+
+
+[[security-threat-model]]
+=== Threat model
+
+The threat model assumes the following attacker capabilities:
+
+* **Network control.** The attacker controls the network between the verifier
+  and all transparency logs, mirrors, and issuing authorities, and may delay,
+  replay, or inject messages.
+
+* **Single-key compromise.** The attacker may compromise any single signing
+  key that is not protected by threshold.
+
+* **Single-authority compromise.** The attacker may compromise a single
+  {{trust authority}} that operates under a threshold scheme, provided the
+  compromise does not reach the quorum threshold T.
+
+* **Log operator coercion.** The attacker may coerce a single transparency log
+  operator to present inconsistent views to different verifiers (split-view
+  attack).
+
+The threat model excludes the following:
+
+* compromise of a quorum of threshold members (T or more);
+* compromise of two or more independent transparency log operators;
+* break of the underlying cryptographic primitives (hash collisions, signature
+  forgery);
+* compromise of the verifier's local trust anchor bundle storage.
+
+
+[[security-transparency]]
+=== Transparency log attacks
+
+==== Split-view attack
+
+A transparency log operator may attempt to present different tree heads to
+different verifiers, enabling the issuance of artifacts visible to some
+verifiers but not others.
+
+The mitigation is {{gossip}} (see <<transparency-mirrors>>): verifiers and
+mirrors cross-check tree head fingerprints. A verifier that detects a tree head
+not observed by the gossip quorum rejects inclusion proofs against that tree
+head.
+
+==== Log omission attack
+
+A log operator may attempt to omit an artifact from the log while claiming it
+was included.
+
+The mitigation is the {{inclusion proof}} (see <<transparency-inclusion-proof>>):
+the verifier recomputes the Merkle root from the leaf and audit path and
+compares it to the signed tree head. A log operator cannot forge an inclusion
+proof without producing a hash collision.
+
+==== Stale tree head attack
+
+An attacker may present an old tree head that predates the inclusion of a
+revoked certificate, causing the verifier to accept an artifact as logged when
+it is not in the current log.
+
+The mitigation is the gossip quorum and the external time anchoring of tree
+heads (see <<transparency-anchoring>>). The verifier confirms that the tree
+head is current (observed by the gossip quorum) and that its external time
+anchor is within the freshness window.
+
+==== Log operator key compromise
+
+An attacker who obtains the log operator's signing key can sign fraudulent tree
+heads with valid signatures, potentially enabling split-view attacks or the
+injection of forged entries.
+
+The mitigation is layered:
+
+* **Multi-log attestation.** Requiring inclusion in M-of-K independent logs
+  (see <<transparency-multi-log>>) ensures that compromise of a single log
+  operator key does not undermine artifact trustworthiness.
+
+* **Gossip-based detection.** A fraudulent tree head signed with a compromised
+  key is detected when mirrors and verifiers compare their views via gossip
+  (see <<transparency-mirrors>>).
+
+* **Operator key protection.** The log operator's signing key shall be
+  protected using threshold signing or hardware-backed storage, reducing the
+  risk of single-party compromise.
+
+* **Key rotation transparency.** Log operator key rotations shall be recorded
+  in the log itself, enabling verifiers to audit the history of key changes.
+
+
+[[security-threshold]]
+=== Threshold signing attacks
+
+==== Sub-quorum compromise
+
+An attacker may compromise fewer than T threshold members and attempt to
+produce a valid signature.
+
+The mitigation is the ceremony protocol threshold property
+(see <<threshold-signing>>): fewer than T members cannot produce a valid
+signature under the aggregate key. This property shall hold for every
+conforming ceremony protocol.
+
+==== Aggregate key continuity attack
+
+An attacker may attempt to exploit a member rotation event to change the
+aggregate key and invalidate existing delegations.
+
+The mitigation is the aggregate key continuity requirement
+(see <<threshold-aggregate-continuity>>): member rotation preserves the
+aggregate key. The attacker cannot force an aggregate key change through member
+rotation.
+
+==== Ceremony record forgery
+
+An attacker may forge a ceremony record to claim a signing event occurred with
+different participants or parameters.
+
+The mitigation is the ceremony record signing requirement
+(see <<ceremony-signing>>): each participant signs the transcript, and the
+aggregate threshold signature is recorded. Forgery requires compromising the
+quorum.
+
+
+[[security-scope]]
+=== Scope attacks
+
+==== Scope widening attack
+
+An attacker may modify a delegation certificate to widen the scope beyond what
+the parent authorized, enabling the issuance of artifacts outside the
+authorized boundary.
+
+The mitigation is the {{monotonic narrowing invariant}}
+(see <<scope-monotonic-narrowing>>): the verifier checks at every chain link
+that the child scope is a subset of the parent scope on every dimension.
+Widening causes hard rejection. The scope is carried in the signed certificate
+extension, so modification invalidates the signature.
+
+==== Scope condition bypass
+
+An attacker may produce an artifact whose content does not satisfy the signing
+key's scope conditions but claim it does.
+
+The mitigation is the scope condition evaluation requirement
+(see <<scope-conditions>>): the verifier evaluates all scope conditions at
+verification time. An artifact failing any condition is rejected regardless of
+signature validity. The evaluation context is fully determined by the artifact
+and its chain, ensuring deterministic verification.
+
+
+[[security-time]]
+=== Time anchoring attacks
+
+==== Backdating attack
+
+An attacker may attempt to backdate an artifact by manipulating the time
+dimension attestation.
+
+The mitigation is the external time anchoring requirement
+(see <<transparency-anchoring>> and <<time-dimension>>): the time dimension
+attestation is anchored to an external, irrefutable time source. Backdating
+requires compromising the external time source or re-mining the anchor (e.g.,
+re-computing proof-of-work).
+
+==== Timestamp freshness attack
+
+An attacker may present an old timestamp as current.
+
+The mitigation is the verifier's time freshness window policy
+(see <<verification-freshness>>): the verifier rejects time anchors outside the
+freshness window specified by its policy.
+
+
+[[security-bundle]]
+=== Trust anchor bundle attacks
+
+==== Bundle poisoning
+
+An attacker may substitute a malicious root anchor in the verifier's trust
+anchor bundle.
+
+The mitigation is the trust anchor bundle self-containment and distributability
+requirements (see <<architecture-anchors>>): the bundle is deterministic and
+distributable via out-of-band channels with published fingerprints. The
+verifier confirms the bundle fingerprint against multiple independent sources
+before use.
+
+==== Stale bundle attack
+
+An attacker may cause the verifier to use an outdated bundle that does not
+include a recently added root or includes a revoked root.
+
+The mitigation is the bundle versioning requirement
+(see <<architecture-anchors>>): the bundle carries a version identifier and
+validity period, and bundle updates are transparency-logged. The verifier
+checks the bundle version against the transparency log.
+
+
+[[security-migration]]
+=== Algorithm migration attacks
+
+==== Downgrade attack
+
+During post-quantum migration, an attacker may attempt to force the use of a
+weaker algorithm (classical-only when composite or post-quantum is available).
+
+The mitigation is the algorithm agility framework
+(see <<algorithm-agility>>): algorithm identifiers are explicit in the
+signature wrapper, and the deployment manifest declares the active migration
+phase. The verifier rejects algorithms below the deployment's declared phase.
+
+==== Algorithm deprecation exploitation
+
+An attacker may exploit the deprecation period to use a known-weak algorithm.
+
+The mitigation is the deprecation process
+(see <<algorithm-agility-deprecation>>): deprecated algorithms produce a
+classification downgrade during the deprecation period and are rejected after
+retirement. The deprecation schedule is published in advance.
+
+
+[[security-dos]]
+=== Denial of service
+
+==== CRL flood
+
+An attacker may flood the verifier with CRL update requests, causing cache
+exhaustion or processing delays.
+
+The mitigation is the offline grace period policy
+(see <<revocation-offline>>): the verifier applies a configurable CRL grace
+period and does not require real-time CRL updates. Stale CRLs within the grace
+period are accepted with a classification downgrade.
+
+==== Transparency log flood
+
+An attacker may submit a large number of spurious entries to a transparency
+log, inflating the log size and slowing inclusion proof verification.
+
+The mitigation is implementation-specific (rate limiting, proof size
+optimization) and is out of scope of this document. However, the framework
+does not require the verifier to process the entire log; the verifier needs
+only the specific inclusion proofs for the artifacts it verifies.
+
+
+[[security-privacy]]
+=== Privacy considerations
+
+CHRONTIF artifacts may carry {{dimension attestation,dimension attestations}} that
+reveal information about the signer, the location, the environmental
+conditions, and the device identity. Implementers should consider the privacy
+implications of including these attestations:
+
+* **Location attestations** reveal the geographic position of the signing
+  event. Implementers should assess whether location precision is necessary or
+  whether coarser granularity suffices.
+
+* **Person attestations** reveal the identity of the human operator.
+  Implementers should consider whether operator pseudonyms suffice.
+
+* **Device identity attestations** reveal the specific device serial number.
+  Implementers should assess the correlation risk across multiple artifacts
+  from the same device.
+
+* **Transparency log entries** are publicly visible. Artifacts logged in a
+  transparency log are discoverable by any party with access to the log.
+  Implementers should assess whether the artifact content itself is sensitive.
+
+NOTE: Transparency logs record artifact existence, not artifact content. To
+minimize personal data exposure, deployments should log only the artifact hash
+and metadata (dimensions present, classification label at issuance time), not
+the full payload.
+Full artifact content distribution is a separate concern from transparency
+logging. The framework does not mandate any particular privacy-preserving technique.
+Profiles of this document may specify privacy enhancements (e.g., zero-knowledge
+attestations, selective disclosure) appropriate to their domain.
+
+
+[[security-rogue-key]]
+=== Rogue-key attack mitigation
+
+In threshold signature schemes, a malicious member may register a public key
+crafted as a function of honest members' keys such that the aggregate key
+equals the attacker's own solo key. This rogue-key attack defeats the threshold
+property.
+
+Each member of a threshold authority shall demonstrate possession of the
+private key corresponding to their contributed public share during the
+threshold key generation ceremony. The aggregate key computation shall
+incorporate all member public keys in a manner that is secure against
+rogue-key attacks (e.g., coefficient-based key aggregation or PoP-verified
+aggregation).
+
+A threshold authority that does not enforce member proof-of-possession is
+non-conforming.
+
+
+[[security-consistency-proofs]]
+=== Transparency log consistency proofs
+
+Inclusion proofs demonstrate that a specific entry is in a tree at a given
+size. Consistency proofs demonstrate that one tree head is a prefix of a later
+tree head — i.e., that the log has not removed or rewritten history.
+
+A transparency log shall support consistency proofs. A consistency proof shall
+consist of the minimal set of intermediate hashes allowing a verifier to
+confirm that tree size `m` is a prefix of tree size `n` (where `m < n`) without
+downloading the entire log.
+
+A mirror shall validate the consistency proof between each consecutive pair of
+tree heads and shall reject any tree head that fails the consistency check. A
+verifier may request a consistency proof between any two tree heads it has
+observed to confirm append-only behaviour.
+
+
+[[security-replay]]
+=== Co-signature replay protection
+
+Each co-signature shall bind not only to the canonical payload hash but also
+to a unique artifact identifier. The artifact identifier may be a transparency
+log sequence number, a deployment-assigned nonce embedded in the canonical
+payload, or a freshly generated random value included in the signed content.
+
+The verifier shall reject any co-signature whose artifact identifier does not
+match the artifact being verified. Reuse of a co-signature across artifacts
+constitutes a hard verification failure.
+
+For living artifacts (artifacts that accumulate dimension attestations over
+time), each revision of the co-signature set shall produce a new transparency
+log entry binding the current full co-signature set to the canonical payload.
+The accumulation window shall be bounded by the artifact's validity period.
+
+
+[[security-wrapping]]
+=== Canonicalization and signature wrapping attacks
+
+A conforming signature wrapper shall ensure that the byte range covered by the
+cryptographic signature is exactly the byte range processed by the verifier
+for all downstream checks, including scope evaluation, classification, and
+revocation binding.
+
+The verifier shall reject any artifact in which the signed content and the
+processed content are not provably identical. Unsigned fields shall not
+influence verification outcomes.
+
+For format profiles using XML-based serialization, the signed and verified node
+sets shall be identical (defending against XML Signature Wrapping attacks). For
+JSON-based and CBOR-based profiles, the signed and decoded payload shall be the
+sole input to downstream processing.
+
+
+[[security-forward]]
+=== Forward and backward security
+
+Upon member removal or re-share, the departing member's share shall be
+cryptographically destroyed in a verifiable manner. The ceremony record shall
+attest to share destruction.
+
+A threshold authority shall maintain an epoch counter. Each signature shall
+carry its epoch. Verifiers shall reject signatures from epochs known to be
+compromised.
+
+Threshold authorities with long-term security requirements (artifact validity
+exceeding 10 years) should employ a forward-secure threshold signature scheme,
+in which compromise of current shares does not enable forgery of signatures
+from prior epochs.
+
+
+[[security-min-params]]
+=== Minimum security parameters
+
+Conforming implementations shall use algorithms and parameters providing a
+minimum security strength of 128 bits. For artifacts with long-term security
+requirements (validity exceeding 10 years), a minimum of 192 bits is
+recommended.
+
+The following minimum parameters apply:
+
+.Minimum security parameters
+[cols="2,3",options="header"]
+|===
+| Algorithm type | Minimum parameters
+
+| Elliptic curve signatures
+| Minimum 256-bit curve (e.g., P-256, Ed25519)
+
+| Post-quantum signatures
+| Minimum NIST PQ Level 2 (e.g., ML-DSA-44)
+
+| Hash functions
+| Minimum SHA-256 or equivalent; SHA-1 and MD5 are prohibited
+
+| Symmetric encryption (at rest)
+| Minimum 128-bit key (e.g., AES-128); 256-bit recommended
+
+| Password-based key derivation
+| Minimum 100,000 iterations (PBKDF2) or equivalent work factor
+|===
+
+Implementations shall not generate or accept keys, signatures, or hashes
+below these minimums. Random number generators used for key generation and
+nonce production shall conform to a recognized standard (e.g., NIST SP 800-90A
+or ISO/IEC 18031).
+
+
+[[security-side-channel]]
+=== Side-channel resistance
+
+Implementations of threshold signing ceremonies shall employ constant-time
+arithmetic for all operations involving secret shares or partial signatures.
+Implementations shall document their side-channel countermeasures.
+
+Device signers subject to physical access shall employ hardware-level
+protections (e.g., secure elements conforming to ISO/IEC 19790 at Security
+Level 3 or higher) for key storage and signing operations.
+
+Ceremony protocols shall specify abort procedures that prevent a malicious
+member from extracting share material through malformed contribution attacks.
+Nonce commitment (commit-then-reveal) shall be used in partial signature
+protocols to prevent nonce bias attacks.
+
+
+[[security-sybil-eclipse]]
+=== Sybil and eclipse attacks
+
+The trust anchor bundle policy shall define criteria for root inclusion that
+prevent Sybil-based classification inflation. Roots shall demonstrate organizational
+independence (distinct legal entities, distinct governance, distinct
+operational infrastructure) before inclusion. The cross-domain diversity
+metric counts only roots whose independence is attested by the bundle policy.
+
+Mirror discovery shall use diverse, independent channels. The verifier shall
+confirm that gossip sources span at least two distinct network paths.
+Deployments in high-risk environments should supplement gossip with
+out-of-band log verification (e.g., published fingerprint lists distributed
+via physical media).
+
+The threat model explicitly acknowledges that a network-controlling attacker
+who eclipses the verifier from all honest mirrors can present a fabricated
+transparency view. This risk is mitigated by gossip diversity but cannot be
+fully eliminated without out-of-band verification channels.
+
+
+[[security-ceremony-robustness]]
+=== Ceremony protocol robustness
+
+A conforming ceremony protocol shall specify:
+
+* **Identifiable abort.** If the ceremony aborts, the protocol shall identify
+  which member(s) caused the abort, enabling accountability.
+
+* **Nonce commitment.** Partial signature protocols shall use nonce commitment
+  to prevent nonce bias attacks by malicious members.
+
+* **Censorship resistance.** The authority shall document its policy for
+  handling member non-participation, including thresholds for member removal
+  for sustained non-participation.
+
+
+[[security-disaster-recovery]]
+=== Disaster recovery
+
+Root trust authorities shall document a disaster recovery plan addressing:
+
+* escrow of threshold shares under independent custodians;
+* procedures for root key reconstruction in the event of partial member loss;
+* transition procedures for migrating to a successor root authority, including
+  re-anchoring of the trust anchor bundle;
+* procedures for post-dissolution revocation of artifacts discovered to be
+  vulnerable.
+
+
+[[security-long-term]]
+=== Long-term security and algorithm degradation
+
+Artifacts with validity periods exceeding 20 years face the risk that their
+signing algorithm may be cryptographically broken during the artifact's
+lifetime. Conforming deployments shall specify a maximum artifact validity
+period per algorithm, after which re-signing with a current algorithm is
+required.
+
+For artifacts with indeterminate validity, the deployment shall specify a
+re-attestation cadence. The algorithm agility framework's deprecation process
+(see <<algorithm-agility-deprecation>>) shall include provision for mandatory
+re-signing of long-lived artifacts before algorithm retirement.
+
+
+[[security-key-escrow]]
+=== Key escrow and lawful intercept
+
+The CHRONTIF framework does not provide a key escrow or lawful intercept
+capability. Threshold schemes are designed so that no single party can produce
+signatures, and the aggregate key is not reconstructable from individual
+shares. Deployments in jurisdictions requiring key escrow shall document how
+their CHRONTIF conformance interacts with applicable legal requirements.
+
+The framework's trust repudiation mechanisms (revocation, scope condition
+withdrawal) operate on artifact validity, not on key recovery, and do not
+provide a decryption or signature-forcing capability.
+
+
+[[security-sc27-alignment]]
+=== Alignment with ISO/IEC security standards
+
+Organizations operating CHRONTIF trust authorities should maintain an
+information security management system conforming to ISO/IEC 27001, with
+CHRONTIF-specific risks (key compromise, ceremony disruption, transparency
+log integrity, scope violation) documented in the risk assessment.
+
+Threshold key shares and root aggregate key material should be stored and
+operated within cryptographic modules conforming to ISO/IEC 19790 at Security
+Level 3 or higher. Key establishment, transport, and agreement should conform
+to the applicable mechanisms in ISO/IEC 11770.
+
+The composite signature model defined in this document is compatible with the
+digital signature framework of ISO/IEC 14888. A composite signature is
+equivalent to the joint verification of multiple digital signatures over the
+same message.

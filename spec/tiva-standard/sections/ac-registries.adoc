@@ -1,0 +1,104 @@
+
+[[annex-c]]
+[appendix,obligation=normative]
+== Scheme-maintained registries
+
+=== General
+
+A scheme implementing this document (a "scheme") shall maintain registries for
+the extensible value spaces used throughout the framework. This document does
+not prescribe the content of any registry. Each scheme owns and maintains its
+own registries, defining the specific values recognized within that scheme's
+scope of recognition.
+
+This annex specifies which registries a scheme shall maintain, the
+characteristics each registry shall have, and the registration policy
+requirements that apply.
+
+
+=== Required registries
+
+A scheme shall maintain at minimum the following registries:
+
+[cols="2,3,2",options="header"]
+|===
+| Registry | Purpose | Referenced by
+
+| Trust dimension tag registry
+| Identifies trust dimension types used in co-signature blocks and verification
+  results
+| <<artifact-multi-dimensional>>
+
+| Algorithm identifier registry
+| Identifies signature algorithms recognized by the scheme, with their class
+  (classical, post-quantum, composite), parameter sets, and status
+| <<algorithms>>
+
+| Ceremony type registry
+| Identifies ceremony types used in ceremony transcripts and deployment
+  manifests
+| <<ceremony-records>>
+
+| Format profile registry
+| Identifies signature envelope format profiles recognized by the scheme, with
+  their canonicalization characteristics
+| <<artifact-format-profiles>>
+
+| Scope dimension registry
+| Identifies scope dimension names used in scope encodings within the scheme
+| <<scope-structure>>
+|===
+
+A scheme may maintain additional registries as needed for its domain.
+
+
+=== Registry characteristics
+
+Each registry maintained by a scheme shall have:
+
+* **Name.** A human-readable name identifying the registry.
+* **Description.** A statement of the registry's purpose and scope.
+* **Entry schema.** The fields that each entry shall contain, including any
+  required fields and optional fields.
+* **Registration policy.** The criteria and process for adding, modifying, or
+  retiring entries.
+* **Maintainer.** The organization or body responsible for maintaining the
+  registry and performing registration decisions.
+* **Publication.** A publicly accessible location where the current registry
+  contents are published.
+
+
+=== Registration policy requirements
+
+Each registry's registration policy shall ensure that:
+
+* registrations are technically sound;
+* proposed entries do not duplicate existing entries;
+* specifications are sufficiently detailed for independent implementation;
+* security implications have been assessed;
+* registrations, modifications, and retirements are publicly recorded with
+  dates and rationale.
+
+The registration policy may designate expert reviewers. The scheme shall
+document the reviewer qualification criteria.
+
+
+=== Inter-scheme recognition
+
+Two schemes that wish to interoperate shall publish a mapping between their
+respective registry entries, or shall adopt a common registry. The mechanism
+for inter-scheme recognition is out of scope of this document; it is a
+governance decision of the participating schemes.
+
+NOTE: A scheme may adopt another scheme's registry by reference, or may
+establish a joint registry with other schemes. The framework does not mandate
+a specific inter-scheme recognition mechanism.
+
+
+=== No mandatory initial values
+
+This document does not prescribe mandatory initial values for any registry.
+The initial content of each registry is determined by the scheme at
+establishment time, subject to the scheme's own governance process. Profiles
+of this document (see <<annex-d>>) may recommend initial values as examples,
+but such recommendations are informative.

@@ -1,0 +1,94 @@
+
+[[key-lifecycle]]
+== Key lifecycle
+
+=== General
+
+This clause specifies the lifecycle of cryptographic keys in the CHRONTIF
+framework: generation, encrypted storage, import and export, hardware
+security module interfaces, and certificate signing requests.
+
+Key lifecycle requirements apply to all signing keys: root {{aggregate
+key,aggregate keys}}, threshold member shares, {{end certificate}} keys, and
+{{time key,time keys}}.
+
+
+[[key-generation]]
+=== Key generation
+
+Keys shall be generated using a cryptographically secure random number
+generator. The generation parameters shall conform to the specification of the
+chosen algorithm as registered in the scheme's algorithm identifier registry.
+
+Threshold key shares shall be generated using a threshold key generation
+protocol that ensures no individual member possesses the full signing key.
+
+
+[[key-storage]]
+=== Encrypted storage
+
+Private keys shall be stored encrypted at rest using an authenticated
+encryption algorithm with adequate security strength. The encryption key shall
+be derived from a passphrase using a password-based key derivation function
+resistant to brute-force attacks. The choice of specific algorithms is an
+implementation decision.
+
+Private keys shall not be stored in plaintext under any circumstances. Export
+of private keys shall require explicit user action and shall produce encrypted
+output.
+
+
+[[key-import-export]]
+=== Import and export
+
+Key import and export shall use a recognized, interoperable key encoding
+format. PKCS#8 for private keys, SubjectPublicKeyInfo for public keys, and
+X.509 for certificates are recognized encodings; additional encodings may be
+registered.
+
+Imported keys shall be validated for format correctness and algorithm
+consistency before use.
+
+
+[[key-hardware]]
+=== Hardware security module interface
+
+Keys may be stored and used within a hardware security module (HSM) accessed
+via PKCS#11 or an equivalent interface. When an HSM is used:
+
+* The private key shall never leave the HSM in plaintext.
+* Signing operations shall be performed within the HSM.
+* Session management shall use authenticated sessions with PIN or equivalent
+  access control.
+* The HSM shall enforce access policies that prevent unauthorized key use.
+
+
+[[key-csr]]
+=== Certificate signing requests
+
+A certificate signing request (CSR) shall follow a recognized CSR format and
+shall include a proof-of-possession (PoP) signature demonstrating that the
+requester holds the private key corresponding to the public key in the request.
+PKCS#10 is a recognized format; additional formats may be registered.
+
+The issuing {{trust authority}} shall verify the PoP before issuing an
+{{end certificate}} or delegation certificate.
+
+
+[[key-rotation]]
+=== Key rotation
+
+Keys shall be rotated according to the authority's key rotation policy.
+Rotation of threshold member shares shall preserve the {{aggregate key}} (see
+<<threshold-aggregate-continuity>>). Rotation of end certificate keys shall
+produce a new certificate under the same or narrower {{scope}}.
+
+
+[[req-key-lifecycle]]
+=== Requirements
+
+[data2text,ar=sections/data/15-key-lifecycle-rc.yaml]
+----
+{% assign prefix = "key-lifecycle" %}
+include::templates/requirements_class.liquid[]
+----

@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Deployment manifest conformance
+    name: Deployment manifest conformance
+    identifier: /conf/manifest
+    target: /req/manifest
+    subject: deployment manifest
+    description: Conformance tests for deployment manifest requirements.
+    dependencies:
+    - /conf/architecture
+    - /conf/threshold-signing
+    - /conf/scope
+    - /conf/algorithms
+    - /conf/transparency
+    guidance:
+    tests:
+
+    - name: Manifest format and signing validation
+      identifier_fragment: manifest-format
+      targets:
+      - /req/manifest/manifest-format
+      purpose: Verify the manifest is in a declarative format, versioned, and signed.
+      method: Inspect the manifest format and verify it is declarative (TOML, YAML, or JSON).
+        Verify it carries a version identifier. Verify it is signed by the root trust
+        authority.
+      type: Validation
+
+    - name: Manifest topology declaration validation
+      identifier_fragment: manifest-topology
+      targets:
+      - /req/manifest/manifest-topology
+      purpose: Verify the manifest declares topology and authorities correctly.
+      method: Inspect the manifest and verify it declares the topology profile, all trust
+        authorities with identifiers, aggregate keys, quorum parameters, and parent
+        references.
+      type: Validation
+
+    - name: Manifest algorithm declaration validation
+      identifier_fragment: manifest-algorithms
+      targets:
+      - /req/manifest/manifest-algorithms
+      purpose: Verify the manifest declares recognized algorithms.
+      method: Inspect the manifest and verify declared algorithms are from the framework's
+        registry.
+      type: Validation
+
+    - name: Manifest transparency declaration validation
+      identifier_fragment: manifest-transparency
+      targets:
+      - /req/manifest/manifest-transparency
+      purpose: Verify the manifest declares transparency logs, mirrors, and multi-log policy.
+      method: Inspect the manifest and verify it declares recognized transparency logs and
+        mirrors with endpoints and public keys. Verify multi-log parameters are present if
+        applicable.
+      type: Validation
+
+    - name: Manifest acyclic graph validation test
+      identifier_fragment: manifest-validation-acyclic
+      targets:
+      - /req/manifest/manifest-validation-acyclic
+      purpose: Verify the manifest validates as an acyclic trust graph with scope narrowing.
+      method: Submit manifests with valid and cyclic authority graphs. Verify acyclic manifests
+        pass validation and cyclic ones fail. Verify scope narrowing is checked at every
+        delegation link.
+      type: Conformance
+
+    - name: Manifest quorum consistency test
+      identifier_fragment: manifest-validation-quorum
+      targets:
+      - /req/manifest/manifest-validation-quorum
+      purpose: Verify quorum parameters are validated for consistency.
+      method: Submit manifests with valid (T <= N) and invalid (T > N) quorum parameters.
+        Verify valid manifests pass and invalid ones fail validation.
+      type: Conformance
+
+    - name: Manifest versioning test
+      identifier_fragment: manifest-versioning
+      targets:
+      - /req/manifest/manifest-versioning
+      purpose: Verify manifest versioning follows semantic rules.
+      method: Submit manifests with major and minor version changes. Verify major changes
+        are handled as breaking and minor changes as compatible. Verify the most recent
+        signed manifest is authoritative.
+      type: Conformance

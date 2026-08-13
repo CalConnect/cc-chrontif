@@ -1,0 +1,270 @@
+
+[[conformance]]
+== Conformance
+
+=== General
+
+This document defines requirements for multiple roles within the trust
+infrastructure: verifiers, issuing authorities, root authorities, transparency
+operators, and device signers. Requirements are grouped into requirements
+classes, each addressing a specific capability.
+
+A conforming implementation may claim conformance to one or more requirements
+classes, depending on the role it performs. Requirements classes are designed
+to be modular: an implementation that serves only as an offline verifier need
+not implement the ceremony or key-lifecycle requirements.
+
+Requirements in this document are capability-based: they specify what an
+implementation shall be able to do, without mandating a specific implementation
+technology or internal architecture.
+
+
+=== Mandatory-to-implement baseline
+
+To ensure interoperability between independently developed implementations, the
+following mandatory-to-implement (MTI) baseline applies. An implementation
+claiming a conformance class shall implement at least the MTI components for
+that class. The baseline specifies algorithm _classes_, not specific
+algorithms, to accommodate deployments with different regulatory or national
+algorithm requirements (e.g., SM2/SM3 in China, FIPS-approved algorithms in
+the United States).
+
+.Mandatory-to-implement baseline by conformance class
+[cols="2,3",options="header"]
+|===
+| Conformance class | Mandatory-to-implement
+
+| `/conf/basic-verifier`
+| At least one classical signature algorithm from the scheme's algorithm registry,
+  at least one format profile, embedded chain discovery, trust anchor bundle
+  loading
+
+| `/conf/full-verifier`
+| All basic-verifier MTI, plus at least one post-quantum or composite algorithm
+  from the registry, transparency inclusion proof verification, CRL processing,
+  coverage report and classification
+
+| `/conf/issuing-authority`
+| All full-verifier MTI, plus threshold signing ceremony protocol, key
+  generation for at least one registered algorithm, ceremony record production
+
+| `/conf/root-authority`
+| All issuing-authority MTI, plus deployment manifest generation, governance
+  record publication
+
+| `/conf/transparency-operator`
+| Append-only transparency log operation, tree head signing, external time anchoring
+
+| `/conf/mirror`
+| Log replication, gossip protocol, inclusion proof serving
+
+| `/conf/device-signer`
+| At least one classical signature algorithm from the registry, at least one
+  format profile, per-device key lifecycle, challenge-response capability
+|===
+
+Two independently developed implementations claiming `/conf/basic-verifier`
+interoperate if they share at least one common classical algorithm and one
+common format profile. Implementations targeting a specific deployment context
+(e.g., a national regulatory regime) shall document which algorithm(s) and
+format profile(s) they implement.
+
+A claim of conformance to a requirements class shall be supported by passing
+the conformance tests defined in the corresponding conformance class in
+<<annex-a>>.
+
+
+=== Core conformance classes
+
+The following core requirements classes address the primary roles in the trust
+infrastructure. Dependencies between classes are acyclic.
+
+.Core requirements classes
+[%header,cols="2,3,2,2"]
+|===
+| Requirements class | Conformance class | Capabilities | Depends on
+
+| `/req/basic-verifier`
+| `/conf/basic-verifier`
+| Artifact format, signature validation, trust-chain path-finding
+| —
+
+| `/req/full-verifier`
+| `/conf/full-verifier`
+| All basic-verifier capabilities, plus scope enforcement, revocation, time
+  attestation, transparency inclusion, coverage report and classification
+| `/req/basic-verifier`
+
+| `/req/issuing-authority`
+| `/conf/issuing-authority`
+| Threshold signing, ceremony protocol, key lifecycle, end certificate issuance
+| `/req/full-verifier`
+
+| `/req/root-authority`
+| `/conf/root-authority`
+| Governance, deployment manifest, scope definition, delegation to DTAs
+| `/req/issuing-authority`
+
+| `/req/transparency-operator`
+| `/conf/transparency-operator`
+| Transparency log operation, inclusion proof issuance, multi-log coordination
+| —
+
+| `/req/mirror`
+| `/conf/mirror`
+| Transparency log mirroring, gossip, inclusion proof serving
+| —
+
+| `/req/device-signer`
+| `/conf/device-signer`
+| Artifact format, per-device key lifecycle, challenge-response
+| `/req/basic-verifier`
+|===
+
+NOTE: <<fig-conformance>> provides a diagram of the requirements class
+dependencies.
+
+
+=== Trust topology profiles
+
+A trust infrastructure deployment shall conform to at least one topology
+profile. A deployment may conform to more than one.
+
+.Trust topology profiles
+[%header,cols="2,4,3"]
+|===
+| Profile | Structure | Notes
+
+| `/conf/hierarchical`
+| Strict tree; one root; linear chains from root to end certificate
+| Simplest profile; single-root anchor bundle
+
+| `/conf/federated`
+| Multiple independent roots; multi-root anchor bundle; FTAs may span roots
+| No single root controls all paths
+
+| `/conf/cross-recognized`
+| Hierarchical deployment with explicit cross-recognition links between roots
+| Bilateral or multilateral root-level agreements
+
+| `/conf/mesh`
+| General DAG; hierarchy-spanning FTAs; arbitrary cross-domain co-signatures
+| Most general topology; highest verification complexity
+|===
+
+
+=== Dimension profiles
+
+A {{trusted artifact}} may carry {{dimension attestation,dimension attestations}}
+from one or more {{trust dimension,trust dimensions}}. Trust dimensions are
+extensible: the set of possible dimensions is not fixed. The following profiles
+are initially defined; additional dimension profiles may be registered per
+<<annex-c>> and claimed by implementations.
+
+.Dimension profiles recognized by the scheme (non-exhaustive)
+[%header,cols="2,3,3"]
+|===
+| Profile | Dimension | Description
+
+| `/conf/dimension-data`
+| Data
+| Primary signature attesting the canonical payload
+
+| `/conf/dimension-person`
+| Person
+| Operator co-signature binding a human accountable party to the artifact
+
+| `/conf/dimension-time`
+| Time
+| Time authority co-signature establishing signing time independently
+
+| `/conf/dimension-location`
+| Location
+| Location authority co-signature (e.g. GNSS-based) attesting provenance location
+
+| `/conf/dimension-environment`
+| Environment
+| Sensor co-signature attesting ambient conditions at signing time
+
+| `/conf/dimension-authorization`
+| Authorization
+| Regulatory or policy authority co-signature attesting that the signing act
+  was permitted
+
+| `/conf/dimension-identity`
+| Identity
+| Manufacturer or identity authority co-signature attesting device or entity
+  genuineness
+
+| `/conf/dimension-oracle`
+| Oracle
+| External data feed co-signature attesting the value of an external datum at
+  a stated time
+
+| `/conf/multi-dimensional`
+| Three or more
+| Convergence of three or more independent trust dimensions on a single artifact
+|===
+
+NOTE: The `/conf/multi-dimensional` profile requires at least three
+independent dimension attestations from different trust dimensions.
+
+
+=== Format profiles
+
+This document is format-agnostic: the {{canonical payload}} and signature
+binding requirements are specified independently of serialization. Format
+profiles follow the pattern `/conf/format-<name>`, where `<name>` identifies a
+specific format registered in the scheme's format profile registry. The
+following are examples of format profiles; schemes may register additional
+profiles.
+
+.Examples of format profiles (non-exhaustive)
+[%header,cols="2,3,3"]
+|===
+| Profile | Format | Reference
+
+| `/conf/format-xmldsig`
+| W3C XML Signature with Exclusive XML Canonicalization
+| <<w3c-xmldsig>>, <<w3c-c14n>>
+
+| `/conf/format-jws`
+| JSON Web Signature (compact or JSON serialization)
+| <<rfc7515>>
+
+| `/conf/format-cose`
+| CBOR Object Signing and Encryption (Sig_Structure)
+| <<rfc8152>>
+|===
+
+An implementation claiming conformance to a format profile shall satisfy the
+format-agnostic binding requirements in <<artifact-format>> in addition to the
+profile-specific format requirements.
+
+
+=== Requirements classes overview
+
+The detailed requirements and conformance tests for each requirements class are
+specified in the relevant subject-matter clauses and rendered from structured
+data:
+
+* <<architecture>>: `/req/architecture/*`
+* <<artifact-format>>: `/req/artifact-format/*`
+* <<algorithms>>: `/req/algorithms/*`
+* <<threshold-signing>>: `/req/threshold-signing/*`
+* <<trust-chain-scope>>: `/req/scope/*`
+* <<revocation>>: `/req/revocation/*`
+* <<transparency>>: `/req/transparency/*`
+* <<verification>>: `/req/verification/*`
+* <<key-lifecycle>>: `/req/key-lifecycle/*`
+* <<delivery>>: `/req/delivery/*`
+* <<ceremony-records>>: `/req/ceremony/*`
+* <<manifest>>: `/req/manifest/*`
+* <<governance>>: `/req/governance/*`
+* <<algorithm-agility>>: `/req/algorithm-agility/*`
+
+The full set of conformance tests is rendered in <<annex-a>>.
+
+[[fig-conformance]]
+.Requirements classes and their dependencies
+image::conformance-hierarchy.svg[]

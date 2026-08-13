@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Verification pipeline conformance
+    name: Verification pipeline conformance
+    identifier: /conf/verification
+    target: /req/verification
+    subject: verification
+    description: Conformance tests for the verification pipeline requirements.
+    dependencies:
+    - /conf/architecture
+    - /conf/artifact-format
+    - /conf/scope
+    - /conf/revocation
+    - /conf/transparency
+    guidance:
+    tests:
+
+    - name: Pipeline architecture test
+      identifier_fragment: pipeline-architecture
+      targets:
+      - /req/verification/pipeline-architecture
+      purpose: Verify the pipeline applies ordered hard and soft checks correctly.
+      method: Construct artifacts that fail each hard check and verify the pipeline short-circuits
+        to the scheme's rejected label. Construct artifacts with varying soft check coverage and
+        verify the grade accumulates correctly.
+      type: Conformance
+
+    - name: Hard check classification test
+      identifier_fragment: hard-checks
+      targets:
+      - /req/verification/hard-checks
+      purpose: Verify each hard check causes short-circuit to the scheme's rejected label on failure.
+      method: For each hard check (format, signature, chain, scope narrowing, scope conditions,
+        revocation), construct an artifact that fails only that check. Verify the pipeline
+        returns the scheme's rejected label in each case.
+      type: Conformance
+
+    - name: Trust graph path-finding test
+      identifier_fragment: pathfinding
+      targets:
+      - /req/verification/pathfinding
+      purpose: Verify the verifier finds paths in the trust graph and collects distinct roots.
+      method: Construct an artifact with co-signatures from multiple independent roots. Verify
+        the verifier finds valid paths to each root. Verify distinct roots are counted for
+        cross-domain diversity scoring.
+      type: Conformance
+
+    - name: Coverage report production test
+      identifier_fragment: coverage-report
+      targets:
+      - /req/verification/coverage-report
+      purpose: Verify the pipeline produces a complete coverage report.
+      method: Construct artifacts with varying dimensional coverage. Verify the coverage report
+        contains all required fields with correct values for hard checks, transparency, time
+        anchor, dimensions, independent roots, and multi-log status.
+      type: Conformance
+
+    - name: Classification policy test
+      identifier_fragment: classification-policy
+      targets:
+      - /req/verification/classification-policy
+      purpose: Verify the scheme's classification policy deterministically maps coverage
+        reports to grade labels.
+      method: Apply the scheme's classification policy to multiple coverage reports. Verify
+        identical coverage reports produce identical grade labels. Verify the classification
+        is a pure function with no side effects.
+      type: Conformance
+
+    - name: Acceptance policy test
+      identifier_fragment: acceptance-policy
+      targets:
+      - /req/verification/acceptance-policy
+      purpose: Verify the verifier's acceptance policy maps grades to accept/reject decisions.
+      method: Configure acceptance policies for different decision contexts. Verify artifacts
+        are accepted or rejected correctly based on their classified grade and the context.
+      type: Conformance
+
+    - name: Time freshness window test
+      identifier_fragment: time-freshness-window
+      targets:
+      - /req/verification/time-freshness-window
+      purpose: Verify the time freshness window rejects stale time attestations.
+      method: Construct artifacts with time attestations of varying ages. Verify that
+        attestations within the freshness window are accepted, those outside are rejected,
+        and those in the grace period are accepted at a downgraded classification label.
+      type: Conformance
+
+    - name: Offline verification test
+      identifier_fragment: offline-verification
+      targets:
+      - /req/verification/offline-verification
+      purpose: Verify offline verification produces correct results.
+      method: Verify artifacts using only the trust anchor bundle, cached CRLs, cached tree
+        heads, and embedded chains. Verify the coverage report matches online verification
+        except for freshness-dependent checks.
+      type: Conformance

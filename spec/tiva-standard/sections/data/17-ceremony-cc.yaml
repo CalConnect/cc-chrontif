@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Ceremony records conformance
+    name: Ceremony records conformance
+    identifier: /conf/ceremony
+    target: /req/ceremony
+    subject: ceremony records
+    description: Conformance tests for ceremony record requirements.
+    dependencies:
+    - /conf/threshold-signing
+    guidance:
+    tests:
+
+    - name: Transcript contents validation
+      identifier_fragment: transcript-contents
+      targets:
+      - /req/ceremony/transcript-contents
+      purpose: Verify transcripts contain all required fields.
+      method: Execute a signing ceremony and inspect the transcript. Verify it contains
+        ceremony type, participant identities with contribution proofs, quorum parameters,
+        payload hash, aggregate signature, and timestamp.
+      type: Validation
+
+    - name: Transcript signing test
+      identifier_fragment: transcript-signing
+      targets:
+      - /req/ceremony/transcript-signing
+      purpose: Verify transcripts are signed by all participants and carry the aggregate
+        signature.
+      method: Execute a ceremony and verify each participant signed the transcript. Verify
+        the aggregate threshold signature is present. Present an incomplete transcript and
+        verify rejection.
+      type: Conformance
+
+    - name: Transcript persistence validation
+      identifier_fragment: transcript-persistence
+      targets:
+      - /req/ceremony/transcript-persistence
+      purpose: Verify transcripts are persisted with sufficient retention.
+      method: Execute a ceremony and verify the transcript is persisted to durable storage.
+        Verify the retention period exceeds the maximum artifact lifetime including grace
+        periods.
+      type: Validation
+
+    - name: Transcript log cross-reference test
+      identifier_fragment: transcript-log-cross-reference
+      targets:
+      - /req/ceremony/transcript-log-cross-reference
+      purpose: Verify transcripts are cross-referenced with transparency log entries.
+      method: Execute a ceremony and verify the produced artifact appears in the transparency
+        log. Verify the transcript references the log entry.
+      type: Conformance
+
+    - name: Audit algorithm test
+      identifier_fragment: audit-algorithm
+      targets:
+      - /req/ceremony/audit-algorithm
+      purpose: Verify the audit algorithm correctly validates ceremony transcripts.
+      method: Execute the audit algorithm on valid and invalid transcripts. Verify it accepts
+        valid transcripts (correct member signatures, aggregate signature, quorum, log
+        cross-reference, timestamp) and rejects invalid ones.
+      type: Conformance

@@ -1,0 +1,128 @@
+
+[[algorithms]]
+== Cryptographic algorithms
+
+=== General
+
+This clause specifies the cryptographic algorithms recognized in the CHRONTIF
+framework, the {{composite signature}} model for post-quantum readiness, and
+the algorithm agility framework that governs algorithm identifier assignment,
+negotiation, and deprecation.
+
+The CHRONTIF framework recognizes classical signature algorithms, post-quantum
+signature algorithms, and composite signatures that combine both. An
+implementation may support any subset, subject to the requirements of its
+claimed conformance classes.
+
+
+[[algorithms-classical]]
+=== Classical signature algorithms
+
+Classical signature algorithms registered in the algorithm identifier registry
+(<<annex-c>>) are recognized. The initial registry includes:
+
+.Examples of classical signature algorithms (scheme registry may include others)
+[cols="2,2,2"]
+|===
+| Algorithm | Parameters | Reference
+
+| ECDSA
+| P-256 (secp256r1)
+| <<fips186-4>>
+
+| EdDSA (Ed25519)
+| Ed25519
+| <<rfc8032>>
+|===
+
+Additional classical algorithms, including national or regional standards
+such as SM2, may be registered per the scheme's registration policy.
+
+Classical algorithms are vulnerable to cryptanalytic attacks by sufficiently
+large quantum computers. Deployments with long-term security requirements
+should migrate to post-quantum or composite algorithms.
+
+
+[[algorithms-post-quantum]]
+=== Post-quantum signature algorithms
+
+Post-quantum signature algorithms registered in the algorithm identifier
+registry maintained by the scheme (see <<annex-c>>) are recognized. The initial registry includes:
+
+.Examples of post-quantum signature algorithms (scheme registry may include others)
+[cols="2,2,2"]
+|===
+| Algorithm | Standard | Notes
+
+| ML-DSA
+| <<fips204>>
+| Module-lattice-based; recommended parameter sets ML-DSA-44, ML-DSA-65, ML-DSA-87
+
+| SLH-DSA
+| <<fips205>>
+| Hash-based; conservative but larger signatures
+|===
+
+
+[[algorithms-composite]]
+=== Composite signatures
+
+A {{composite signature}} is a single signature produced by the
+AND-composition of two or more signature algorithms over the same {{canonical
+payload}}. All component signatures shall verify for the composite to be valid.
+
+The primary use case for composite signatures is combining a classical
+algorithm with a post-quantum algorithm for transition security during
+post-quantum migration. Compositions of two post-quantum algorithms or other
+multi-algorithm combinations are also permitted.
+
+[example]
+====
+A composite signature might combine Ed25519 (classical) with ML-DSA-65
+(post-quantum). The verifier validates both components; the composite is valid
+only if both succeed.
+====
+
+
+[[algorithms-migration]]
+=== Post-quantum migration path
+
+The framework supports migration from classical to post-quantum algorithms.
+The migration is governed by the algorithm agility framework
+(see <<algorithm-agility>>).
+
+NOTE: A typical migration follows three phases: (1) classical-only, where the
+deployment uses classical signatures exclusively; (2) composite, where the
+deployment uses composite signatures for new artifacts while classical-only
+artifacts remain verifiable; (3) post-quantum-only, where classical-only
+signatures are deprecated and eventually rejected. The specific timing and
+phase boundaries are deployment decisions.
+
+
+[[algorithms-agility]]
+=== Algorithm agility
+
+Algorithm agility ensures that new algorithms can be introduced and old
+algorithms deprecated without breaking existing verifiers.
+
+* **Identifiers.** Each algorithm shall carry an explicit identifier in the
+  signature wrapper. Verifiers shall use this identifier to select the
+  validation method.
+
+* **Negotiation.** An issuer shall use algorithms recognized by its target
+  verifiers. Algorithm identifiers carry sufficient metadata for verifiers to
+  determine support.
+
+* **Deprecation.** Deprecated algorithms shall be announced in advance.
+  Verifiers may downgrade or reject artifacts using deprecated algorithms
+  according to their policy.
+
+
+[[req-algorithms]]
+=== Requirements
+
+[data2text,ar=sections/data/09-algorithms-rc.yaml]
+----
+{% assign prefix = "algorithms" %}
+include::templates/requirements_class.liquid[]
+----

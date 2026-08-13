@@ -1,0 +1,74 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Key lifecycle conformance
+    name: Key lifecycle conformance
+    identifier: /conf/key-lifecycle
+    target: /req/key-lifecycle
+    subject: key lifecycle
+    description: Conformance tests for key lifecycle requirements.
+    dependencies:
+    - /conf/algorithms
+    - /conf/threshold-signing
+    guidance:
+    tests:
+
+    - name: Secure key generation test
+      identifier_fragment: key-generation
+      targets:
+      - /req/key-lifecycle/key-generation
+      purpose: Verify keys are generated with secure randomness and correct parameters.
+      method: Generate keys for each supported algorithm. Verify the random source is
+        cryptographically secure. Verify parameters conform to specifications. For threshold
+        keys, verify no individual member possesses the full key.
+      type: Conformance
+
+    - name: Encrypted key storage validation
+      identifier_fragment: encrypted-storage
+      targets:
+      - /req/key-lifecycle/encrypted-storage
+      purpose: Verify private keys are encrypted at rest.
+      method: Inspect stored keys and verify they are encrypted with an authenticated
+        encryption algorithm with adequate security strength. Verify the encryption key
+        is derived using a password-based key derivation function resistant to brute-force
+        attacks. Attempt plaintext extraction and verify failure.
+      type: Validation
+
+    - name: Key import and export test
+      identifier_fragment: import-export
+      targets:
+      - /req/key-lifecycle/import-export
+      purpose: Verify key import and export use standard encodings.
+      method: Export keys in at least one recognized encoding format. Re-import and verify
+        round-trip correctness. Verify imported keys are validated for format and algorithm
+        consistency.
+      type: Conformance
+
+    - name: HSM interface test
+      identifier_fragment: hsm-interface
+      targets:
+      - /req/key-lifecycle/hsm-interface
+      purpose: Verify HSM usage keeps private keys inside the HSM.
+      method: Configure an HSM-backed key. Verify signing occurs within the HSM. Verify the
+        private key never leaves the HSM. Verify session authentication is enforced.
+      type: Conformance
+
+    - name: CSR proof of possession test
+      identifier_fragment: csr-pop
+      targets:
+      - /req/key-lifecycle/csr-pop
+      purpose: Verify CSRs include valid proof of possession.
+      method: Generate a CSR with PoP. Verify the PoP signature validates against the
+        request's public key. Submit a CSR without PoP and verify rejection.
+      type: Conformance
+
+    - name: Key rotation test
+      identifier_fragment: key-rotation
+      targets:
+      - /req/key-lifecycle/key-rotation
+      purpose: Verify key rotation works correctly.
+      method: Rotate a threshold member and verify the aggregate key is unchanged. Rotate
+        an end certificate key and verify the new certificate is under the same or narrower
+        scope.
+      type: Conformance

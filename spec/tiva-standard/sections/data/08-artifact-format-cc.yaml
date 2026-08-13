@@ -1,0 +1,201 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Artifact format conformance
+    name: Artifact format conformance
+    identifier: /conf/artifact-format
+    target: /req/artifact-format
+    subject: trusted artifact
+    description: Conformance tests for artifact format and signature binding requirements.
+    dependencies:
+    - /conf/architecture
+    guidance:
+    tests:
+
+    - name: Canonical representation binding validation
+      identifier_fragment: canonical-binding
+      targets:
+      - /req/artifact-format/canonical-binding
+      purpose: Verify the signature binds to a deterministic canonical payload.
+      method: Produce multiple serializations of the same logical payload. Canonicalize
+        each and verify the canonical bytes are identical. Verify the signature validates
+        against the canonical bytes.
+      type: Conformance
+
+    - name: Algorithm identification validation
+      identifier_fragment: algorithm-identification
+      targets:
+      - /req/artifact-format/algorithm-identification
+      purpose: Verify the wrapper explicitly identifies the signing algorithm and parameters.
+      method: Inspect signature wrappers and verify the algorithm and parameters are
+        explicitly carried. Verify verifiers can unambiguously determine the validation
+        method.
+      type: Validation
+
+    - name: Signer identification validation
+      identifier_fragment: signer-identification
+      targets:
+      - /req/artifact-format/signer-identification
+      purpose: Verify the wrapper references or embeds the signer's key or end certificate.
+      method: Inspect signature wrappers and verify the signer identity is present.
+        Verify the verifier can locate the key and delegation chain from the wrapper.
+      type: Validation
+
+    - name: Chain availability validation
+      identifier_fragment: chain-availability
+      targets:
+      - /req/artifact-format/chain-availability
+      purpose: Verify the wrapper carries or references the full chain to root.
+      method: Test artifacts with embedded, referenced, and hybrid chain strategies.
+        Verify the verifier can reconstruct the full chain for each conforming strategy.
+      type: Conformance
+
+    - name: Self-description validation
+      identifier_fragment: self-description
+      targets:
+      - /req/artifact-format/self-description
+      purpose: Verify the wrapper is self-describing.
+      method: Provide a verifier with only the wrapper and the trust anchor bundle.
+        Verify all inputs needed for validation are derivable without external convention.
+      type: Conformance
+
+    - name: Canonical payload determinism test
+      identifier_fragment: canonical-determinism
+      targets:
+      - /req/artifact-format/canonical-determinism
+      purpose: Verify canonicalization is deterministic.
+      method: Canonicalize the same logical payload using two independent implementations.
+        Verify the canonical bytes are identical. Repeat with different serializations
+        of the same logical content.
+      type: Conformance
+
+    - name: Format profile satisfaction test
+      identifier_fragment: format-profile-satisfaction
+      targets:
+      - /req/artifact-format/format-profile-satisfaction
+      purpose: Verify implementations claiming a format profile satisfy the five binding
+        requirements.
+      method: For each claimed format profile, verify the five binding requirements
+        are met in addition to the profile-specific format requirements. Test with
+        xmldsig, jws, and cose profiles.
+      type: Conformance
+
+    - name: Version compatibility test
+      identifier_fragment: version-compatibility
+      targets:
+      - /req/artifact-format/version-compatibility
+      purpose: Verify semantic versioning rules are followed.
+      method: Present artifacts with major version exceeding the verifier's maximum.
+        Verify rejection. Present artifacts with minor version containing unknown fields.
+        Verify acceptance with unknown fields ignored.
+      type: Conformance
+
+    - name: Co-signature block contents validation
+      identifier_fragment: cosignature-block
+      targets:
+      - /req/artifact-format/cosignature-block
+      purpose: Verify co-signature blocks carry the required fields.
+      method: Inspect co-signature blocks and verify each contains signer identity,
+        chain reference, algorithm and parameters, dimension tag, and signature.
+      type: Validation
+
+    - name: Co-signature independent verification test
+      identifier_fragment: cosignature-independent-verification
+      targets:
+      - /req/artifact-format/cosignature-independent-verification
+      purpose: Verify co-signatures are independently verifiable.
+      method: Construct an artifact with multiple co-signatures from different chains.
+        Verify each co-signature validates independently against its own root. Verify
+        removing one co-signature does not affect the cryptographic validity of others.
+      type: Conformance
+
+    - name: Co-signature canonical binding test
+      identifier_fragment: cosignature-canonical-binding
+      targets:
+      - /req/artifact-format/cosignature-canonical-binding
+      purpose: Verify all co-signatures attest the same canonical payload.
+      method: Construct an artifact with co-signatures. Verify each co-signature validates
+        against the same canonical payload hash. Verify partial attestation is rejected.
+      type: Conformance
+
+    - name: Format profile co-signature encoding test
+      identifier_fragment: format-profile-cosignature-encoding
+      targets:
+      - /req/artifact-format/format-profile-cosignature-encoding
+      purpose: Verify format profiles define co-signature block encoding.
+      method: For each registered format profile, inspect the profile specification. Verify
+        it defines encoding of co-signature blocks, dimension tags, and chain references.
+        Verify that a profile without co-signature encoding does not claim multi-dimensional
+        conformance.
+      type: Conformance
+
+    - name: Cross-domain no cross-recognition test
+      identifier_fragment: cross-domain-no-cross-recognition
+      targets:
+      - /req/artifact-format/cross-domain-no-cross-recognition
+      purpose: Verify cross-domain co-signatures work without root cross-certification.
+      method: Construct an artifact with co-signatures from two independent roots that
+        have not cross-certified. Verify the verifier validates both co-signatures
+        using anchors from both roots in the trust anchor bundle.
+      type: Conformance
+
+    - name: Trust cement property test
+      identifier_fragment: trust-cement
+      targets:
+      - /req/artifact-format/trust-cement
+      purpose: Verify co-signatures cannot be stripped and commitments are non-repudiable.
+      method: Attempt to remove a co-signature from an artifact and verify the artifact's
+        self-description is broken. Verify the transparency log entry includes all
+        co-signatures and cannot be rewritten.
+      type: Conformance
+
+    - name: Dimensional convergence test
+      identifier_fragment: dimensional-convergence
+      targets:
+      - /req/artifact-format/dimensional-convergence
+      purpose: Verify all dimension attestations sign the same canonical payload.
+      method: Construct an artifact with dimension attestations from data, person,
+        time, location, and environment dimensions. Verify each attestation validates
+        against the same canonical payload hash.
+      type: Conformance
+
+    - name: Time dimension validation
+      identifier_fragment: time-dimension
+      targets:
+      - /req/artifact-format/time-dimension
+      purpose: Verify the time dimension is attested by a time key with external anchoring.
+      method: Produce a time dimension attestation. Verify it is a co-signature tagged
+        dimension time. Verify it records the artifact hash existence at a stated time.
+        Verify the external time anchor is present and verifiable.
+      type: Conformance
+
+    - name: Living artifact accumulation test
+      identifier_fragment: living-artifact
+      targets:
+      - /req/artifact-format/living-artifact
+      purpose: Verify dimension attestations can accumulate over time.
+      method: Produce an artifact with one dimension attestation. Add additional dimension
+        attestations at successive times. Verify each added attestation signs the
+        original canonical payload. Verify the coverage report gains fields with each addition.
+      type: Conformance
+
+    - name: Signature wrapping prevention test
+      identifier_fragment: wrapping-prevention
+      targets:
+      - /req/artifact-format/wrapping-prevention
+      purpose: Verify the signature wrapper prevents wrapping attacks.
+      method: Construct an artifact with unsigned fields that could influence downstream
+        processing. Verify the verifier rejects the artifact because signed and processed
+        content are not identical.
+      type: Conformance
+
+    - name: Co-signature replay protection test
+      identifier_fragment: replay-protection
+      targets:
+      - /req/artifact-format/replay-protection
+      purpose: Verify co-signatures bind to unique artifact identifiers.
+      method: Construct two artifacts with the same canonical payload hash but different
+        artifact identifiers. Attach a co-signature from artifact A to artifact B. Verify
+        the verifier rejects the replayed co-signature.
+      type: Conformance

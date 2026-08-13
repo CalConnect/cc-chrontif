@@ -1,0 +1,341 @@
+
+[[artifact-format]]
+== Artifact format and signature binding
+
+=== General
+
+A {{trusted artifact}} is the deliverable of the CHRONTIF framework. It is a signed
+data object carrying one or more signatures over a deterministic canonical
+representation of its payload. This clause specifies the format-agnostic
+binding requirements that all conforming artifact formats shall satisfy, the
+recognized format profiles, and the models for co-signatures, cross-domain
+trust fusion, and multi-dimensional attestation.
+
+This document is format-agnostic: the binding requirements are specified
+independently of serialization. Specific signature envelope formats (e.g., XMLDSig,
+JWS, COSE) are defined as conformance profiles in <<artifact-format-profiles>>.
+
+
+[[artifact-binding]]
+=== Signature binding requirements
+
+Any conforming signature wrapper shall guarantee the following five binding
+properties:
+
+. **Canonical representation binding.** The signature shall bind to a
+  deterministic {{canonical payload}} — a byte-string representation of the
+  payload data such that the same logical content always produces the same
+  bytes, regardless of serialization format or encoding.
+
+. **Algorithm identification.** The wrapper shall explicitly identify the
+  signing algorithm and its parameters, such that the verifier knows
+  unambiguously how to validate the signature.
+
+. **Signer identification.** The wrapper shall reference or embed the signer's
+  public key or {{end certificate}}, enabling the verifier to locate the key
+  and its delegation chain.
+
+. **Chain availability.** The wrapper shall carry or reference the full chain
+  from the signer to a root anchor, in accordance with at least one chain
+  discovery strategy (see <<architecture-discovery>>).
+
+. **Self-description.** The wrapper shall be self-describing: a verifier shall
+  be able to determine all inputs needed for validation from the wrapper and
+  the {{trust anchor bundle}} alone, without external convention.
+
+
+[[artifact-canonical-payload]]
+=== Canonical payload
+
+The {{canonical payload}} is the deterministic byte-string representation of
+the artifact data that all signatures and {{co-signature,co-signatures}}
+attest. Every signer — regardless of trust dimension, organization, or trust
+chain — attests the same canonical bytes.
+
+A conforming canonicalization algorithm shall satisfy the following
+characteristics:
+
+* **Determinism.** The same logical content shall always produce the same
+  canonical byte string, regardless of the serialization format, encoding, or
+  implementation that produced it.
+
+* **Recoverability.** The canonical byte string shall be sufficient to
+  reconstruct the logical content without loss.
+
+* **Unambiguity.** The canonicalization rules shall be fully specified, leaving
+  no implementation-defined behavior that could cause two implementations to
+  produce different canonical bytes for the same logical content.
+
+* **Collision resistance.** Two distinct logical contents shall not produce
+  the same canonical byte string (subject to the underlying hash function's
+  collision resistance).
+
+The specific canonicalization algorithm is specified by each format profile
+(see <<artifact-format-profiles>>). An implementation claiming a format
+profile shall use the canonicalization algorithm specified by that profile.
+The following are examples of canonicalization algorithms used by initially
+registered profiles:
+
+.Examples of canonicalization algorithms by format profile
+[cols="2,3",options="header"]
+|===
+| Format profile | Canonicalization characteristics
+
+| JWS-based
+| Object keys in deterministic order (e.g., lexicographic), no insignificant
+  whitespace, deterministic number representation, UTF-8 encoding
+
+| COSE-based
+| Definite-length encoding, map keys in deterministic order, integers in
+  minimum-length encoding
+
+| XMLDSig-based
+| Canonical XML (e.g., Exclusive C14N) for the signed subtree, UTF-8 encoding
+|===
+
+Additional format profiles and their canonicalization algorithms may be
+registered in the scheme's registry. The choice of format profile is a deployment
+decision; this document does not mandate a specific format.
+
+A co-signer cannot selectively attest part of the artifact. Partial attestation
+is not conforming.
+
+
+[[artifact-format-profiles]]
+=== Format profiles
+
+The choice of signature envelope format is a deployment decision. This document
+does not mandate a specific format. An implementation claiming a format profile
+shall satisfy the binding requirements in <<artifact-binding>> in addition to
+the profile-specific canonicalization characteristics. The following format
+profiles are initially registered; additional profiles may be registered per
+<<annex-c>>.
+
+.Initially registered format profiles
+[cols="2,3,2"]
+|===
+| Profile | Format | Reference
+
+| `/conf/format-xmldsig`
+| W3C XML Signature with Exclusive XML Canonicalization (Exc-C14N)
+| <<w3c-xmldsig>>, <<w3c-c14n>>
+
+| `/conf/format-jws`
+| JSON Web Signature, compact or JSON serialization, with detached content
+| <<rfc7515>>
+
+| `/conf/format-cose`
+| CBOR Object Signing and Encryption, Sig_Structure
+| <<rfc8152>>
+|===
+
+Future formats may be registered upon demonstration of conformance to the five
+binding requirements and specification of their canonicalization algorithm.
+
+
+[[artifact-payload-schema]]
+=== Per-domain payload schema
+
+The payload of a {{trusted artifact}} follows a domain-specific schema. The
+schema is identified by a URI (`$id`) and is versioned. Multiple payload
+schemas may coexist within one CHRONTIF deployment, enabling different domains to
+define their own artifact content structures.
+
+A payload schema shall be deterministic: two artifacts with the same logical
+content shall canonicalize to the same bytes under the schema.
+
+
+[[artifact-versioning]]
+=== Version compatibility
+
+Artifact format versioning follows semantic compatibility rules:
+
+* **Major version** changes are breaking. Verifiers shall reject artifacts
+  whose major version exceeds the verifier's supported maximum.
+
+* **Minor version** changes are backward and forward compatible. Verifiers
+  shall ignore unknown fields introduced in minor versions.
+
+The version is carried explicitly in the wrapper, not implied by the format
+profile.
+
+
+[[artifact-cosignatures]]
+=== Co-signatures and multi-party attestation
+
+A {{co-signature}} is an additional signature on the same {{canonical payload}}
+of a {{trusted artifact}}, produced by a signer from an independent role,
+organization, or {{trust dimension}}. Co-signatures are the mechanism by which
+the artifact becomes a convergence point of independent attestations rather
+than a single-authority assertion.
+
+==== Co-signature block
+
+Each co-signature block shall contain:
+
+* **Signer identity.** An {{end certificate}} reference or key fingerprint.
+
+* **Chain reference.** A reference to the signer's root (which may differ from
+  the primary signer's root).
+
+* **Algorithm.** The signing algorithm and parameters. Each co-signer may use
+  a different algorithm.
+
+* **Dimension tag.** The {{trust dimension}} type this co-signature attests
+  (e.g., data, person, time, location, environment).
+
+* **Signature.** The cryptographic signature over the canonical payload.
+
+==== Independent verification
+
+Each co-signature shall be verified independently:
+
+* each has its own chain to its own root;
+* the verifier checks each signature, chain, and scope independently;
+* no co-signature depends on another for its cryptographic validity (policy
+  dependencies are separate, see <<verification>>).
+
+==== Canonical payload binding
+
+All co-signatures shall attest the same {{canonical payload}}. A co-signer
+cannot selectively attest part of the artifact.
+
+==== Format profile encoding obligation
+
+Each format profile registered in the scheme's format profile registry shall
+specify how co-signature blocks, dimension tags, and chain references are encoded
+in that format. A format profile that does not define a co-signature encoding
+shall not claim conformance to the multi-dimensional attestation requirements of
+this document.
+
+
+[[artifact-cross-domain]]
+=== Cross-domain trust fusion
+
+{{co-signature,co-signatures}} on a {{trusted artifact}} may originate from
+independent {{trust chain,trust chains}} — different roots, different
+governance frameworks. The artifact becomes a **cross-domain trust junction**:
+a single data object on which multiple independent governance frameworks have
+converged.
+
+==== No root cross-recognition required
+
+Cross-domain co-signing does not require the participating roots to
+cross-certify each other. The co-signatures themselves are the cross-domain
+trust recognition, established at the artifact level rather than at the CA
+level.
+
+The verifier holds anchors for multiple roots in the {{trust anchor bundle}}.
+Cross-domain verification uses these anchors directly.
+
+==== Trust cement properties
+
+Once co-signatures are applied to an artifact, the following properties hold:
+
+* A co-signature cannot be stripped without breaking the artifact's
+  self-description.
+* Each co-signer committed to the exact same canonical payload and cannot
+  deny its attestation.
+* The transparency log records the artifact with all co-signatures, and the
+  record cannot be rewritten.
+* Each co-signature may carry its own time anchor, preventing backdating.
+
+
+[[artifact-multi-dimensional]]
+=== Multi-dimensional attestation
+
+Each {{trust dimension}} is an independently verifiable aspect of reality,
+attested by its own {{dimension attestation}} (a {{co-signature}} tagged with
+the dimension type). Dimensions are independent: each has its own trust tree
+and root, and no cross-recognition between dimension roots is required
+(<<fig-convergence>>).
+
+[[fig-convergence]]
+.Multi-dimensional convergence on a trusted artifact
+image::dimensional-convergence.svg[]
+
+.Examples of trust dimensions and their attestations (non-exhaustive; see the scheme's registry)
+[cols="2,3,2"]
+|===
+| Dimension | What it attests | External anchor (example)
+
+| data
+| The primary content (measured value, record)
+| Transparency log
+
+| person
+| A human witnessed or authorized the act
+| Hardware token
+
+| time
+| The artifact existed at a stated time
+| External timestamp source
+
+| location
+| The event occurred at stated coordinates
+| Location authority signal
+
+| environment
+| Ambient conditions were within stated bounds
+| Calibrated sensor
+
+| authorization
+| The action was permitted under a policy
+| Regulatory framework
+
+| identity
+| The device or person is genuine
+| Identity authority
+
+| oracle
+| External data had a stated value at a time
+| Multi-source agreement
+|===
+
+==== Convergence
+
+All dimension attestations shall sign the same {{canonical payload}}. The
+artifact is the convergence point: each dimension is an independent attestation
+of trustworthiness, and the artifact is where they intersect. More dimensions
+converging on an artifact produce a more favorable classification label (see
+<<verification>> for the classification policy).
+
+[[time-dimension]]
+==== Time as a first-class dimension
+
+The time dimension is attested by a {{time key}} — a co-signature from a time
+authority that records the existence of the artifact hash at a stated time and
+anchors that record to an external, irrefutable time source. The time dimension
+is objective, tamper-evident, and cross-domain: it is valid regardless of the
+organizational hierarchy under which the artifact was produced.
+
+
+[[artifact-living]]
+=== Living artifacts
+
+A {{trusted artifact}} may accumulate {{dimension attestation,dimension
+attestations}} over time. As additional dimensions converge, the artifact's
+{{classification label}} may improve as additional dimensions are attested.
+
+[example]
+====
+At time T0, a device signs a data record (data dimension). At T1, an operator
+co-signs (person dimension). At T2, a time authority anchors the artifact
+(time dimension). At T3, a location authority co-signs (location dimension).
+Each addition increases the dimensional coverage in the coverage report, which
+the scheme's classification policy may map to a more favorable classification
+label.
+====
+
+The accumulation protocol shall ensure that each added dimension attestation
+signs the original canonical payload, not a modified version.
+
+
+[[req-artifact-format]]
+=== Requirements
+
+[data2text,ar=sections/data/08-artifact-format-rc.yaml]
+----
+{% assign prefix = "artifact-format" %}
+include::templates/requirements_class.liquid[]
+----

@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="sans-serif" font-size="12">
+  <defs>
+    <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f3e8fd" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#f3e8fd" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <text x="450" y="25" text-anchor="middle" font-size="15" font-weight="bold">Multi-dimensional convergence on a trusted artifact</text>
+  <text x="450" y="44" text-anchor="middle" font-size="12" fill="#666">Each dimension is independently verifiable; convergence increases trust grade</text>
+
+  <!-- Central artifact -->
+  <circle cx="450" cy="300" r="180" fill="#f3e8fd" fill-opacity="0.3"/>
+  <rect x="350" y="270" width="200" height="60" rx="8" fill="#9334e6" stroke="#7b1fa2" stroke-width="2"/>
+  <text x="450" y="295" text-anchor="middle" font-weight="bold" fill="white" font-size="14">Trusted Artifact</text>
+  <text x="450" y="315" text-anchor="middle" fill="#e1bee7" font-size="11">Canonical payload hash H</text>
+
+  <!-- Data dimension (top) -->
+  <rect x="370" y="70" width="160" height="50" rx="6" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="450" y="90" text-anchor="middle" font-weight="bold">Data dimension</text>
+  <text x="450" y="106" text-anchor="middle" font-size="10" fill="#666">Primary signature (End Cert)</text>
+  <line x1="450" y1="120" x2="450" y2="270" stroke="#4285f4" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="460" y="200" font-size="10" fill="#4285f4">signs H</text>
+
+  <!-- Person dimension (top-right) -->
+  <rect x="650" y="100" width="160" height="50" rx="6" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="730" y="120" text-anchor="middle" font-weight="bold">Person dimension</text>
+  <text x="730" y="136" text-anchor="middle" font-size="10" fill="#666">Operator co-signature</text>
+  <line x1="660" y1="140" x2="540" y2="270" stroke="#34a853" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="610" y="200" font-size="10" fill="#34a853">signs H</text>
+
+  <!-- Time dimension (right) -->
+  <rect x="700" y="275" width="160" height="50" rx="6" fill="#fef7e0" stroke="#fbbc04" stroke-width="2"/>
+  <text x="780" y="295" text-anchor="middle" font-weight="bold">Time dimension</text>
+  <text x="780" y="311" text-anchor="middle" font-size="10" fill="#666">Time key (anchored)</text>
+  <line x1="700" y1="300" x2="550" y2="300" stroke="#fbbc04" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="610" y="290" font-size="10" fill="#fbbc04">signs H</text>
+
+  <!-- Location dimension (bottom-right) -->
+  <rect x="650" y="450" width="160" height="50" rx="6" fill="#fce8e6" stroke="#ea4335" stroke-width="2"/>
+  <text x="730" y="470" text-anchor="middle" font-weight="bold">Location dimension</text>
+  <text x="730" y="486" text-anchor="middle" font-size="10" fill="#666">GNSS co-signature</text>
+  <line x1="660" y1="455" x2="540" y2="325" stroke="#ea4335" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="610" y="395" font-size="10" fill="#ea4335">signs H</text>
+
+  <!-- Environment dimension (bottom) -->
+  <rect x="370" y="480" width="160" height="50" rx="6" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
+  <text x="450" y="500" text-anchor="middle" font-weight="bold">Environment dimension</text>
+  <text x="450" y="516" text-anchor="middle" font-size="10" fill="#666">Sensor co-signature</text>
+  <line x1="450" y1="480" x2="450" y2="330" stroke="#009688" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="460" y="410" font-size="10" fill="#009688">signs H</text>
+
+  <!-- Authorization dimension (bottom-left) -->
+  <rect x="90" y="450" width="160" height="50" rx="6" fill="#f3e8fd" stroke="#9334e6" stroke-width="2"/>
+  <text x="170" y="470" text-anchor="middle" font-weight="bold">Authorization</text>
+  <text x="170" y="486" text-anchor="middle" font-size="10" fill="#666">Regulatory co-signature</text>
+  <line x1="250" y1="455" x2="360" y2="325" stroke="#9334e6" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="290" y="395" font-size="10" fill="#9334e6">signs H</text>
+
+  <!-- Identity dimension (left) -->
+  <rect x="40" y="275" width="160" height="50" rx="6" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text x="120" y="295" text-anchor="middle" font-weight="bold">Identity dimension</text>
+  <text x="120" y="311" text-anchor="middle" font-size="10" fill="#666">Manufacturer co-signature</text>
+  <line x1="200" y1="300" x2="350" y2="300" stroke="#ff9800" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="260" y="290" font-size="10" fill="#ff9800">signs H</text>
+
+  <!-- Grade progression -->
+  <text x="450" y="565" text-anchor="middle" font-weight="bold" font-size="13">Grade increases as more dimensions converge</text>
+  <rect x="150" y="575" width="40" height="20" rx="3" fill="#ef5350"/>
+  <text x="170" y="589" text-anchor="middle" font-size="11" fill="white">D</text>
+  <rect x="240" y="575" width="40" height="20" rx="3" fill="#ffa726"/>
+  <text x="260" y="589" text-anchor="middle" font-size="11" fill="white">C</text>
+  <rect x="330" y="575" width="40" height="20" rx="3" fill="#ffd54f"/>
+  <text x="350" y="589" text-anchor="middle" font-size="11">B</text>
+  <rect x="420" y="575" width="40" height="20" rx="3" fill="#d4e157"/>
+  <text x="440" y="589" text-anchor="middle" font-size="11">A</text>
+  <rect x="510" y="575" width="40" height="20" rx="3" fill="#81c784"/>
+  <text x="530" y="589" text-anchor="middle" font-size="11">A+</text>
+  <rect x="600" y="575" width="50" height="20" rx="3" fill="#4caf50"/>
+  <text x="625" y="589" text-anchor="middle" font-size="11" fill="white">A+++</text>
+</svg>

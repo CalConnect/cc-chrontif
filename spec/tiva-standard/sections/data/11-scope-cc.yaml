@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Authorization scope governance conformance
+    name: Scope governance conformance
+    identifier: /conf/scope
+    target: /req/scope
+    subject: scope governance
+    description: Conformance tests for scope governance requirements.
+    dependencies:
+    - /conf/architecture
+    guidance:
+    tests:
+
+    - name: Scope structure validation
+      identifier_fragment: scope-structure
+      targets:
+      - /req/scope/scope-structure
+      purpose: Verify scopes are expressed as multi-dimensional constraint sets.
+      method: Inspect scope encoding in delegation and end certificates. Verify each
+        scope carries multiple independently constraining dimensions. Verify each dimension
+        accepts wildcard, set, or single values.
+      type: Validation
+
+    - name: Monotonic narrowing test
+      identifier_fragment: monotonic-narrowing
+      targets:
+      - /req/scope/monotonic-narrowing
+      purpose: Verify the monotonic narrowing invariant is enforced at every delegation
+        link.
+      method: Construct delegations with valid narrowing (wildcard to set, set to
+        subset, set to single) and invalid widening (single to set, set to wildcard,
+        single to different single). Verify the verifier accepts narrowing and rejects
+        widening on every dimension.
+      type: Conformance
+      guidance:
+      - Test each scope dimension independently and in combination.
+
+    - name: Scope widening rejection test
+      identifier_fragment: widening-rejection
+      targets:
+      - /req/scope/widening-rejection
+      purpose: Verify widening causes hard rejection, not downgrade.
+      method: Construct a chain with scope widening on one dimension. Verify the verifier
+        rejects the path outright, not downgrades the classification label.
+      type: Conformance
+
+    - name: Scope conditions evaluation test
+      identifier_fragment: scope-conditions
+      targets:
+      - /req/scope/scope-conditions
+      purpose: Verify scope conditions are evaluated at verification time and cause
+        failure when not met.
+      method: Construct artifacts with scope conditions (e.g., value within tolerance,
+        calibration valid at time). Verify the verifier evaluates conditions against
+        artifact content. Verify artifacts failing a condition are rejected even with
+        valid signatures.
+      type: Conformance
+
+    - name: Scope condition determinism test
+      identifier_fragment: condition-determinism
+      targets:
+      - /req/scope/condition-determinism
+      purpose: Verify condition evaluation is deterministic across independent verifiers.
+      method: Evaluate the same scope condition against the same artifact using two
+        independent verifier implementations. Verify both reach the same result.
+      type: Conformance
+
+    - name: Scope encoding validation
+      identifier_fragment: scope-encoding
+      targets:
+      - /req/scope/scope-encoding
+      purpose: Verify the scope encoding is machine-checkable, compact, and extensible.
+      method: Inspect the scope encoding format. Verify it is parseable without human
+        interpretation. Verify the encoding size is proportional to constraint complexity,
+        not inflated. Verify unknown dimension types or condition types do not cause
+        parsing failure in verifiers that do not recognize them.
+      type: Validation
+
+    - name: Four-layer enforcement test
+      identifier_fragment: four-layer-enforcement
+      targets:
+      - /req/scope/four-layer-enforcement
+      purpose: Verify scope is enforced at all four layers.
+      method: Test scope tampering in the certificate (layer 1). Test widening at a
+        chain link (layer 2). Test condition failure in the pipeline (layer 3). Verify
+        scope is present in transparency log entries (layer 4). Verify each layer independently
+        detects the violation.
+      type: Conformance
+
+    - name: Scope in transparency log validation
+      identifier_fragment: scope-in-transparency
+      targets:
+      - /req/scope/scope-in-transparency
+      purpose: Verify scope is recorded in the transparency log for every certificate.
+      method: Inspect transparency log entries for delegation and end certificates.
+        Verify each entry includes the full scope. Verify third parties can audit scope
+        assignments from log entries alone.
+      type: Validation

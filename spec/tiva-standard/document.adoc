@@ -1,0 +1,79 @@
+= Convergent hierarchical repudiable open network trust infrastructure framework —
+  Distributed threshold issuance, multi-dimensional attestation, and offline verification
+:docnumber: 99999
+:edition: 1
+:language: en
+:doctype: international-standard
+:docstage: 20
+:docsubstage: 00
+:technical-committee-number: 154
+:technical-committee: Processes, data elements and documents in commerce, industry and administration
+:secretariat: BSI
+:library-ics: 03.100.99
+:mn-document-class: iso
+:mn-output-extensions: xml,html,doc,pdf,rxl
+:requirements-model: ogc
+:imagesdir: images
+:toc-tables:
+
+include::sections/00-foreword.adoc[]
+
+include::sections/00-introduction.adoc[]
+
+include::sections/01-scope.adoc[]
+
+include::sections/02-norm-refs.adoc[]
+
+include::sections/03-terms.adoc[]
+
+include::sections/04-conventions.adoc[]
+
+include::sections/05-principles.adoc[]
+
+include::sections/06-conformance.adoc[]
+
+include::sections/07-architecture.adoc[]
+
+include::sections/08-artifact-format.adoc[]
+
+include::sections/09-algorithms.adoc[]
+
+include::sections/10-threshold-signing.adoc[]
+
+include::sections/11-trust-chain-scope.adoc[]
+
+include::sections/12-revocation.adoc[]
+
+include::sections/13-transparency.adoc[]
+
+include::sections/14-verification-pipeline.adoc[]
+
+include::sections/15-key-lifecycle.adoc[]
+
+include::sections/16-delivery-discovery.adoc[]
+
+include::sections/17-ceremony-records.adoc[]
+
+include::sections/18-deployment-manifest.adoc[]
+
+include::sections/19-governance.adoc[]
+
+include::sections/20-algorithm-agility.adoc[]
+
+include::sections/21-security-considerations.adoc[]
+
+include::sections/aa-abstract-test-suite.adoc[]
+
+include::sections/ab-pki-comparison.adoc[]
+
+include::sections/ac-registries.adoc[]
+
+include::sections/ad-cnml-profile.adoc[]
+
+include::sections/ae-reference-tech.adoc[]
+
+include::sections/af-cross-tech.adoc[]
+
+include::sections/ag-vc-composition.adoc[]
+
+include::sections/99-bibliography.adoc[]

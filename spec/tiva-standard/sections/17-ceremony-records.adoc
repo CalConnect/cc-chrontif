@@ -1,0 +1,89 @@
+
+[[ceremony-records]]
+== Ceremony records and transcripts
+
+=== General
+
+A {{ceremony}} record is a verifiable transcript of a threshold signing
+ceremony. It documents who participated, what was signed, the quorum
+parameters, and the signature produced. Ceremony records provide signing
+accountability and auditability for threshold signing operations.
+
+This clause specifies the transcript format, signing requirements,
+persistence, and the audit algorithm.
+
+
+[[ceremony-transcript-format]]
+=== Transcript format
+
+A ceremony transcript shall be expressed in a deterministic, machine-readable
+format and shall contain:
+
+* **Ceremony type.** The type of ceremony (e.g., root creation, DTA issuance,
+  member rotation, re-share, artifact signing).
+
+* **Participants.** The identities of the participating key holders, with
+  their contribution proofs.
+
+* **Quorum parameters.** The (T, N) threshold parameters and the number of
+  participants who contributed.
+
+* **Payload.** The {{canonical payload}} hash that was signed.
+
+* **Signature.** The resulting threshold signature under the authority's
+  {{aggregate key}}.
+
+* **Timestamp.** The time of the ceremony, anchored to a {{time key}} or
+  external time source where possible.
+
+
+[[ceremony-signing]]
+=== Transcript signing
+
+The ceremony transcript shall be signed by each participating member,
+attesting to their participation. The transcript shall also carry the
+aggregate threshold signature produced by the ceremony.
+
+A transcript without all member signatures or without the aggregate signature
+is incomplete and shall not be accepted as evidence of a valid ceremony.
+
+
+[[ceremony-persistence]]
+=== Persistence and retention
+
+Ceremony transcripts shall be persisted to durable storage and retained for
+the validity period of the artifacts they produced. Retention shall exceed
+the maximum possible artifact lifetime, including any grace periods.
+
+Transcripts shall be cross-referenced with the {{transparency log}}: the
+artifact or certificate produced by the ceremony shall appear in the log, and
+the transcript shall reference the corresponding log entry.
+
+
+[[ceremony-audit]]
+=== Audit algorithm
+
+The ceremony audit algorithm verifies that a ceremony transcript is
+consistent and valid:
+
+. Verify each member's participation signature.
+
+. Verify the aggregate threshold signature against the authority's published
+   aggregate key.
+
+. Confirm that at least T of N members participated.
+
+. Cross-reference the transcript's payload with the {{transparency log}} entry
+   for the produced artifact or certificate.
+
+. Confirm the timestamp is consistent with the transparency log entry.
+
+
+[[req-ceremony]]
+=== Requirements
+
+[data2text,ar=sections/data/17-ceremony-rc.yaml]
+----
+{% assign prefix = "ceremony" %}
+include::templates/requirements_class.liquid[]
+----

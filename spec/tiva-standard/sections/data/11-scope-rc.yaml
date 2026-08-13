@@ -1,0 +1,83 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Trust chain and authorization scope governance
+    name: Trust chain and authorization scope governance
+    identifier: /req/scope
+    subject: scope governance
+    description: Requirements on scope structure, monotonic narrowing, scope conditions, scope encoding, and four-layer enforcement.
+    dependencies:
+    - /req/architecture
+    guidance:
+
+    requirements:
+    - name: Scope as multi-dimensional constraint set
+      identifier_fragment: scope-structure
+      statement: The scope of a trust authority shall be expressed as a multi-dimensional
+        constraint set in which each scope dimension constrains one axis of the authorization
+        boundary independently.
+      guidance:
+      - Scope dimensions include, non-exhaustively, domain, subdomain, class, instance,
+        and identity.
+      - Each dimension may carry the wildcard value, a set of values, or a single value.
+
+    - name: Monotonic narrowing invariant
+      identifier_fragment: monotonic-narrowing
+      statement: At every delegation link, the child scope shall be a subset of (or
+        equal to) the parent scope on every scope dimension.
+      guidance:
+      - The narrowing relation is, wildcard encompasses any value; set encompasses
+        subset or single; single encompasses the same single only.
+
+    - name: Scope widening rejection
+      identifier_fragment: widening-rejection
+      statement: A verifier shall reject any verification path on which scope widening
+        is detected on any scope dimension at any delegation link.
+      guidance:
+      - Widening constitutes a hard verification failure, not a warning or downgrade.
+
+    - name: Scope conditions as executable predicates
+      identifier_fragment: scope-conditions
+      statement: A scope may include scope conditions, which shall be executable predicates
+        evaluated at verification time against the content and context of the trusted
+        artifact.
+      guidance:
+      - An artifact signed by a key whose scope conditions are not met shall fail
+        verification, regardless of cryptographic signature validity.
+
+    - name: Scope condition determinism
+      identifier_fragment: condition-determinism
+      statement: The evaluation context for a scope condition shall be fully determined
+        by the artifact and its chain, such that two independent verifiers evaluating
+        the same condition reach the same result.
+      guidance:
+      - External state references in conditions shall be resolved to deterministic,
+        verifiable inputs (e.g., transparency log entries, timestamp anchors).
+
+    - name: Scope encoding properties
+      identifier_fragment: scope-encoding
+      statement: The scope encoding shall be machine-checkable, compact, and extensible,
+        carried in a certificate extension identifiable by conforming verifiers.
+      guidance:
+      - Machine-checkable means the narrowing relation and condition evaluation are
+        verifiable without human interpretation of free text.
+      - Extensible means new dimensions and condition types can be added without breaking
+        verifiers that do not recognize them.
+
+    - name: Four-layer scope enforcement
+      identifier_fragment: four-layer-enforcement
+      statement: Scope shall be enforced at four layers, in the signed certificate
+        extension, at every chain verification link, in the verification pipeline
+        including condition evaluation, and in the transparency log recording.
+      guidance:
+      - This defence-in-depth model ensures that scope violations are caught at multiple
+        independent checkpoints.
+
+    - name: Scope recorded in transparency log
+      identifier_fragment: scope-in-transparency
+      statement: The scope of every delegation certificate and end certificate shall
+        be recorded in a recognized transparency log, enabling third-party audit of
+        scope assignments.
+      guidance:
+      - This enables detection of scope violations by parties other than the verifier.

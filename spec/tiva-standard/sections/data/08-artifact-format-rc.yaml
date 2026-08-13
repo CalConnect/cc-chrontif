@@ -1,0 +1,169 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Artifact format and signature binding
+    name: Artifact format and signature binding
+    identifier: /req/artifact-format
+    subject: trusted artifact
+    description: Requirements on signature binding, canonical payload, format profiles, co-signatures, cross-domain trust fusion, and multi-dimensional attestation.
+    dependencies:
+    - /req/architecture
+    guidance:
+
+    requirements:
+    - name: Canonical representation binding
+      identifier_fragment: canonical-binding
+      statement: A signature wrapper shall bind the signature to a deterministic canonical
+        payload — a byte-string representation of the payload data such that the same
+        logical content always produces the same bytes.
+      guidance:
+      - The canonicalization algorithm is specified by the applicable format profile.
+
+    - name: Algorithm identification
+      identifier_fragment: algorithm-identification
+      statement: A signature wrapper shall explicitly identify the signing algorithm
+        and its parameters, such that the verifier can unambiguously determine how
+        to validate the signature.
+      guidance:
+      - Each co-signer may use a different algorithm.
+
+    - name: Signer identification
+      identifier_fragment: signer-identification
+      statement: A signature wrapper shall reference or embed the signer's public key
+        or end certificate, enabling the verifier to locate the key and its delegation
+        chain.
+      guidance:
+
+    - name: Chain availability
+      identifier_fragment: chain-availability
+      statement: A signature wrapper shall carry or reference the full chain from the
+        signer to a root anchor, in accordance with at least one chain discovery strategy.
+      guidance:
+      - Chain discovery strategies are specified in /req/architecture/chain-discovery.
+
+    - name: Self-description
+      identifier_fragment: self-description
+      statement: A signature wrapper shall be self-describing, such that a verifier
+        can determine all inputs needed for validation from the wrapper and the trust
+        anchor bundle alone, without external convention.
+      guidance:
+
+    - name: Canonical payload determinism
+      identifier_fragment: canonical-determinism
+      statement: The canonicalization of the payload shall be deterministic, such that
+        two artifacts with the same logical content always produce the same canonical
+        bytes.
+      guidance:
+      - Per-domain payload schemas shall be deterministic under canonicalization.
+
+    - name: Format profile satisfaction
+      identifier_fragment: format-profile-satisfaction
+      statement: An implementation claiming a format profile shall satisfy the five
+        binding requirements in addition to the profile-specific format requirements
+        for that profile.
+      guidance:
+      - Recognized profiles are format-xmldsig, format-jws, and format-cose.
+
+    - name: Version compatibility rules
+      identifier_fragment: version-compatibility
+      statement: Artifact format versioning shall follow semantic compatibility rules,
+        where major version changes are breaking and shall be rejected by verifiers whose
+        supported maximum is exceeded; minor version changes are backward and forward
+        compatible, with unknown fields ignored.
+      guidance:
+      - The version is carried explicitly in the wrapper.
+
+    - name: Co-signature block contents
+      identifier_fragment: cosignature-block
+      statement: Each co-signature block shall contain the signer identity, chain reference,
+        algorithm and parameters, dimension tag, and signature over the canonical payload.
+      guidance:
+      - The dimension tag identifies the trust dimension this co-signature attests.
+
+    - name: Co-signature independent verification
+      identifier_fragment: cosignature-independent-verification
+      statement: Each co-signature shall be verifiable independently, with its own chain
+        to its own root, and no co-signature shall depend on another for its cryptographic
+        validity.
+      guidance:
+      - Policy dependencies (e.g., minimum number of co-signatures for a classification label)
+        are separate from cryptographic dependency.
+
+    - name: Co-signature canonical payload binding
+      identifier_fragment: cosignature-canonical-binding
+      statement: All co-signatures on an artifact shall attest the same canonical payload.
+        Partial attestation of the artifact is not conforming.
+      guidance:
+      - A co-signer cannot selectively attest part of the artifact.
+
+    - name: Format profile co-signature encoding obligation
+      identifier_fragment: format-profile-cosignature-encoding
+      statement: Each format profile registered in the scheme's format profile registry shall
+        specify how co-signature blocks, dimension tags, and chain references are encoded in
+        that format. A format profile that does not define a co-signature encoding shall not
+        claim conformance to the multi-dimensional attestation requirements.
+      guidance:
+      - This ensures interoperability within a format profile for multi-dimensional artifacts.
+
+    - name: Cross-domain co-signature without root cross-recognition
+      identifier_fragment: cross-domain-no-cross-recognition
+      statement: Cross-domain co-signatures shall not require participating roots to
+        cross-certify each other; the co-signatures themselves shall provide cross-domain
+        trust at the artifact level.
+      guidance:
+      - The verifier holds anchors for multiple roots in the trust anchor bundle.
+
+    - name: Cross-domain trust cement
+      identifier_fragment: trust-cement
+      statement: Once co-signatures are applied to an artifact, it shall not be possible
+        to strip a co-signature without breaking the artifact's self-description, and
+        each co-signer's commitment to the canonical payload shall be non-repudiable.
+      guidance:
+      - The transparency log records the artifact with all co-signatures and cannot
+        be rewritten.
+
+    - name: Multi-dimensional convergence on canonical payload
+      identifier_fragment: dimensional-convergence
+      statement: All dimension attestations on an artifact shall sign the same canonical
+        payload, making the artifact the convergence point of orthogonal trust dimensions.
+      guidance:
+      - Each dimension has its own trust tree and root; no cross-recognition between
+        dimension roots is required.
+
+    - name: Time as first-class dimension
+      identifier_fragment: time-dimension
+      statement: The time dimension shall be attested by a time key — a co-signature
+        from a time authority that records the existence of the artifact hash at a
+        stated time and anchors that record to an external time source.
+      guidance:
+      - The time dimension is objective, non-repudiable, and cross-domain.
+
+    - name: Living artifact accumulation
+      identifier_fragment: living-artifact
+      statement: A trusted artifact may accumulate dimension attestations over time,
+        provided each added attestation signs the original canonical payload without
+        modification.
+      guidance:
+      - As additional dimensions converge, the coverage report gains fields and the
+        classification label may improve.
+
+    - name: Signature wrapping prevention
+      identifier_fragment: wrapping-prevention
+      statement: A conforming signature wrapper shall ensure that the byte range covered by the
+        cryptographic signature is exactly the byte range processed by the verifier for all
+        downstream checks, and the verifier shall reject any artifact where signed content
+        and processed content are not provably identical.
+      guidance:
+      - For XML-based profiles, the signed and verified node sets shall be identical.
+      - For JSON-based and CBOR-based profiles, the signed payload shall be the sole input
+        to downstream processing.
+
+    - name: Co-signature replay protection
+      identifier_fragment: replay-protection
+      statement: Each co-signature shall bind to a unique artifact identifier in addition to
+        the canonical payload hash, and the verifier shall reject any co-signature whose
+        artifact identifier does not match the artifact being verified.
+      guidance:
+      - The artifact identifier may be a transparency log sequence number or a nonce
+        embedded in the canonical payload.

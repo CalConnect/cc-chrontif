@@ -1,0 +1,224 @@
+
+[[architecture]]
+== Architecture and trust model
+
+=== General
+
+A trust infrastructure that conforms to the CHRONTIF framework as described in this
+document aims to provide verifiable artifacts whose trustworthiness is
+established by the convergence of multiple independent trust dimensions, each
+backed by its own trust tree.
+
+The architecture consists of four main areas of concern:
+
+* Trust authorities: the entities that hold signing authority and their
+  delegation relationships (<<architecture-authorities>>);
+
+* The trust graph: the directed acyclic graph that generalizes the linear
+  chain to admit multiple paths, federations, and cross-domain links
+  (<<architecture-graph>>);
+
+* Chain discovery: the mechanisms by which a verifier resolves the path from
+  an artifact to a root anchor (<<architecture-discovery>>);
+
+* The trust anchor bundle: the self-contained set of root anchors that
+  enables offline verification (<<architecture-anchors>>).
+
+
+[[architecture-authorities]]
+=== Trust authorities
+
+==== The four-level model
+
+Signing authority in the CHRONTIF framework flows through four levels:
+
+.Four-level delegation model
+[cols="1,3,2,1"]
+|===
+| Level | Role | Scope authority | Threshold
+
+| 1
+| {{root trust authority}}
+| Defines the initial scope under which all subordinate authorities operate
+| May be 1-of-1, threshold, or federated
+
+| 2
+| {{delegated trust authority}}
+| Receives authority via delegation; narrows the scope
+| May be 1-of-1, threshold, or federated
+
+| 3
+| {{end certificate}}
+| Authorizes a specific key to sign artifacts; carries the narrowest scope
+| 1-of-1 (the key holder)
+
+| 4
+| {{trusted artifact}}
+| The signed data produced under the end certificate's authorization
+| Carries the primary signature plus co-signatures
+|===
+
+A delegation chain from root to end certificate may pass through zero or more
+delegated trust authorities. Each delegation narrows the scope; the artifact
+inherits the narrowest scope along its chain.
+
+==== Delegation
+
+A delegation is the act by which a parent {{trust authority}} authorizes a child
+to operate within a subset of the parent's {{scope}}. A delegation shall be
+expressed as a signed credential (a delegation certificate) that binds:
+
+* the child's {{aggregate key}};
+* the {{quorum}} parameters, if the child is a threshold authority;
+* the narrowed {{scope}}, which shall satisfy the {{monotonic narrowing
+  invariant}};
+* a reference to the ceremony protocol used, if threshold (see
+  <<threshold-signing>>).
+
+A delegation certificate is itself a verifiable artifact: it carries the
+parent's signature and is subject to chain verification, scope enforcement, and
+transparency inclusion.
+
+==== End certificate issuance
+
+An {{end certificate}} authorizes a specific signing key to produce {{trusted
+artifact,trusted artifacts}}. An end certificate shall not itself delegate
+authority further; it binds a key to the authority to sign within its scope.
+
+An end certificate shall carry:
+
+* the authorized public key or its fingerprint;
+* the {{scope}} under which the key is authorized to sign;
+* the {{scope condition,scope conditions}}, if any, that artifacts signed by
+  this key shall satisfy at verification time;
+* a reference to the issuing {{trust authority}}'s delegation chain.
+
+
+[[architecture-graph]]
+=== Trust graph
+
+==== From chain to graph
+
+Traditional PKI models trust as a linear chain: root, intermediate CA, leaf
+certificate. The CHRONTIF framework generalizes this to a {{trust graph}} — a
+directed acyclic graph (DAG) in which multiple valid paths may exist between
+an artifact and a root anchor (<<fig-trust-graph>>).
+
+[[fig-trust-graph]]
+.Trust graph with threshold nodes, federation, and cross-domain edges
+image::trust-graph-dag.svg[]
+
+The trust graph arises from four structural features:
+
+* **Threshold memberships.** A single delegated trust authority can be reached
+  through multiple member key paths.
+
+* **Federated trust authorities.** A {{federated trust authority}} spans
+  multiple independent organizations, creating cross-organization edges.
+
+* **Cross-domain co-signatures.** A {{trusted artifact}} can carry
+  {{co-signature,co-signatures}} from different trust chains, creating
+  horizontal edges at the artifact level.
+
+* **Mutual recognition.** Two {{root trust authority,root trust authorities}}
+  may mutually recognize each other, creating root-level edges.
+
+==== Path-finding
+
+The verifier's task in the CHRONTIF framework is not to walk a single chain but to
+find paths in the trust graph from the artifact to any anchor in the {{trust
+anchor bundle}}. Multiple valid paths may exist; the coverage report records all
+valid paths, and the classification policy may require paths through multiple
+independent roots for higher classification labels.
+
+The path-finding algorithm is implementation-neutral. This document specifies
+the requirements that any conforming path-finder shall satisfy (see
+<<req-architecture>>), including:
+
+* monotonic scope narrowing at every link;
+* cryptographic signature validation at every link;
+* transparency log inclusion for every delegation certificate and end
+  certificate on the path;
+* revocation status checking for every authority on the path.
+
+
+[[architecture-discovery]]
+=== Chain discovery
+
+A verifier shall be able to reconstruct the full delegation chain from an
+artifact to a root anchor. Discovery strategies are recognized; additional strategies may be registered; an
+implementation may support one or more.
+
+==== Embedded chain
+
+The artifact carries the full delegation chain inline. The root is resolved
+from the {{trust anchor bundle}} by fingerprint. This strategy is fully
+offline-capable but produces larger payloads.
+
+==== Transparency-log references
+
+Each certificate carries a `delegatedBy` reference (a transparency-log sequence
+number or equivalent pointer). The verifier fetches and caches the referenced
+certificates on first encounter. This strategy produces compact payloads but
+requires network access on first encounter.
+
+==== Hybrid (reference design)
+
+The artifact embeds the end certificate and the immediate delegation chain,
+resolves the root from the anchor bundle, and includes transparency-log
+sequence numbers for freshness and audit. This is the recommended strategy for
+production deployments.
+
+
+[[architecture-anchors]]
+=== Trust anchor bundle
+
+A {{trust anchor bundle}} is a self-contained set of root {{trust authority}}
+anchors — root {{aggregate key,aggregate keys}} or their fingerprints —
+together with the metadata needed to identify and validate them. The trust
+anchor bundle is the starting point for all verification paths.
+
+A trust anchor bundle shall be:
+
+* **Self-contained.** A verifier holding the bundle and the artifact shall
+  require no additional network access to complete verification (for embedded
+  or hybrid chain strategies).
+
+* **Versioned.** Each bundle carries a version identifier and a validity
+  period. Bundle updates are themselves transparently logged.
+
+* **Distributable.** The bundle shall be expressible in a deterministic format
+  suitable for out-of-band distribution (e.g., via physical media, secure
+  channel, or published fingerprint).
+
+
+[[architecture-generalization]]
+=== Generalization from domain-specific hierarchies
+
+The delegation model is domain-agnostic. Domain-specific hierarchies map onto
+it by identifying their tiers with the appropriate trust authority level.
+
+[example]
+====
+A pharmaceutical supply-chain deployment maps its tiers as follows: a global
+regulatory body maps to the {{root trust authority}}; national drug agencies
+map to {{delegated trust authority,delegated trust authorities}} at successive
+scope narrowings; manufacturer quality-assurance authorities map to delegated
+trust authorities with production-line scope; per-batch signing keys map to
+{{end certificate,end certificates}}; and signed batch release records map to
+{{trusted artifact,trusted artifacts}}.
+====
+
+Other domains — pharmaceutical supply chains, academic credentials,
+environmental monitoring — may define their own tier mappings. The
+requirements of this document apply uniformly regardless of the domain.
+
+
+[[req-architecture]]
+=== Requirements
+
+[data2text,ar=sections/data/07-architecture-rc.yaml]
+----
+{% assign prefix = "architecture" %}
+include::templates/requirements_class.liquid[]
+----

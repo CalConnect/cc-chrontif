@@ -1,0 +1,266 @@
+
+[[annex-d]]
+[appendix,obligation=informative]
+== Sample domain profile: supply-chain provenance
+
+=== General
+
+This annex presents a sample profile of the CHRONTIF framework for a supply-chain
+provenance deployment. It demonstrates how a specific domain configures the
+CHRONTIF framework into a concrete, implementable system. The profile specifies the
+algorithm classes, format characteristics, scope dimensions, transparency
+configuration, threshold parameters, and dimensional attestations used.
+
+This annex is informative. It does not specify requirements. It illustrates
+how the normative requirements of this document are instantiated for a real
+deployment.
+
+
+[[supply-profile-identifier]]
+=== Profile identifier
+
+This profile is identified as `/profile/supply-chain-provenance`. It claims
+the following conformance classes:
+
+* `/conf/basic-verifier`
+* `/conf/full-verifier`
+* `/conf/issuing-authority`
+* `/conf/root-authority`
+* `/conf/transparency-operator`
+* `/conf/mirror`
+* `/conf/device-signer`
+* `/conf/hierarchical` (topology)
+* At least one format profile from the scheme's registry
+* `/conf/dimension-data`
+* `/conf/dimension-person`
+* `/conf/dimension-time`
+* `/conf/dimension-location`
+* `/conf/multi-dimensional`
+
+
+[[supply-hierarchy]]
+=== Hierarchy mapping
+
+A pharmaceutical supply-chain deployment maps its organizational tiers to the
+CHRONTIF delegation model as follows:
+
+[cols="2,2,3,1",options="header"]
+|===
+| Supply-chain tier | CHRONTIF level | Role | Threshold
+
+| Global regulatory body
+| Root trust authority
+| Defines the global supply-chain scope; delegates to national authorities
+| 3-of-5
+
+| National drug agency
+| Delegated trust authority
+| National regulatory authority; delegates to manufacturers
+| 2-of-3
+
+| Manufacturer QA authority
+| Delegated trust authority
+| Production facility quality-assurance signing authority
+| 1-of-1 or 2-of-3
+
+| Batch signing key
+| End certificate
+| Per-production-batch key authorized to sign release records
+| 1-of-1
+
+| Signed batch release record
+| Trusted artifact
+| The batch data with co-signatures — the deliverable
+| Primary + co-signatures
+|===
+
+
+[[supply-algorithms]]
+=== Algorithms
+
+The deployment uses algorithms from the scheme's algorithm registry. The
+selection is a deployment decision; this profile does not mandate specific
+algorithms. The deployment may define a post-quantum migration trajectory
+following the three-phase path specified in <<algorithms-migration>>.
+
+
+[[supply-format]]
+=== Artifact format
+
+The deployment selects a format profile from the scheme's format profile
+registry. The selected profile satisfies the binding requirements in
+<<artifact-binding>> and the canonicalization characteristics in
+<<artifact-canonical-payload>>. The payload schema is domain-specific,
+identified by a URI and versioned per <<artifact-versioning>>.
+
+
+[[supply-scope]]
+=== Scope dimensions
+
+The deployment uses the following scope dimensions (non-exhaustive; additional
+dimensions may be defined by the deployment):
+
+[cols="2,3,3",options="header"]
+|===
+| Dimension | Values | Example
+
+| `domain`
+| `pharma`, `food`, `electronics`
+| Fixed at root
+
+| `subdomain`
+| `vaccines`, `raw-materials`, `finished-goods`
+| National authority narrows
+
+| `class`
+| Product classes (e.g., `{vaccine, tablet, device}`)
+| Manufacturer narrows
+
+| `batch`
+| Batch identifier (e.g., `LOT-2026-001`)
+| End certificate narrows to a specific batch
+
+| `conditions`
+| Temperature compliance, chain-of-custody validity
+| Evaluated at verification time
+|===
+
+
+[[supply-transparency]]
+=== Transparency configuration
+
+The deployment operates a transparency log with the following characteristics
+(examples; specific configuration is a deployment decision):
+
+* append-only Merkle tree with inclusion proofs;
+* external time anchoring to an independent time source;
+* gossip between independent mirror operators;
+* public mirror endpoints published in the deployment manifest.
+
+
+[[supply-threshold]]
+=== Threshold configuration
+
+The deployment uses threshold signing at the regulatory and national levels
+(examples; specific thresholds are deployment decisions):
+
+[cols="2,2,2",options="header"]
+|===
+| Authority | Quorum (example) | Ceremony
+
+| Global regulatory body (RTA)
+| 3-of-5
+| Annual key ceremony; 5 regulatory representatives
+
+| National drug agency (DTA)
+| 2-of-3
+| National ceremony; 3 authorized officers
+
+| Manufacturer QA (DTA)
+| 1-of-1 or 2-of-3
+| Facility-dependent
+
+| Batch signing key (End Cert)
+| 1-of-1
+| Per-batch key generation
+|===
+
+
+[[supply-dimensions]]
+=== Dimensional attestation model
+
+Artifacts in this deployment carry the following dimensional attestations
+(examples; the set of dimensions is extensible):
+
+[cols="2,3",options="header"]
+|===
+| Dimension | Attestation source
+
+| Data
+| Batch signing key signs the release record
+
+| Person
+| QA operator co-signs ("I authorize this batch release")
+
+| Time
+| Time authority anchors the artifact hash to an external time source
+
+| Location
+| Location authority co-signs ("produced at facility F")
+
+| Environment
+| Cold-chain sensor co-signs ("temperature was 2-8 C throughout transit")
+|===
+
+A fully-attested batch release record achieves the highest classification label when
+all policy-required dimensions are present.
+
+
+[[supply-manifest]]
+=== Sample deployment manifest
+
+The following excerpt illustrates the deployment manifest per the schema in
+<<manifest>>:
+
+----
+[deployment]
+name = "PharmaSupplyChain-Global"
+operator = "GlobalPharmaRegulator"
+manifestVersion = 1
+
+mode = "production"
+
+[[tiers]]
+name = "global-regulator"
+role = "RTA"
+threshold = { t = 3, n = 5 }
+
+[[tiers]]
+name = "national-agency"
+role = "DTA"
+threshold = { t = 2, n = 3 }
+delegatedBy = "global-regulator"
+delegationScope = "subdomain"
+
+[[tiers]]
+name = "manufacturer-qa"
+role = "DTA"
+threshold = { t = 1, n = 1 }
+delegatedBy = "national-agency"
+delegationScope = "class"
+
+[[tiers]]
+name = "batch-key"
+role = "EndCertificate"
+delegatedBy = "manufacturer-qa"
+delegationScope = "batch"
+
+[transparency]
+gossip = true
+----
+
+NOTE: The algorithms, format profile, and transparency configuration in this
+manifest reference values from the scheme's registries, not values prescribed
+by this document.
+
+
+[[supply-verification]]
+=== Verification example
+
+A customs inspector verifying a pharmaceutical shipment proceeds as follows:
+
+. The shipment carries its provenance artifact (compact encoding per
+  <<delivery-qr>>).
+
+. The inspector's verifier loads the scheme's trust anchor bundle (offline).
+
+. The pipeline runs hard checks: format validity, signature validity,
+  chain integrity, scope narrowing, scope conditions (temperature compliance,
+  chain-of-custody validity), revocation status.
+
+. The pipeline runs soft checks: transparency inclusion, time anchor,
+  cross-domain co-signatures (person from QA operator, location from facility
+  authority, environment from cold-chain sensor).
+
+. The assigned grade reflects the dimensional coverage. If the grade meets the
+  inspector's policy minimum, the shipment is accepted.

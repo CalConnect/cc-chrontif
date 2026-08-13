@@ -1,0 +1,326 @@
+
+[[annex-b]]
+[appendix,obligation=informative]
+== Comparison with traditional public key infrastructure
+
+=== General
+
+This annex describes how the trust infrastructure specified in this document
+differs from traditional public key infrastructure (PKI) as specified in
+ISO/IEC 9594-8 (X.509) <<iso9594-8>> and the IETF PKI certificate profile
+<<rfc5280>>. It identifies the use cases for which each technology is
+appropriate and distinguishes decisions driven by hard technical requirements
+from those driven by deployment preference.
+
+This annex is informative. It does not specify requirements.
+
+
+=== Applicable standards
+
+The following standards define traditional PKI:
+
+* <<iso9594-8>> (X.509) specifies the public-key and attribute certificate
+  framework, including certificate formats, certification path validation, and
+  attribute certificates.
+
+* <<rfc5280>> profiles X.509 certificates and certificate revocation lists for
+  use in the Internet PKI.
+
+* <<rfc8446>> (TLS 1.3) specifies the Transport Layer Security protocol, which
+  uses X.509 certificates for server and client authentication.
+
+* <<rfc6962>> specifies Certificate Transparency, an optional overlay for
+  monitoring certificate issuance in the web PKI.
+
+This document specifies CHRONTIF, which addresses a different problem space:
+establishing the trustworthiness of persistent artifacts through multi-party,
+multi-dimensional attestation.
+
+
+=== Structural differences
+
+[%header,cols="2,3,3"]
+|===
+| Property | Traditional PKI | CHRONTIF (this document)
+
+| Authorization boundary
+| Policy-defined (Baseline Requirements); not verifiable from the certificate
+| Cryptographic scope enforced at every chain link (<<trust-chain-scope>>)
+
+| Signers per object
+| One signature per certificate
+| N co-signatures per artifact, each from an independent trust dimension
+  (<<artifact-cosignatures>>)
+
+| Key compromise resilience
+| Single key per CA; single point of compromise
+| Threshold at every authority level (<<threshold-signing>>)
+
+| Federation model
+| Bridge CAs are single entities
+| Federated trust authorities are threshold groups of independent organizations
+  (<<threshold-federated>>)
+
+| Transparency
+| Certificate Transparency is an optional monitoring overlay
+| Transparency log inclusion is a verification requirement
+  (<<transparency>>)
+
+| Trust assessment
+| Binary: valid or revoked
+| Graduated: graduated trust classification reflecting coverage report (<<verification-classification>>)
+
+| Revocation scope
+| Invalidates the certificate; prior signatures remain valid
+| Propagates to all artifacts transitively bound to the revoked state
+  (<<revocation-propagation>>)
+
+| Time evidence
+| notBefore/notAfter are self-asserted by the issuer
+| External time anchoring via independent time authority
+  (<<time-dimension>>)
+
+| Topology
+| Strict hierarchy (with awkward cross-certification)
+| Hierarchical, federated, cross-recognized, and mesh as first-class profiles
+  (<<governance-topologies>>)
+
+| Authorization model
+| Static: "this key is authorized"
+| Dynamic: scope includes executable conditions evaluated at verification time
+  (<<scope-conditions>>)
+
+| Authenticity proof
+| Static certificate; authenticity proven by possession
+| Challenge-response: verifier challenges for fresh nonce-bound artifact
+
+| Log redundancy
+| Single CT log suffices for monitoring
+| Multi-log attestation quorum (M-of-K) for federated artifacts
+  (<<transparency-multi-log>>)
+
+| Cross-domain trust
+| CA-to-CA cross-certification
+| Artifact-level co-signatures from independent hierarchies
+  (<<artifact-cross-domain>>)
+
+| Dimensional coverage
+| One dimension: authority/identity
+| Multi-dimensional: time, location, environment as cryptographic
+  co-signature dimensions (<<artifact-multi-dimensional>>)
+|===
+
+
+=== Use case suitability
+
+==== Use cases for which CHRONTIF is the appropriate technology
+
+CHRONTIF is appropriate when one or more of the following properties are required:
+
+* **Multi-party attestation.** The artifact's trustworthiness depends on
+  independent attestations from multiple parties (e.g., operator, laboratory,
+  regulator). PKI binds one signer per object and cannot express convergence.
+
+* **Cryptographic scope enforcement.** The signing key's authority must be
+  verifiable from the certificate itself, not from external policy. PKI defines
+  scope externally; it cannot detect scope violations at verification time.
+
+* **Threshold at every level.** No single key compromise compromises any
+  authority. PKI uses single-key CAs; threshold is typically root-only if at
+  all.
+
+* **Mandatory transparency.** The artifact's existence is publicly
+  auditable, and un-logged artifacts are rejected. PKI treats transparency
+  as optional.
+
+* **Revocation propagation to artifacts.** Revoking an authority state
+  flags all artifacts bound to that state. PKI revokes certificates only;
+  prior signatures remain valid.
+
+* **Multi-dimensional reality attestation.** Time, location, or environmental
+  conditions are cryptographically attested, not carried as metadata. PKI
+  has one dimension: authority.
+
+* **Graduated trust assessment.** The verifier needs to distinguish between
+  levels of assurance for risk-based policy. PKI is binary.
+
+[example]
+====
+A regulatory compliance regime that requires a signed data record to be
+attested by the issuing device (data dimension), a certified operator
+(person dimension), an accredited time authority (time dimension), and an
+environmental sensor (environment dimension) cannot be satisfied by PKI. The
+multi-dimensional convergence model of CHRONTIF is a hard requirement.
+====
+
+
+==== Use cases for which traditional PKI is appropriate
+
+Traditional PKI is appropriate when the following conditions hold:
+
+* **Server identity authentication.** The use case is authenticating a server
+  to a client in a transport-layer session. TLS <<rfc8446>> with X.509
+  certificates is the mature, interoperable solution.
+
+* **Simple key-to-identity binding.** The requirement is to bind a public key
+  to an identity (person, organization, or device) for signature or encryption.
+  X.509 certificates provide this directly.
+
+* **Web PKI ecosystem.** The use case requires interoperability with existing
+  web browsers, operating systems, and trust stores. The web PKI ecosystem
+  (CA/Browser Forum Baseline Requirements, CT monitoring) is specific to this
+  domain.
+
+* **Email security.** S/MIME uses X.509 for email signing and encryption. The
+  interoperability ecosystem is mature.
+
+
+==== Use cases where either technology is viable
+
+For the following use cases, both PKI and CHRONTIF are technically viable; the
+choice is a preference decision based on deployment constraints:
+
+* **Code signing.** Both can bind a signing key to a publisher. CHRONTIF adds
+  multi-party attestation and graduated trust; PKI is simpler and more widely
+  deployed.
+
+* **Document signing.** Both can sign documents. CHRONTIF adds scope enforcement
+  and revocation propagation; PKI is interoperable with existing document
+  formats.
+
+* **Device identity.** Both can issue device certificates. CHRONTIF adds
+  threshold signing and challenge-response authenticity; PKI is simpler.
+
+
+=== Hard requirements and preference decisions
+
+The choice between CHRONTIF and PKI can be decomposed into hard requirements
+(structural properties that one technology provides and the other does not)
+and preference decisions (properties that both provide or that depend on
+deployment context).
+
+==== Decisions driven by hard requirements
+
+The following properties are hard requirements that determine technology
+choice. If any of these is required, the technology that does not provide it
+structurally cannot be used.
+
+[%header,cols="3,2,2,2"]
+|===
+| Required property | CHRONTIF | PKI | Decision driver
+
+| Multi-party co-signed artifacts
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Cryptographic scope enforcement
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Threshold at every authority level
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Transparency as verification requirement
+| Provides
+| Does not provide (CT is optional)
+| Hard requirement for CHRONTIF
+
+| Revocation propagation to artifacts
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Multi-dimensional attestation
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Graduated classification labels
+| Provides
+| Does not provide
+| Hard requirement for CHRONTIF
+
+| Web browser interoperability
+| Does not provide
+| Provides
+| Hard requirement for PKI
+
+| TLS session authentication
+| Does not provide
+| Provides
+| Hard requirement for PKI
+|===
+
+==== Decisions driven by preference
+
+The following properties do not constitute hard requirements; the choice
+depends on deployment context, ecosystem maturity, or operational preference.
+
+[%header,cols="3,2,2,3"]
+|===
+| Property | CHRONTIF | PKI | Consideration
+
+| Single-signer document signing
+| Viable
+| Viable
+| PKI preferred for ecosystem interoperability; CHRONTIF preferred if scope
+  enforcement or revocation propagation is desired.
+
+| Code signing
+| Viable
+| Viable
+| PKI preferred for platform compatibility; CHRONTIF preferred for multi-party
+  attestation or threshold protection.
+
+| Device identity
+| Viable
+| Viable
+| PKI preferred for simplicity; CHRONTIF preferred for challenge-response
+  authenticity or graduated trust.
+
+| Internal CA for an organization
+| Viable
+| Viable
+| PKI preferred for existing tooling; CHRONTIF preferred if threshold signing or
+  mandatory transparency is desired.
+|===
+
+
+=== Coexistence
+
+CHRONTIF and PKI are not mutually exclusive. A deployment may use both:
+
+* PKI for server authentication and transport-layer security (TLS).
+
+* CHRONTIF for artifact attestation, regulatory compliance records, and
+  multi-party signing.
+
+A CHRONTIF {{end certificate}} may reference a PKI certificate for the identity
+dimension, establishing the signer's organizational identity via PKI while
+adding CHRONTIF's scope enforcement and multi-dimensional attestation. This
+composition is permitted by the format-agnostic binding requirements in
+<<artifact-binding>>.
+
+
+=== Migration considerations
+
+An organization migrating from PKI to CHRONTIF should consider:
+
+* **Key reuse.** Existing PKI keys may be reused as CHRONTIF end certificate keys,
+  provided the scope is narrowed appropriately.
+
+* **Certificate mapping.** Existing X.509 certificates map to CHRONTIF end
+  certificates. The X.509 subject and extensions provide initial scope and
+  identity information.
+
+* **Transparency log bootstrapping.** A new CHRONTIF deployment starts with an
+  empty transparency log. Existing artifacts may be retroactively logged.
+
+* **Graduated adoption.** An organization may adopt CHRONTIF incrementally — for
+  example, starting with the data dimension only (PKI-compatible) and adding
+  person, time, location, and environment dimensions over time as the living
+  artifact model permits.

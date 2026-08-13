@@ -1,0 +1,494 @@
+
+[[annex-e]]
+[appendix,obligation=informative]
+== Reference technology instantiation
+
+=== General
+
+This annex demonstrates CHRONTIF instantiated with a concrete technology
+stack. It provides implementation-level detail — artifact structure,
+computation steps, verification examples, and test scenarios — sufficient for
+an implementer to build a conforming system against this stack. All technology
+choices are examples; this annex does not mandate them.
+
+The reference stack:
+
+[cols="2,3",options="header"]
+|===
+| CHRONTIF concept | Reference technology
+
+| Classical signature algorithm
+| Ed25519 (<<rfc8032>>)
+
+| Post-quantum algorithm (migration target)
+| ML-DSA-65 (<<fips204>>)
+
+| Composite signature (transition)
+| Ed25519 AND ML-DSA-65 (both components verified)
+
+| Hash function
+| SHA-256
+
+| Signature envelope
+| JSON Web Signature, compact serialization, detached content (<<rfc7515>>)
+
+| Canonicalization
+| JSON Canonicalization Scheme (<<rfc8785>>)
+
+| Transparency log
+| Append-only Merkle tree with SHA-256, domain-separated hashing (RFC 6962 convention: 0x00 leaf, 0x01 node)
+
+| External time anchoring
+| OpenTimestamps commitment to an external proof-of-work chain
+
+| Threshold signing
+| 2-of-3 threshold (reference configuration; specific scheme is a deployment choice)
+
+| Key encoding
+| SubjectPublicKeyInfo (SPKI) for public keys
+
+| Scope condition expression
+| JSON Logic
+|===
+
+
+=== Canonical payload hash computation
+
+All co-signatures attest the same canonical payload hash. For the reference
+stack, the computation is:
+
+[arabic]
+. Take the logical payload as a JSON object.
+. Apply JSON Canonicalization Scheme (JCS, <<rfc8785>>) to produce a
+   deterministic byte string. JCS sorts object keys lexicographically by
+   UTF-16 code unit, removes insignificant whitespace, encodes numbers in
+   shortest round-trippable representation, and outputs UTF-8.
+. Compute SHA-256 over the JCS output.
+. The resulting 32-byte digest is the canonical payload hash.
+
+All co-signers — regardless of which trust dimension they attest — sign this
+same 32-byte digest. If the payload changes by even one byte after JCS
+canonicalization, all existing co-signatures break.
+
+
+=== Artifact structure
+
+The following structure illustrates a fully-attested artifact using the
+reference stack. Field names are shown for the reference stack; deployments
+using different format profiles may use different structures.
+
+----
+{
+  "version": "1.0",
+  "artifact_id": "art-2026-00001",
+  "payload": {
+    "batch_id": "LOT-2026-001",
+    "product": "vaccine-batch-A",
+    "quantity": 50000,
+    "release_date": "2026-08-09"
+  },
+  "scope": {
+    "domain": "pharma",
+    "subdomain": "vaccines",
+    "class": "vaccine",
+    "batch": "LOT-2026-001",
+    "conditions": [
+      { ">=": [ { "var": "payload.quantity" }, 10000 ] }
+    ]
+  },
+  "canonical_payload_hash": "<base64 SHA-256 of JCS(payload)>",
+  "co_signatures": [
+    {
+      "dimension": "data",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<transparency-log-seq:12345>",
+      "signer_pubkey": "<base64 SPKI>",
+      "signature": "<base64 Ed25519 signature over canonical_payload_hash>"
+    },
+    {
+      "dimension": "person",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<operator-key-fingerprint>",
+      "signer_pubkey": "<base64 SPKI>",
+      "signature": "<base64 Ed25519 signature>"
+    },
+    {
+      "dimension": "time",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<time-authority-key-fingerprint>",
+      "external_anchor": "<OpenTimestamps proof bytes, base64>",
+      "signature": "<base64 Ed25519 signature>"
+    }
+  ],
+  "transparency": {
+    "log_seq": 67890,
+    "inclusion_proof": {
+      "leaf_hash": "<base64 SHA-256 of log entry>",
+      "audit_path": ["<base64 sibling hashes>"],
+      "tree_head": {
+        "root_hash": "<base64 Merkle root>",
+        "tree_size": 100000,
+        "timestamp": "2026-08-09T12:00:00Z",
+        "operator_signature": "<base64 Ed25519 signature over tree head>"
+      }
+    }
+  }
+}
+----
+
+Key fields:
+
+[cols="2,3",options="header"]
+|===
+| Field | Purpose
+
+| `artifact_id`
+| Unique identifier binding co-signatures to this artifact (replay protection)
+
+| `payload`
+| The logical content all co-signers attest
+
+| `scope`
+| Multi-dimensional authorization boundary with executable conditions
+
+| `canonical_payload_hash`
+| SHA-256 of JCS-canonicalized payload; what all signatures cover
+
+| `co_signatures[]`
+| Array of independent signatures, each tagged with a dimension
+
+| `co_signatures[].dimension`
+| Trust dimension tag from the scheme's registry
+
+| `co_signatures[].signer_cert_ref`
+| End certificate reference (transparency-log sequence or key fingerprint)
+
+| `co_signatures[].signature`
+| Ed25519 signature over the canonical payload hash
+
+| `transparency`
+| Inclusion proof binding the artifact to the transparency log
+|===
+
+
+=== Living artifact evolution
+
+An artifact may accumulate co-signatures over time. Each revision produces a
+new transparency log entry:
+
+----
+T0: artifact created with data co-signature only
+    → transparency log entry #67890
+
+T1: person co-signature added
+    → transparency log entry #67891
+    (binds: canonical_payload_hash + data + person co-signatures)
+
+T2: time co-signature added
+    → transparency log entry #67892
+    (binds: canonical_payload_hash + data + person + time co-signatures)
+----
+
+The verifier uses the co-signature set from the most recent transparency log
+entry. The `artifact_id` binds all co-signatures to the same artifact,
+preventing replay across different artifacts.
+
+
+=== Verification result examples
+
+The verification pipeline produces an objective coverage report, which the
+scheme's classification policy maps to a grade label. The reference stack uses
+these example labels: `unverified`, `basic`, `verified`, `attested`,
+`certified`, `rejected`.
+
+**Minimal valid artifact (data dimension only, no transparency):**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": false,
+    "time_anchored": false,
+    "dimensions_verified": ["data"],
+    "dimension_count": 0,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 1
+  },
+  "classified_grade": "unverified",
+  "downgrades": ["transparency_missing", "time_anchor_absent"]
+}
+----
+
+**With transparency log inclusion:**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": true,
+    "time_anchored": false,
+    "dimensions_verified": ["data"],
+    "dimension_count": 0,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 1
+  },
+  "classified_grade": "basic",
+  "downgrades": ["time_anchor_absent"]
+}
+----
+
+**With external time anchor:**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": true,
+    "time_anchored": true,
+    "dimensions_verified": ["data", "time"],
+    "dimension_count": 0,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 2
+  },
+  "classified_grade": "basic",
+  "downgrades": []
+}
+----
+
+**With dimensional breadth (person + environment):**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": true,
+    "time_anchored": true,
+    "dimensions_verified": ["data", "time", "person", "environment"],
+    "dimension_count": 2,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 4
+  },
+  "classified_grade": "verified",
+  "downgrades": []
+}
+----
+
+**With dimensional breadth + cross-domain diversity:**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": true,
+    "time_anchored": true,
+    "dimensions_verified": ["data", "time", "person", "location", "environment"],
+    "dimension_count": 3,
+    "independent_roots": 1,
+    "multi_log_quorum": false,
+    "paths_found": 6
+  },
+  "classified_grade": "attested",
+  "downgrades": []
+}
+----
+
+**With multi-log quorum:**
+----
+{
+  "coverage": {
+    "hard_checks": "pass",
+    "transparency_included": true,
+    "time_anchored": true,
+    "dimensions_verified": ["data", "time", "person", "location", "environment"],
+    "dimension_count": 3,
+    "independent_roots": 1,
+    "multi_log_quorum": true,
+    "paths_found": 6
+  },
+  "classified_grade": "certified",
+  "downgrades": []
+}
+----
+
+**Failed — revoked authority:**
+----
+{
+  "coverage": {
+    "hard_checks": "fail",
+    "transparency_included": false,
+    "time_anchored": false,
+    "dimensions_verified": [],
+    "dimension_count": 0,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 0
+  },
+  "classified_grade": "rejected",
+  "failures": [
+    {
+      "check": "revocation_status",
+      "reason": "revoked",
+      "detail": "data dimension co-signer authority revoked at 2026-08-08T10:00:00Z"
+    }
+  ],
+  "downgrades": []
+}
+----
+
+**Failed — scope condition not met:**
+----
+{
+  "coverage": {
+    "hard_checks": "fail",
+    "transparency_included": false,
+    "time_anchored": false,
+    "dimensions_verified": [],
+    "dimension_count": 0,
+    "independent_roots": 0,
+    "multi_log_quorum": false,
+    "paths_found": 1
+  },
+  "classified_grade": "rejected",
+  "failures": [
+    {
+      "check": "scope_conditions",
+      "reason": "scope_condition_failed",
+      "detail": "Condition {>=: [{var: payload.quantity}, 10000]} evaluated false (quantity=5000)"
+    }
+  ],
+  "downgrades": []
+}
+----
+
+
+=== Test scenarios
+
+The following scenarios provide implementable test cases. Each specifies the
+artifact configuration, the verification state, and the expected result.
+Grade labels shown are for the reference stack's example classification
+policy; other schemes may use different labels.
+
+[cols="3,4,2,1",options="header"]
+|===
+| Scenario | Configuration | Expected grade | Pass/fail
+
+| Minimal valid artifact
+| Data dimension only, valid chain, valid scope, no transparency, no time
+| unverified
+| Pass
+
+| With transparency
+| Data dimension, valid chain, transparency inclusion verified
+| basic
+| Pass
+
+| With time anchor
+| Data dimension, transparency verified, time dimension anchored
+| basic
+| Pass
+
+| With dimensional breadth
+| Data + person + environment, transparency verified, time anchored
+| verified
+| Pass
+
+| With cross-domain
+| Data + time + one co-signature from independent root
+| verified
+| Pass
+
+| Broad + cross-domain
+| Data + person + location + time + one cross-domain co-signature
+| attested
+| Pass
+
+| With multi-log
+| Attested artifact also included in M-of-K independent logs
+| certified
+| Pass
+
+| Scope widened
+| Chain has a delegation link where child scope exceeds parent
+| rejected
+| Fail (scope_widened)
+
+| Revoked authority
+| An authority on the verification path is revoked
+| rejected
+| Fail (revoked)
+
+| Scope condition failed
+| A scope condition evaluates to false at verification time
+| rejected
+| Fail (scope_condition_failed)
+
+| Invalid signature
+| A co-signature fails cryptographic validation
+| rejected
+| Fail (signature_invalid)
+|===
+
+
+=== Trust anchor bundle format
+
+The reference trust anchor bundle is a signed JSON document:
+
+----
+{
+  "bundle_version": "2026.08",
+  "valid_from": "2026-08-01T00:00:00Z",
+  "valid_until": "2026-12-31T23:59:59Z",
+  "roots": [
+    {
+      "name": "PharmaRegulator-Global",
+      "aggregate_key": "<base64 Ed25519 public key>",
+      "fingerprint": "<hex SHA-256 of SPKI>",
+      "quorum": { "t": 3, "n": 5 }
+    }
+  ],
+  "transparency_logs": [
+    {
+      "name": "PharmaLog-Primary",
+      "operator_key": "<base64 Ed25519 public key>",
+      "endpoint": "https://log.pharma-regulator.example"
+    }
+  ],
+  "bundle_signature": "<base64 threshold signature over JCS(bundle)>"
+}
+----
+
+The verifier confirms the `bundle_signature` against the root aggregate key
+and checks the `valid_until` date.
+
+
+=== Scope condition expressions
+
+The reference stack uses JSON Logic for scope conditions. JSON Logic is
+deterministic, Turing-incomplete, and widely implemented.
+
+[cols="2,3",options="header"]
+|===
+| Purpose | Expression
+
+| Value within range
+| `{">=": [{"var": "payload.quantity"}, 10000]}`
+
+| String equality
+| `{"==": [{"var": "payload.product"}, "vaccine-batch-A"]}`
+
+| Certification valid at time
+| `{">=": [{"var": "calibration.expiry"}, {"var": "signature_time"}]}`
+|===
+
+
+=== Challenge-response protocol
+
+For device signers, the reference challenge-response protocol:
+
+[arabic]
+. The verifier generates a random 256-bit nonce and sends it with a
+   freshness window (e.g., 30 seconds).
+. The device produces a fresh artifact containing the nonce in its payload,
+   signs it under its end certificate key, and returns it.
+. The verifier runs the normal pipeline, additionally checking that the
+   nonce in the payload matches the challenge and the artifact was produced
+   within the freshness window.

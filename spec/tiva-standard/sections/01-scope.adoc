@@ -1,0 +1,70 @@
+
+[[scope]]
+== Scope
+
+This document specifies a trust infrastructure for the issuance and verification
+of verifiable artifacts — signed data objects whose trustworthiness is
+established by the convergence of multiple independent trust dimensions, each
+backed by its own trust tree.
+
+This document specifies the following:
+
+* the trust model, including the delegation structure from a root trust
+  authority through delegated trust authorities to end certificates, and the
+  trust graph that generalizes a linear chain to a directed acyclic graph;
+
+* the scope model, including scope dimensions, monotonic narrowing, executable
+  scope conditions, and the four-layer enforcement of scope at every chain link;
+
+* the artifact format and signature binding requirements, including the
+  co-signature model for multi-party attestation, cross-domain trust fusion, and
+  multi-dimensional reality attestation;
+
+* the threshold signing model, requiring threshold quorum at every trust
+  authority level and specifying the ceremony protocol;
+
+* the federated trust authority model, in which threshold groups of independent
+  organizations share an aggregate key;
+
+* the transparency model, including append-only Merkle logs, inclusion proofs,
+  consistency proofs, mirrors, gossip, and multi-log attestation;
+
+* the revocation model, including certificate revocation lists and propagation
+  of revocation to artifacts transitively bound to a revoked state;
+
+* the verification pipeline, including trust graph path-finding, coverage
+  report production, classification policy, acceptance policy, and time
+  freshness enforcement;
+
+* the algorithm agility model, including the algorithm identifier registry,
+  deprecation process, and migration governance;
+
+* the trust topology profiles: hierarchical, federated, cross-recognized, and
+  mesh;
+
+* the key lifecycle, including generation, storage, rotation, and ceremony
+  requirements;
+
+* the delivery and discovery mechanisms, including chain resolution, trust
+  anchor bundles, machine-readable passports, and challenge-response;
+
+* the conformance class hierarchy and the abstract test suite.
+
+The following are out of scope of this document:
+
+* implementation details for the realization of any CHRONTIF component;
+
+* domain-specific content, schemas, or data models that a particular adopter
+  community may define as profiles of this document;
+
+* the internal design of hardware security modules, secure enclaves, or other
+  key protection mechanisms, except where they interact with the ceremony
+  protocol;
+
+* the governance procedures of any specific root trust authority, except for
+  the structural requirements that all root trust authorities shall satisfy;
+
+* network transport protocols for artifact delivery, except for the
+  requirements on chain resolution and discovery;
+
+* legal or regulatory recognition of CHRONTIF-based artifacts in any jurisdiction.
