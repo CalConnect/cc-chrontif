@@ -1,0 +1,63 @@
+
+[bibliography]
+== Bibliography
+
+* [[[iso9594-8,ISO/IEC 9594-8:2020]]], _Information technology — Open Systems Interconnection — The Directory: Public-key and attribute certificate frameworks_
+
+* [[[iso8601,ISO 8601-1:2019]]], _Date and time — Representations for information interchange — Part 1: Basic rules_
+
+* [[[iso3166-1,ISO 3166-1:2020]]], _Codes for the representation of names of countries and their subdivisions — Part 1: Country codes_
+
+* [[[iso7501,ISO/IEC 7501-1:2005]]], _Identification cards — Machine readable travel documents — Part 1: Machine readable passport_
+
+* [[[iso14888,ISO/IEC 14888]]], _Information technology — Security techniques — Digital signatures with appendix_
+
+* [[[iso11770,ISO/IEC 11770]]], _Information technology — Security techniques — Key management_
+
+* [[[iso19790,ISO/IEC 19790:2012]]], _Information technology — Security techniques — Security requirements for cryptographic modules_
+
+* [[[iso18031,ISO/IEC 18031:2011]]], _Information technology — Security techniques — Random bit generation_
+
+* [[[rfc8949,RFC 8949]]], _Concise Binary Object Representation (CBOR)_, IETF, 2020
+
+* [[[rfc8785,RFC 8785]]], _JSON Canonicalization Scheme (JCS)_, IETF, 2020
+
+* [[[rfc3986,RFC 3986]]], _Uniform Resource Identifier (URI): Generic Syntax_, IETF, 2005
+
+* [[[jsonschema,JSON Schema Specification (Draft 7)]]], IETF Internet-Draft, 2018
+
+* [[[gm-t-0003-2012,GM/T 0003-2012]]], _SM2 Elliptic Curve Public Key Cryptography Algorithm_, Chinese cryptographic standard
+
+* [[[gm-t-0005-2010,GM/T 0005-2010]]], _SM3 Cryptographic Hash Algorithm_, Chinese cryptographic standard
+
+* [[[iso18045,ISO/IEC 18045:2008]]], _Information technology — Security techniques — Methodology for IT security evaluation_
+
+* [[[iso27001,ISO/IEC 27001:2022]]], _Information security, cybersecurity and privacy protection — Information security management systems — Requirements_
+
+* [[[iso7064,ISO/IEC 7064:2003]]], _Information technology — Security techniques — Check character systems_
+
+* [[[rfc6960,RFC 6960]]], _X.509 Internet Public Key Infrastructure Online Certificate Status Protocol — OCSP_, IETF, 2013
+
+* [[[rfc9162,RFC 9162]]], _Certificate Transparency Version 2.0_, IETF, 2022
+
+* [[[rfc8446,RFC 8446]]], _The Transport Layer Security (TLS) Protocol Version 1.3_, IETF, 2018
+
+* [[[nist-sp800-57,NIST SP 800-57 Part 1 Rev. 5]]], _Recommendation for Key Management_, NIST, 2020
+
+* [[[nist-sp800-131a,NIST SP 800-131A Rev. 2]]], _Transitioning the Use of Cryptographic Algorithms and Key Lengths_, NIST, 2019
+
+* [[[pkcs11,PKCS #11 v3.0]]], _Cryptographic Token Interface Standard_, OASIS, 2020
+
+* [[[pkcs10,PKCS #10 v1.7]]], _Certification Request Syntax Specification_, RFC 2986, IETF, 2000
+
+* [[[bip340,BIP 340]]], _Taproot: Schnorr Signatures for SegWit v1_, Bitcoin Improvement Proposal, 2020
+
+* [[[opentimestamps,OpenTimestamps]]], _Scalable, Trustless, Distributed Timestamping_, OpenTimestamps specification
+
+* [[[xmss,RFC 8391]]], _XMSS: eXtended Merkle Signature Scheme_, IETF, 2018
+
+* [[[lersh,RFC 8554]]], _Leighton-Micali Hash-Based Signatures_, IETF, 2019
+
+* [[[w3c-vc,W3C Recommendation: Verifiable Credentials Data Model 1.1]]], W3C, 2022
+
+* [[[json-ld,W3C Recommendation: JSON-LD 1.1]]], W3C, 2020

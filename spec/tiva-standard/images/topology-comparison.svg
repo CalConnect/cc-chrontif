@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="sans-serif" font-size="11">
+  <text x="450" y="25" text-anchor="middle" font-size="15" font-weight="bold">Trust topology profiles</text>
+
+  <!-- Hierarchical -->
+  <rect x="20" y="50" width="200" height="430" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="30" y="60" width="180" height="28" rx="4" fill="#4285f4"/>
+  <text x="120" y="78" text-anchor="middle" fill="white" font-weight="bold">Hierarchical</text>
+  <text x="120" y="105" text-anchor="middle" font-size="10" fill="#666">Single root, linear chains</text>
+  <!-- RTA -->
+  <circle cx="120" cy="140" r="20" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="120" y="144" text-anchor="middle" font-size="9">RTA</text>
+  <!-- DTAs -->
+  <circle cx="80" cy="210" r="15" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="80" y="214" text-anchor="middle" font-size="8">DTA</text>
+  <circle cx="160" cy="210" r="15" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="160" y="214" text-anchor="middle" font-size="8">DTA</text>
+  <line x1="110" y1="155" x2="85" y2="198" stroke="#999"/>
+  <line x1="130" y1="155" x2="155" y2="198" stroke="#999"/>
+  <!-- End certs -->
+  <rect x="55" y="270" width="50" height="20" rx="3" fill="#fef7e0" stroke="#fbbc04"/>
+  <text x="80" y="284" text-anchor="middle" font-size="8">EC</text>
+  <rect x="135" y="270" width="50" height="20" rx="3" fill="#fef7e0" stroke="#fbbc04"/>
+  <text x="160" y="284" text-anchor="middle" font-size="8">EC</text>
+  <line x1="80" y1="225" x2="80" y2="270" stroke="#999"/>
+  <line x1="160" y1="225" x2="160" y2="270" stroke="#999"/>
+  <text x="120" y="330" text-anchor="middle" font-size="10" fill="#555">Simplest profile.</text>
+  <text x="120" y="345" text-anchor="middle" font-size="10" fill="#555">Single-root anchor</text>
+  <text x="120" y="360" text-anchor="middle" font-size="10" fill="#555">bundle.</text>
+
+  <!-- Federated -->
+  <rect x="240" y="50" width="200" height="430" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="250" y="60" width="180" height="28" rx="4" fill="#34a853"/>
+  <text x="340" y="78" text-anchor="middle" fill="white" font-weight="bold">Federated</text>
+  <text x="340" y="105" text-anchor="middle" font-size="10" fill="#666">Multiple independent roots</text>
+  <!-- RTA1 -->
+  <circle cx="290" cy="140" r="18" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="290" y="144" text-anchor="middle" font-size="8">RTA₁</text>
+  <!-- RTA2 -->
+  <circle cx="390" cy="140" r="18" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="390" y="144" text-anchor="middle" font-size="8">RTA₂</text>
+  <!-- FTA spanning -->
+  <rect x="300" y="195" width="80" height="25" rx="4" fill="#fce8e6" stroke="#ea4335" stroke-width="2" stroke-dasharray="4,2"/>
+  <text x="340" y="212" text-anchor="middle" font-size="9" font-weight="bold">FTA</text>
+  <line x1="295" y1="155" x2="325" y2="195" stroke="#ea4335" stroke-dasharray="3,2"/>
+  <line x1="385" y1="155" x2="355" y2="195" stroke="#ea4355" stroke-dasharray="3,2"/>
+  <!-- End cert -->
+  <rect x="315" y="260" width="50" height="20" rx="3" fill="#fef7e0" stroke="#fbbc04"/>
+  <text x="340" y="274" text-anchor="middle" font-size="8">EC</text>
+  <line x1="340" y1="220" x2="340" y2="260" stroke="#999"/>
+  <text x="340" y="330" text-anchor="middle" font-size="10" fill="#555">Multi-root anchor</text>
+  <text x="340" y="345" text-anchor="middle" font-size="10" fill="#555">bundle. FTAs span</text>
+  <text x="340" y="360" text-anchor="middle" font-size="10" fill="#555">hierarchies.</text>
+
+  <!-- Cross-recognized -->
+  <rect x="460" y="50" width="200" height="430" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="470" y="60" width="180" height="28" rx="4" fill="#ff9800"/>
+  <text x="560" y="78" text-anchor="middle" fill="white" font-weight="bold">Cross-recognized</text>
+  <text x="560" y="105" text-anchor="middle" font-size="10" fill="#666">Hierarchies with links</text>
+  <!-- RTA1 -->
+  <circle cx="510" cy="140" r="18" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="510" y="144" text-anchor="middle" font-size="8">RTA₁</text>
+  <!-- RTA2 -->
+  <circle cx="610" cy="140" r="18" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="610" y="144" text-anchor="middle" font-size="8">RTA₂</text>
+  <!-- Cross-recognition link -->
+  <line x1="528" y1="140" x2="592" y2="140" stroke="#ff9800" stroke-width="2" stroke-dasharray="5,3"/>
+  <text x="560" y="132" text-anchor="middle" font-size="8" fill="#ff9800" font-weight="bold">mutual recog.</text>
+  <!-- DTAs -->
+  <circle cx="510" cy="210" r="15" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="510" y="214" text-anchor="middle" font-size="8">DTA</text>
+  <circle cx="610" cy="210" r="15" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="610" y="214" text-anchor="middle" font-size="8">DTA</text>
+  <line x1="510" y1="155" x2="510" y2="195" stroke="#999"/>
+  <line x1="610" y1="155" x2="610" y2="195" stroke="#999"/>
+  <text x="560" y="330" text-anchor="middle" font-size="10" fill="#555">Root-level mutual</text>
+  <text x="560" y="345" text-anchor="middle" font-size="10" fill="#555">recognition via</text>
+  <text x="560" y="360" text-anchor="middle" font-size="10" fill="#555">signed credentials.</text>
+
+  <!-- Mesh -->
+  <rect x="680" y="50" width="200" height="430" rx="8" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1"/>
+  <rect x="690" y="60" width="180" height="28" rx="4" fill="#9334e6"/>
+  <text x="780" y="78" text-anchor="middle" fill="white" font-weight="bold">Mesh</text>
+  <text x="780" y="105" text-anchor="middle" font-size="10" fill="#666">General DAG, FTAs</text>
+  <!-- RTA1 -->
+  <circle cx="730" cy="140" r="16" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="730" y="144" text-anchor="middle" font-size="7">RTA₁</text>
+  <!-- RTA2 -->
+  <circle cx="830" cy="140" r="16" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="830" y="144" text-anchor="middle" font-size="7">RTA₂</text>
+  <!-- FTA nodes -->
+  <rect x="695" y="195" width="40" height="20" rx="3" fill="#fce8e6" stroke="#ea4335" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="715" y="209" text-anchor="middle" font-size="7">FTA</text>
+  <rect x="825" y="195" width="40" height="20" rx="3" fill="#fce8e6" stroke="#ea4335" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="845" y="209" text-anchor="middle" font-size="7">FTA</text>
+  <rect x="760" y="240" width="40" height="20" rx="3" fill="#fce8e6" stroke="#ea4335" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="780" y="254" text-anchor="middle" font-size="7">FTA</text>
+  <!-- Mesh edges -->
+  <line x1="730" y1="156" x2="720" y2="195" stroke="#999"/>
+  <line x1="830" y1="156" x2="840" y2="195" stroke="#999"/>
+  <line x1="730" y1="156" x2="770" y2="240" stroke="#999"/>
+  <line x1="830" y1="156" x2="790" y2="240" stroke="#999"/>
+  <line x1="735" y1="205" x2="760" y2="245" stroke="#ea4335" stroke-width="1" stroke-dasharray="2,2"/>
+  <line x1="825" y1="205" x2="800" y2="245" stroke="#ea4335" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="780" y="330" text-anchor="middle" font-size="10" fill="#555">Most general.</text>
+  <text x="780" y="345" text-anchor="middle" font-size="10" fill="#555">Arbitrary cross-domain</text>
+  <text x="780" y="360" text-anchor="middle" font-size="10" fill="#555">co-signatures.</text>
+</svg>

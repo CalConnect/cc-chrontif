@@ -1,0 +1,128 @@
+
+[[annex-a]]
+[appendix,obligation=normative]
+== Conformance test suite
+
+=== General
+
+This annex provides the conformance classes intended to verify that an
+implementation conforms to the requirements specified in this document. Each
+conformance class targets a requirements class defined in the normative
+clauses.
+
+Conformance classes are rendered from structured data using the conformance
+class template. Each conformance class lists its conformance tests, with each
+test targeting one or more requirements.
+
+
+=== Architecture and trust model
+
+[data2text,ar=sections/data/07-architecture-cc.yaml]
+----
+{% assign prefix = "architecture" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Artifact format and signature binding
+
+[data2text,ar=sections/data/08-artifact-format-cc.yaml]
+----
+{% assign prefix = "artifact-format" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Cryptographic algorithms
+
+[data2text,ar=sections/data/09-algorithms-cc.yaml]
+----
+{% assign prefix = "algorithms" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Threshold signing
+
+[data2text,ar=sections/data/10-threshold-signing-cc.yaml]
+----
+{% assign prefix = "threshold-signing" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Trust chain and authorization scope governance
+
+[data2text,ar=sections/data/11-scope-cc.yaml]
+----
+{% assign prefix = "scope" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Revocation and artifact binding
+
+[data2text,ar=sections/data/12-revocation-cc.yaml]
+----
+{% assign prefix = "revocation" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Transparency and multi-log attestation
+
+[data2text,ar=sections/data/13-transparency-cc.yaml]
+----
+{% assign prefix = "transparency" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Verification pipeline
+
+[data2text,ar=sections/data/14-verification-cc.yaml]
+----
+{% assign prefix = "verification" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Key lifecycle
+
+[data2text,ar=sections/data/15-key-lifecycle-cc.yaml]
+----
+{% assign prefix = "key-lifecycle" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Delivery and discovery
+
+[data2text,ar=sections/data/16-delivery-cc.yaml]
+----
+{% assign prefix = "delivery" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Ceremony records
+
+[data2text,ar=sections/data/17-ceremony-cc.yaml]
+----
+{% assign prefix = "ceremony" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Deployment manifest
+
+[data2text,ar=sections/data/18-manifest-cc.yaml]
+----
+{% assign prefix = "manifest" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Governance and mutual recognition
+
+[data2text,ar=sections/data/19-governance-cc.yaml]
+----
+{% assign prefix = "governance" %}
+include::templates/conformance_class.liquid[]
+----
+
+=== Algorithm agility
+
+[data2text,ar=sections/data/20-algorithm-agility-cc.yaml]
+----
+{% assign prefix = "algorithm-agility" %}
+include::templates/conformance_class.liquid[]
+----

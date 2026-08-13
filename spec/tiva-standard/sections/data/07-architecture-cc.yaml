@@ -1,0 +1,139 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Architecture and trust model conformance
+    name: Architecture and trust model conformance
+    identifier: /conf/architecture
+    target: /req/architecture
+    subject: trust infrastructure
+    description: Conformance tests for the architecture and trust model requirements.
+    dependencies:
+    guidance:
+    tests:
+
+    - name: Four-level delegation model validation
+      identifier_fragment: four-level-model
+      targets:
+      - /req/architecture/four-level-model
+      purpose: Verify that the implementation implements the four-level delegation model.
+      method: Inspect the implementation to confirm that signing authority flows from
+        a root trust authority through delegated trust authorities to end certificates
+        that authorize keys to produce trusted artifacts.
+      type: Validation
+      guidance:
+      - Verify that delegation chains can pass through zero or more delegated trust
+        authorities.
+
+    - name: Delegation certificate binding validation
+      identifier_fragment: delegation-certificate
+      targets:
+      - /req/architecture/delegation-certificate
+      purpose: Verify that delegations are expressed as signed credentials binding
+        the required fields.
+      method: Inspect delegation certificate format and verify it carries the child's
+        aggregate key, quorum parameters (if threshold), narrowed scope, and ceremony
+        protocol reference (if applicable). Verify the certificate is signed by the
+        parent.
+      type: Validation
+      guidance:
+      - For 1-of-1 children, verify quorum parameters are omitted.
+
+    - name: Delegation scope narrowing test
+      identifier_fragment: delegation-scope-narrowing
+      targets:
+      - /req/architecture/delegation-scope-narrowing
+      purpose: Verify that scope narrowing is enforced at every delegation link.
+      method: Construct test delegations with valid (narrowing) and invalid (widening)
+        scope changes. Verify the verifier accepts valid narrowing and rejects widening
+        on any dimension.
+      type: Conformance
+      guidance:
+      - Test widening on each scope dimension independently.
+
+    - name: End certificate contents validation
+      identifier_fragment: end-certificate-contents
+      targets:
+      - /req/architecture/end-certificate-contents
+      purpose: Verify that end certificates carry the required fields.
+      method: Inspect end certificate format and verify it carries the authorized key
+        or fingerprint, scope, scope conditions, and issuing chain reference. Verify
+        the certificate does not delegate authority further.
+      type: Validation
+      guidance:
+      - Confirm scope conditions are present when applicable.
+
+    - name: Trust graph path-finding test
+      identifier_fragment: trust-graph-pathfinding
+      targets:
+      - /req/architecture/trust-graph-pathfinding
+      purpose: Verify the verifier can find paths from artifact to root anchor in the
+        trust graph.
+      method: Construct a trust graph with multiple paths (threshold memberships,
+        federated authorities, cross-domain co-signatures). Verify the verifier finds
+        valid paths, validates signatures and scope narrowing at every link, and
+        rejects paths with broken signatures or scope violations.
+      type: Conformance
+      guidance:
+      - Test with graphs containing cycles to verify DAG property is maintained.
+
+    - name: Path transparency inclusion test
+      identifier_fragment: path-transparency-inclusion
+      targets:
+      - /req/architecture/path-transparency-inclusion
+      purpose: Verify transparency log inclusion is confirmed for every certificate
+        on a verification path.
+      method: Construct an artifact whose chain includes certificates with and without
+        transparency log inclusion proofs. Verify the verifier downgrades or rejects
+        artifacts with un-logged certificates.
+      type: Conformance
+
+    - name: Path revocation checking test
+      identifier_fragment: path-revocation-checking
+      targets:
+      - /req/architecture/path-revocation-checking
+      purpose: Verify revocation status is checked for every authority on a path.
+      method: Construct an artifact whose chain includes a revoked authority. Verify
+        the verifier detects the revocation and propagates it to the bound artifact.
+      type: Conformance
+
+    - name: Chain discovery strategy test
+      identifier_fragment: chain-discovery
+      targets:
+      - /req/architecture/chain-discovery
+      purpose: Verify the verifier supports at least one chain discovery strategy.
+      method: Test the verifier with artifacts using embedded chains, transparency-log
+        references, and hybrid strategies. Verify the verifier can reconstruct the
+        full chain for at least one strategy.
+      type: Conformance
+      guidance:
+      - For offline-capable strategies, verify no network access is required.
+
+    - name: Trust anchor bundle self-containment validation
+      identifier_fragment: anchor-bundle-self-contained
+      targets:
+      - /req/architecture/anchor-bundle-self-contained
+      purpose: Verify the trust anchor bundle is self-contained for offline verification.
+      method: Inspect the bundle format and verify it contains root aggregate keys
+        or fingerprints plus validation metadata. Test offline verification with an
+        embedded-chain artifact and confirm no network access is required.
+      type: Validation
+
+    - name: Trust anchor bundle versioning validation
+      identifier_fragment: anchor-bundle-versioning
+      targets:
+      - /req/architecture/anchor-bundle-versioning
+      purpose: Verify the trust anchor bundle is versioned and updates are logged.
+      method: Inspect the bundle to confirm it carries a version identifier and validity
+        period. Verify bundle updates are recorded in a transparency log.
+      type: Validation
+
+    - name: Trust anchor bundle distributability validation
+      identifier_fragment: anchor-bundle-distributable
+      targets:
+      - /req/architecture/anchor-bundle-distributable
+      purpose: Verify the trust anchor bundle is expressible in a deterministic distributable
+        format.
+      method: Serialize the bundle and verify the output is deterministic (same input
+        produces identical bytes). Verify the format is suitable for out-of-band distribution.
+      type: Validation

@@ -1,0 +1,187 @@
+
+[[trust-chain-scope]]
+== Trust chain and authorization scope governance
+
+=== General
+
+The {{authorization scope,scope}} is a first-class concept in the CHRONTIF
+framework. Unlike traditional PKI, in which a CA's authorization boundary is
+defined by external policy and is not verifiable from the certificate itself,
+the authorization scope in this document is a signed field carried in every
+delegation certificate and end certificate, cryptographically enforced at every
+chain link.
+
+This clause specifies the authorization scope data model, the {{monotonic
+narrowing invariant}}, {{authorization scope condition,scope conditions}} as
+executable predicates, and the multi-layer enforcement model.
+
+
+[[scope-structure]]
+=== Authorization scope structure
+
+An authorization scope is a multi-dimensional constraint set. Each
+{{authorization scope dimension,scope dimension}} constrains one axis of the
+authorization boundary independently:
+
+.Initially defined authorization scope dimensions (non-exhaustive; additional dimensions may be defined by profiles)
+[cols="2,3,3"]
+|===
+| Dimension | Constrains | Example values
+
+| domain
+| The field of application
+| `pharma`, `supply-chain`, `credentials`, or wildcard
+
+| subdomain
+| The area within the domain
+| `manufacturing`, `cold-chain`, or wildcard
+
+| class
+| The type of object
+| `{"vaccine", "tablet"}`, or wildcard
+
+| instance
+| The specific model
+| `LOT-2026-001`, or wildcard
+
+| identity
+| The specific unit
+| `BATCH-A`, or wildcard
+
+| conditions
+| Executable predicates on artifact content
+| See <<scope-conditions>> (uses inverted narrowing: child shall be a superset of parent)
+|===
+
+Each dimension may carry the wildcard value (denoting no constraint on that
+axis), a set of values, or a single value. Narrowing a dimension means
+replacing a wider constraint with a narrower one: wildcard narrows to set or
+single; set narrows to subset or single; single narrows to the same single
+only.
+
+
+[[scope-monotonic-narrowing]]
+=== Monotonic narrowing invariant
+
+At every delegation link, the child scope shall be a subset of (or equal to)
+the parent scope on every dimension. This is the {{monotonic narrowing
+invariant}} (<<fig-scope-narrowing>>).
+
+[[fig-scope-narrowing]]
+.Monotonic scope narrowing through the delegation chain
+image::scope-narrowing.svg[]
+
+The narrowing relation is defined by the following algorithm. Given a parent
+scope `S_p` and a child scope `S_c`, `narrowed(S_p, S_c)` holds if and only if
+the following procedure returns true:
+
+[arabic]
+. Normalize both scopes: singleton sets `{x}` are equivalent to the single
+  value `x` and shall be normalized before comparison.
+. For each scope dimension `d` in the union of dimensions present in `S_p`
+  and `S_c`:
+.. Let `v_p` be the value of dimension `d` in `S_p` (wildcard if absent).
+.. Let `v_c` be the value of dimension `d` in `S_c` (wildcard if absent).
+.. If `v_p` is wildcard, the dimension is narrowed regardless of `v_c`.
+   Continue to the next dimension.
+.. If `v_c` is wildcard and `v_p` is not wildcard, the dimension is widened.
+   Return false.
+.. If both `v_p` and `v_c` are single values: the dimension is narrowed if
+   and only if `v_c = v_p`. If `v_c` is not equal to `v_p`, return false.
+.. If `v_p` is a single value and `v_c` is a set: the dimension is widened.
+   A set cannot be narrower than a single value. Return false.
+.. If `v_p` is a set and `v_c` is a single value: the dimension is narrowed
+   if and only if `v_c` is a member of `v_p`. If not, return false.
+.. If `v_p` is a set and `v_c` is a set: the dimension is narrowed if and
+   only if `v_c` is a subset of `v_p` (set inclusion). If not, return false.
+. Let `C_p` be the set of scope conditions in `S_p` and `C_c` the set in
+  `S_c`. The conditions dimension is narrowed if and only if `C_c` is a
+  superset of `C_p` (every condition in the parent is also present in the
+  child, and the child may add additional conditions). If any parent condition
+  is absent from the child, return false.
+. Return true.
+
+An artifact signed under `S_c` satisfies the scope if `narrowed(S_p, S_c)`
+holds at every delegation link from the root to the end certificate, and all
+conditions in the effective scope (the narrowest along the chain) evaluate to
+true against the artifact content.
+
+Widening any dimension at any delegation link constitutes a hard verification
+failure. The verifier shall reject any chain in which `narrowed(S_p, S_c)`
+returns false at any link.
+
+
+[[scope-conditions]]
+=== Authorization scope conditions
+
+A {{scope condition}} is an executable predicate included in a scope, evaluated
+at verification time against the content and context of the {{trusted
+artifact}}. Scope conditions bind signing authority to live state, not merely
+to static identity.
+
+A scope condition may assert, for example:
+
+* that a measured value falls within a specified tolerance;
+* that a certification is valid at the signature time;
+* that a compliance status holds;
+* that an environmental reading is within an acceptable range.
+
+An artifact signed by a key whose scope conditions are not met fails
+verification, regardless of the cryptographic validity of the signature.
+
+Scope conditions shall be expressed in a machine-checkable, deterministic
+format. The condition language shall be non-Turing-complete. The evaluation of
+any condition shall terminate in time bounded by a polynomial function of the
+input size. The evaluation context (the artifact content and any external state
+references) shall be fully determined by the artifact and its chain, such that
+two independent verifiers evaluating the same condition reach the same result.
+
+
+[[scope-encoding]]
+=== Authorization scope encoding
+
+Scope shall be encoded in a format that is:
+
+* **Machine-checkable.** The narrowing relation and condition evaluation shall
+  be verifiable without human interpretation of free text.
+
+* **Compact.** The encoding shall be wire-efficient, as scope is carried in
+  every certificate.
+
+* **Extensible.** New scope dimensions and condition types shall be addable
+  without breaking existing verifiers that do not recognize them.
+
+The scope is carried in a certificate extension (the `authorizedScopes`
+extension or equivalent in the applicable format profile). Format profiles
+specified in <<artifact-format>> define the concrete encoding for each
+supported serialization.
+
+
+[[scope-four-layer]]
+=== Multi-layer enforcement
+
+Scope is enforced at multiple independent layers:
+
+. **Certificate extension.** The scope is carried in the certificate, signed
+  by the parent authority. Tampering with the scope invalidates the signature.
+
+. **Chain verification.** The {{monotonic narrowing invariant}} is checked at
+  every delegation link. Widening on any dimension causes rejection.
+
+. **Verification pipeline.** The {{verification pipeline}} includes a scope
+  check that confirms the artifact's content falls within the scope of the
+  signing key, including evaluation of all {{scope condition,scope conditions}}.
+
+. **Transparency log.** The scope is recorded in the public transparency log
+  for every certificate, enabling audit and detection of scope violations by
+  third parties.
+
+
+[[req-scope]]
+=== Requirements
+
+[data2text,ar=sections/data/11-scope-rc.yaml]
+----
+{% assign prefix = "scope" %}
+include::templates/requirements_class.liquid[]
+----

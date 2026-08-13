@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Architecture and trust model
+    name: Architecture and trust model
+    identifier: /req/architecture
+    subject: trust infrastructure
+    description: Requirements on the four-level delegation model, the trust graph, chain discovery, and the trust anchor bundle.
+    dependencies:
+    guidance:
+
+    requirements:
+    - name: Four-level delegation model
+      identifier_fragment: four-level-model
+      statement: The trust infrastructure shall implement a delegation model in which
+        signing authority flows from a root trust authority, through zero or more
+        delegated trust authorities, to an end certificate that authorizes a key to
+        produce trusted artifacts.
+      guidance:
+      - The four levels are root trust authority, delegated trust authority, end
+        certificate, and trusted artifact.
+      - A delegation chain may pass through zero or more delegated trust authorities.
+
+    - name: Delegation certificate binding
+      identifier_fragment: delegation-certificate
+      statement: A delegation from a parent trust authority to a child shall be expressed
+        as a signed credential that binds the child's aggregate key, the quorum parameters
+        if the child is threshold, the narrowed scope, and a reference to the ceremony
+        protocol if applicable.
+      guidance:
+      - The delegation certificate is itself a verifiable artifact subject to chain
+        verification, scope enforcement, and transparency inclusion.
+      - If the child is a single-key authority (1-of-1), the quorum parameters are
+        omitted.
+
+    - name: Scope narrowing in delegation
+      identifier_fragment: delegation-scope-narrowing
+      statement: Every delegation shall narrow the scope such that the child's scope
+        is a subset of the parent's scope on every scope dimension, in accordance with
+        the monotonic narrowing invariant.
+      guidance:
+      - Widening any scope dimension at any delegation link constitutes a verification
+        failure.
+      - Detailed scope requirements are specified in /req/scope/.
+
+    - name: End certificate contents
+      identifier_fragment: end-certificate-contents
+      statement: An end certificate shall carry the authorized public key or its
+        fingerprint, the scope under which the key is authorized to sign, any scope
+        conditions, and a reference to the issuing trust authority's delegation chain.
+      guidance:
+      - An end certificate shall not delegate authority further.
+      - Scope conditions are executable predicates evaluated at verification time.
+
+    - name: Trust graph path-finding
+      identifier_fragment: trust-graph-pathfinding
+      statement: A verifier shall be able to find one or more paths in the trust graph
+        from a trusted artifact to a root anchor in the trust anchor bundle, validating
+        the cryptographic signature and the scope narrowing at every link on each path.
+      guidance:
+      - Multiple valid paths may exist. The coverage report records all valid paths
+        and the classification policy determines the label from the convergence pattern.
+      - The path-finding algorithm is implementation-neutral.
+
+    - name: Transparency inclusion on path
+      identifier_fragment: path-transparency-inclusion
+      statement: For every delegation certificate and end certificate on a verification
+        path, the verifier shall confirm inclusion in a recognized transparency log.
+      guidance:
+      - Artifacts or certificates not provably included in a recognized log shall be
+        downgraded or rejected.
+      - Detailed transparency requirements are specified in /req/transparency/.
+
+    - name: Revocation checking on path
+      identifier_fragment: path-revocation-checking
+      statement: For every trust authority on a verification path, the verifier shall
+        determine the revocation status and propagate any revocation to artifacts
+        transitively bound to that authority.
+      guidance:
+      - Detailed revocation requirements are specified in /req/revocation/.
+
+    - name: Chain discovery support
+      identifier_fragment: chain-discovery
+      statement: A verifier shall support at least one chain discovery strategy —
+        embedded chain, transparency-log references, or hybrid — sufficient to
+        reconstruct the full delegation chain from artifact to root anchor.
+      guidance:
+      - The embedded chain strategy carries the full chain inline and is fully offline-capable.
+      - The transparency-log reference strategy uses sequence number pointers and
+        requires network access on first encounter.
+      - The hybrid strategy embeds the immediate chain and includes transparency-log
+        references for freshness.
+
+    - name: Trust anchor bundle self-containment
+      identifier_fragment: anchor-bundle-self-contained
+      statement: A trust anchor bundle shall contain the root aggregate keys or their
+        fingerprints and the metadata needed to identify and validate them, such that
+        a verifier holding the bundle and an artifact with an embedded or hybrid chain
+        requires no additional network access to complete verification.
+      guidance:
+      - The bundle is the starting point for all verification paths.
+
+    - name: Trust anchor bundle versioning
+      identifier_fragment: anchor-bundle-versioning
+      statement: A trust anchor bundle shall carry a version identifier and a validity
+        period, and bundle updates shall be recorded in a transparency log.
+      guidance:
+      - Bundle versioning enables verifiers to determine whether they hold a current
+        or stale anchor set.
+
+    - name: Trust anchor bundle distributability
+      identifier_fragment: anchor-bundle-distributable
+      statement: A trust anchor bundle shall be expressible in a deterministic format
+        suitable for out-of-band distribution.
+      guidance:
+      - Examples of out-of-band distribution include physical media, secure channels,
+        and published fingerprints verified against multiple independent sources.

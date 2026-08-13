@@ -1,0 +1,162 @@
+
+[[revocation]]
+== Revocation and artifact binding
+
+=== General
+
+PKI provides robust certificate-level revocation through CRLs and OCSP. In the
+CHRONTIF framework, revocation additionally propagates to artifacts: revoking a
+{{trust authority}} state flags every {{trusted artifact}} transitively bound to
+that state, across all {{trust dimension,trust dimensions}} and all
+{{trust chain,trust chains}}.
+
+This clause specifies the certificate revocation list (CRL) profile, the
+hash-binding model that links artifacts to authority states, the propagation
+algorithm, and the query interface for discovering bound artifacts.
+
+
+[[revocation-crl]]
+=== Certificate revocation list
+
+A certificate revocation list (CRL) is a signed, time-stamped list of revoked
+{{end certificate,end certificates}} and {{delegated trust authority}}
+credentials. A CRL shall:
+
+* identify the issuing {{trust authority}} whose revoked credentials it lists;
+* carry each revoked credential's fingerprint, the revocation time, and the
+  revocation reason;
+* carry a validity period during which it is authoritative — after expiry,
+  verifiers shall fetch a current CRL or apply a grace period policy
+  (see <<revocation-offline>>);
+* be itself recorded in a {{transparency log}} to enable audit of revocation
+  decisions.
+
+The specific CRL format is a deployment decision.
+
+NOTE: X.509 CRLs as profiled in <<rfc5280>> are an example of a recognized CRL
+format.
+
+
+[[revocation-hash-binding]]
+=== Hash-binding to authority states
+
+A {{trusted artifact}} carries a cryptographic hash-binding to the authority
+states under which it was produced. These states include:
+
+* the certification state of the issuing device (if applicable);
+* the evaluative state of the testing or inspection authority;
+* the compliance state of the regulatory framework;
+* any other state whose validity is a precondition for the artifact's
+  trustworthiness.
+
+The hash-binding is a digest of the relevant state, embedded in the artifact
+or referenced via the transparency log. The binding is signed as part of the
+{{canonical payload}}.
+
+
+[[revocation-propagation]]
+=== Propagation algorithm
+
+When an authority state is revoked, the propagation algorithm shall flag every
+artifact transitively bound to that state. The propagation query is performed by
+the {{transparency log}} operator (or a {{mirror}}) to discover the set of
+affected artifacts; an offline verifier checks individual artifact bindings
+against cached revocation data.
+
+. Identify the revoked state by its hash or identifier.
+
+. Query the set of artifacts whose hash-binding includes the revoked state.
+   This query uses the transparency log index.
+
+. Mark each affected artifact as bound to a revoked state. Marking does not
+   delete or alter the artifact; it flags its revocation status.
+
+. Propagate through {{co-signature,co-signatures}}: if a co-signature on an
+   artifact originates from a revoked authority, the artifact is flagged.
+
+An artifact flagged as bound to a revoked state shall receive the scheme's
+rejected classification label, regardless of other dimensional coverage.
+
+
+[[revocation-condition-withdrawal]]
+=== Scope condition withdrawal
+
+A {{scope condition}} may reference an external state (e.g., a calibration
+certificate, a compliance status, an accreditation). When that external state
+is revoked, all artifacts whose scope conditions depend on it shall be flagged.
+
+The withdrawal propagation algorithm:
+
+[arabic]
+. Identify the revoked external state by its hash or identifier.
+. Query the set of artifacts whose {{scope}} includes a condition referencing
+   the revoked state. This query uses the scope encoding in the artifact's
+   chain certificates and the transparency log index.
+. For each affected artifact, re-evaluate the scope conditions. If a condition
+   now evaluates to false, the artifact is flagged with a
+   `scope_condition_failed` failure reason (see <<verification-results>>).
+. An artifact flagged through condition withdrawal shall receive the scheme's
+   rejected classification label, consistent with the scope condition hard
+   check in the verification pipeline (see <<verification>>).
+
+NOTE: Scope condition withdrawal is a form of {{trust repudiation}}: trust
+granted under a condition that is later invalidated is formally withdrawn. This
+completes the trust lifecycle — conditions are not permanent assumptions but
+live predicates that can fail retroactively.
+
+
+[[revocation-flag-semantics]]
+=== Flag semantics
+
+Revocation propagation uses flag semantics, not deletion:
+
+* The artifact is **marked** as bound to a revoked state, not removed.
+
+* The marking is **queryable**: a verifier can determine whether an artifact
+  is affected by querying the revocation status of its bound states.
+
+* The marking is **reversible** if the revocation is itself revoked (e.g., a
+  false positive is corrected).
+
+This approach preserves the audit trail while preventing acceptance of
+artifacts whose trust foundation has been revoked.
+
+
+[[revocation-query]]
+=== Query interface
+
+A verifier shall be able to query the revocation status of an artifact through
+the following interface:
+
+* Given an artifact, return its bound authority states and their revocation
+  status.
+
+* Given a revoked state, return the set of artifacts transitively bound to it.
+
+The query interface shall be usable offline against cached CRLs and
+transparency log indices.
+
+
+[[revocation-offline]]
+=== Offline verification and grace period
+
+For offline verification, a verifier shall apply a CRL grace period policy:
+
+* If the verifier holds a CRL within its validity period, revocation status is
+  determined from the CRL directly.
+
+* If the verifier's CRL is expired but within a configurable grace period, the
+  verifier may accept the stale CRL with a classification downgrade.
+
+* If the CRL is expired beyond the grace period, the verifier shall reject
+  artifacts whose chain includes authorities subject to that CRL.
+
+
+[[req-revocation]]
+=== Requirements
+
+[data2text,ar=sections/data/12-revocation-rc.yaml]
+----
+{% assign prefix = "revocation" %}
+include::templates/requirements_class.liquid[]
+----

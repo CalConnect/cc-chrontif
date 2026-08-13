@@ -1,0 +1,133 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Threshold signing conformance
+    name: Threshold signing conformance
+    identifier: /conf/threshold-signing
+    target: /req/threshold-signing
+    subject: threshold signing
+    description: Conformance tests for threshold signing and federated trust authority requirements.
+    dependencies:
+    - /conf/architecture
+    guidance:
+    tests:
+
+    - name: Threshold at every level test
+      identifier_fragment: threshold-every-level
+      targets:
+      - /req/threshold-signing/threshold-every-level
+      purpose: Verify that threshold signing is supported at every trust authority level.
+      method: Construct a delegation hierarchy with threshold at root, intermediate
+        DTA, and end-issuing levels. Verify that signatures from each level require
+        the specified quorum and cannot be produced by fewer than T members.
+      type: Conformance
+
+    - name: Quorum parameters in delegation validation
+      identifier_fragment: quorum-in-delegation
+      targets:
+      - /req/threshold-signing/quorum-in-delegation
+      purpose: Verify delegation certificates for threshold children carry the required
+        quorum parameters.
+      method: Inspect delegation certificates for threshold authorities and verify
+        they carry the aggregate public key, quorum (T, N), and member identity references.
+      type: Validation
+
+    - name: Aggregate key continuity test
+      identifier_fragment: aggregate-key-continuity
+      targets:
+      - /req/threshold-signing/aggregate-key-continuity
+      purpose: Verify member rotation preserves the aggregate key and existing delegations.
+      method: Perform a member rotation (add, remove, replace) on a threshold authority.
+        Verify the aggregate public key is unchanged. Verify existing parent delegations
+        remain valid. Verify artifacts signed before and after rotation verify against
+        the same aggregate key.
+      type: Conformance
+
+    - name: Nested threshold test
+      identifier_fragment: nested-threshold
+      targets:
+      - /req/threshold-signing/nested-threshold
+      purpose: Verify nested threshold structures are supported.
+      method: Construct a threshold DTA whose members are themselves threshold DTAs.
+        Verify signing requires inner authorities to reach their quorum before contributing
+        shares to the outer threshold.
+      type: Conformance
+
+    - name: FTA formation validation
+      identifier_fragment: fta-formation
+      targets:
+      - /req/threshold-signing/fta-formation
+      purpose: Verify FTA formation produces a single aggregate key from independent
+        members.
+      method: Form an FTA with multiple independent member organizations contributing
+        shares. Verify the resulting aggregate key is a single key. Verify no single
+        member can produce a valid signature.
+      type: Conformance
+
+    - name: FTA recursive composition test
+      identifier_fragment: fta-recursive-composition
+      targets:
+      - /req/threshold-signing/fta-recursive-composition
+      purpose: Verify recursively composed FTAs are supported.
+      method: Construct an FTA that is a member of another FTA. Verify signing by
+        the outer FTA requires the inner FTA to reach its own quorum first.
+      type: Conformance
+
+    - name: FTA hierarchy-spanning test
+      identifier_fragment: fta-hierarchy-spanning
+      targets:
+      - /req/threshold-signing/fta-hierarchy-spanning
+      purpose: Verify FTAs can span independent root hierarchies.
+      method: Construct an FTA with members from two independent roots. Verify artifacts
+        signed by the FTA are verifiable and recognized by both hierarchies.
+      type: Conformance
+
+    - name: FTA re-share test
+      identifier_fragment: fta-reshare
+      targets:
+      - /req/threshold-signing/fta-reshare
+      purpose: Verify FTA member join/leave preserves the aggregate key and historical
+        validity.
+      method: Add and remove members from an FTA. Verify the aggregate key is unchanged.
+        Verify artifacts signed before the operation remain valid.
+      type: Conformance
+
+    - name: Ceremony threshold property test
+      identifier_fragment: ceremony-threshold-property
+      targets:
+      - /req/threshold-signing/ceremony-threshold-property
+      purpose: Verify the ceremony protocol enforces the threshold property.
+      method: Attempt to produce a signature with fewer than T members. Verify the
+        attempt fails. Produce a signature with T or more members and verify it validates
+        against the aggregate key.
+      type: Conformance
+
+    - name: Rogue-key attack prevention test
+      identifier_fragment: rogue-key-prevention
+      targets:
+      - /req/threshold-signing/rogue-key-prevention
+      purpose: Verify proof-of-possession prevents rogue-key attacks.
+      method: Attempt to register a threshold member without proof-of-possession. Verify
+        rejection. Attempt to register a crafted rogue key. Verify the aggregate key
+        computation does not collapse to the attacker's solo key.
+      type: Conformance
+
+    - name: Ceremony robustness test
+      identifier_fragment: ceremony-robustness
+      targets:
+      - /req/threshold-signing/ceremony-robustness
+      purpose: Verify ceremony protocol provides identifiable abort and nonce commitment.
+      method: Execute a ceremony with a malicious member sending malformed contributions.
+        Verify the abort is attributable. Verify nonce commitment prevents nonce bias.
+      type: Conformance
+
+    - name: Ceremony record production validation
+      identifier_fragment: ceremony-record-production
+      targets:
+      - /req/threshold-signing/ceremony-record-production
+      purpose: Verify ceremonies produce verifiable ceremony records.
+      method: Execute a signing ceremony and inspect the resulting ceremony record.
+        Verify it documents participating members, threshold parameters, and the signature
+        produced. Verify the record is independently verifiable.
+      type: Validation

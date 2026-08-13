@@ -1,0 +1,157 @@
+
+[[transparency]]
+== Transparency and multi-log attestation
+
+=== General
+
+Every {{end certificate}} and every {{trusted artifact}} shall be recorded in a
+recognized {{transparency log}} by the issuing authority. This is a normative
+requirement on issuance, not on verification.
+
+At verification time, transparency log inclusion is a soft check: artifacts
+not provably included in a recognized log are downgraded (see
+<<verification>>). A verifier whose policy sets
+`requires_transparency` to true (the default) rejects artifacts without
+inclusion proofs; a verifier whose policy sets it to false accepts them at a
+downgraded grade.
+
+This clause specifies the transparency log structure, inclusion proofs, external
+time anchoring, {{gossip}} between {{mirror,mirrors}}, and the multi-log
+attestation model.
+
+
+[[transparency-log-structure]]
+=== Transparency log structure
+
+A {{transparency log}} shall be implemented as an append-only data structure
+with the following properties:
+
+* **Inclusion proofs.** The log shall support cryptographic proofs that a
+  specific entry is included at a specific log state, without requiring the
+  verifier to download the entire log.
+
+* **Append-only.** Entries may be added but never modified or removed. The log
+  head (a cryptographic commitment to the entire log contents) shall be
+  published at each update.
+
+* **Log head signatures.** Each log head shall be signed by the log operator,
+  enabling verifiers to confirm they are viewing an authentic log state.
+
+* **Domain separation.** The log shall prevent second-preimage attacks through
+  domain separation between leaf and internal node data.
+
+* **Consistency proofs.** The log shall support cryptographic proofs that a
+  new tree head extends a previously published tree head — i.e., the log is
+  append-only between any two published states. A consistency proof enables a
+  verifier to confirm that no entries were removed or modified between two log
+  states.
+
+NOTE: Merkle trees as specified in <<rfc6962>> are an example of a log structure
+satisfying these properties. Other append-only log constructions with
+equivalent inclusion proof and consistency proof guarantees may be used.
+
+
+[[transparency-consistency-proof]]
+=== Consistency proof
+
+A consistency proof demonstrates that a new tree head is a valid extension of a
+previously known tree head — that no entries were removed or modified between
+the two states.
+
+A consistency proof shall consist of:
+
+* the old tree head (root hash and tree size);
+* the new tree head (root hash, tree size, and timestamp);
+* the audit path of intermediate hashes connecting the two states.
+
+The verifier shall validate the consistency proof by recomputing the root hashes
+from the audit path and confirming that the new tree head contains all entries
+of the old tree head as a prefix.
+
+Mirrors and verifiers shall use consistency proofs to verify the append-only
+property of the log over time (see <<transparency-mirrors>>). A log that cannot
+produce a consistency proof between two claimed sequential tree heads is
+evidence of misbehaviour.
+
+
+[[transparency-inclusion-proof]]
+=== Inclusion proof
+
+An {{inclusion proof}} demonstrates that a specific entry (an end certificate
+or a trusted artifact) is included in a transparency log at a specific tree
+head.
+
+An inclusion proof shall consist of:
+
+* the leaf hash of the entry;
+* the audit path (the set of sibling hashes from the leaf to the root);
+* the tree head (root hash, tree size, and timestamp) against which the proof
+  is validated;
+* the log operator's signature over the tree head.
+
+The verifier shall validate the inclusion proof by recomputing the root hash
+from the leaf and audit path, comparing it to the tree head, and validating the
+tree head signature.
+
+
+[[transparency-anchoring]]
+=== External time anchoring
+
+Each tree head shall be anchored to an external, irrefutable time source to
+prove that the log state existed at a specific time. The anchoring shall
+produce a verifiable proof that the tree head hash was committed to the
+external source within the tree head's timestamp window.
+
+
+[[transparency-mirrors]]
+=== Mirrors and gossip
+
+==== Mirrors
+
+A {{mirror}} is an independent operator that replicates a {{transparency log}}
+and serves inclusion proofs and log entries to verifiers. Mirrors provide:
+
+* **Availability.** If the primary log operator is unavailable, mirrors
+  continue to serve the log.
+
+* **Integrity.** Mirrors independently verify the log's append-only property
+  by checking that each new tree head extends the previous one.
+
+* **Detection.** Mirrors detect log misbehaviour (e.g., a split view where the
+  log operator presents different tree heads to different verifiers).
+
+==== Gossip
+
+{{gossip}} is the protocol by which mirrors and verifiers cross-check their
+views of a transparency log by comparing tree head fingerprints. A gossip
+quorum of at least 2-of-3 independent sources agreeing on a tree head provides
+corroboration that the log state is consistent.
+
+A verifier shall confirm that the tree head it relies on is observed by at
+least the gossip quorum before accepting inclusion proofs against that tree
+head.
+
+
+[[transparency-multi-log]]
+=== Multi-log attestation
+
+For artifacts issued by a {{federated trust authority}}, the issuing authority
+may require inclusion in at least M of K independent transparency logs, where
+M and K are specified by the authority's policy.
+
+Multi-log attestation ensures that no single log operator controls the record.
+An artifact meeting a multi-log quorum requirement shall carry inclusion
+proofs from at least M independent logs.
+
+The verifier shall validate each inclusion proof independently and confirm
+that at least M of the K recognized logs include the artifact.
+
+
+[[req-transparency]]
+=== Requirements
+
+[data2text,ar=sections/data/13-transparency-rc.yaml]
+----
+{% assign prefix = "transparency" %}
+include::templates/requirements_class.liquid[]
+----

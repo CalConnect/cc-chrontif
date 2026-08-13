@@ -1,0 +1,99 @@
+{% assign rc_count = 0 %}
+{% for group in ar.groups %}
+
+{% for scope in group.scopes %}
+{% assign rc_count = rc_count | plus: 1 %}
+
+{{ scope.name }} has its formalized requirements class described in <<rc-{{prefix}}-{{rc_count}}>>{% if scope.requirements.size > 0 %}, with its requirements listed from <<r-{{prefix}}-{{rc_count}}-1>> to <<r-{{prefix}}-{{rc_count}}-{{scope.requirements.size}}>>{% endif %}.
+
+[[rc-{{prefix}}-{{rc_count}}]]
+.{{scope.name}}
+[requirements_class]
+====
+[%metadata]
+identifier:: {{scope.identifier}}
+description:: {{scope.description}}
+
+{% if scope.subject %}
+subject:: {{scope.subject}}
+{% endif %}
+
+{% for depend in scope.dependencies %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% for requirement in scope.requirements %}
+{% assign req_id = scope.identifier | append: "/" | append: requirement.identifier_fragment %}
+requirement:: {{req_id}}
+{% endfor %}
+
+{% if scope.guidance %}
+guidance::
++
+--
+{% for rec in scope.guidance %}
+{{rec}}
+
+{% endfor %}
+--
+{% endif %}
+
+====
+
+{% assign r_count = 0 %}
+{% for requirement in scope.requirements %}
+{% assign r_count = r_count | plus: 1 %}
+{% assign req_id = scope.identifier | append: "/" | append: requirement.identifier_fragment %}
+{% if requirement.name %}
+.{{requirement.name}}
+{% endif %}
+[[r-{{prefix}}-{{rc_count}}-{{r_count}}]]
+[requirement]
+======
+[%metadata]
+identifier:: {{req_id}}
+statement::
++
+--
+{{requirement.statement}}
+
+--
+
+{% for depend in requirement.dependencies %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% if requirement.subject %}
+subject:: {{requirement.subject}}
+{% endif %}
+
+{% if requirement.guidance or requirement.examples %}
+guidance::
++
+--
+{% for rec in requirement.guidance %}
+{{rec}}
+
+{% endfor %}
+
+{% for example in requirement.examples %}
+
+[example]
+====
+{{example}}
+
+====
+
+{% endfor %}
+
+--
+{% endif %}
+
+======
+
+
+{% endfor %}
+
+{% endfor %}
+
+{% endfor %}

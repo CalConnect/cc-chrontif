@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Governance conformance
+    name: Governance conformance
+    identifier: /conf/governance
+    target: /req/governance
+    subject: governance
+    description: Conformance tests for governance and mutual recognition requirements.
+    dependencies:
+    - /conf/architecture
+    - /conf/threshold-signing
+    guidance:
+    tests:
+
+    - name: Topology declaration validation
+      identifier_fragment: topology-declaration
+      targets:
+      - /req/governance/topology-declaration
+      purpose: Verify the deployment declares its topology in the manifest.
+      method: Inspect the deployment manifest and verify it declares one of the four topology
+        profiles. Verify the declared topology matches the actual trust graph structure.
+      type: Validation
+
+    - name: Root governance requirements test
+      identifier_fragment: root-governance
+      targets:
+      - /req/governance/root-governance
+      purpose: Verify the root trust authority satisfies all governance requirements.
+      method: Inspect a root trust authority and verify it publishes scope and delegation
+        policy, records operations in a transparency log, operates under threshold or
+        federation, maintains governance records, publishes a versioned anchor bundle,
+        and maintains an ISMS with published audit attestations.
+      type: Conformance
+
+    - name: Issuing authority ISMS test
+      identifier_fragment: issuing-authority-isms
+      targets:
+      - /req/governance/issuing-authority-isms
+      purpose: Verify issuing authorities maintain organizational assurance.
+      method: Inspect a delegated trust authority that issues end certificates. Verify it
+        maintains an ISMS or equivalent framework and undergoes periodic security audits.
+      type: Conformance
+
+    - name: Mutual recognition test
+      identifier_fragment: mutual-recognition
+      targets:
+      - /req/governance/mutual-recognition
+      purpose: Verify mutual recognition is expressed via signed cross-recognition credentials.
+      method: Establish mutual recognition between two roots. Verify cross-recognition
+        credentials are signed by both roots. Verify the credentials are recorded in both
+        transparency logs. Verify verifiers with both anchors can accept artifacts from
+        either hierarchy.
+      type: Conformance
+
+    - name: Topology conformance test
+      identifier_fragment: topology-conformance
+      targets:
+      - /req/governance/topology-conformance
+      purpose: Verify each topology profile's structural requirements are satisfied.
+      method: For each topology profile (hierarchical, federated, cross-recognized, mesh),
+        construct a conforming deployment and verify it satisfies the structural requirements.
+        Construct a non-conforming deployment and verify rejection.
+      type: Conformance

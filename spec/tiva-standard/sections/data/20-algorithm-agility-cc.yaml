@@ -1,0 +1,53 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Algorithm agility conformance
+    name: Algorithm agility conformance
+    identifier: /conf/algorithm-agility
+    target: /req/algorithm-agility
+    subject: algorithm agility
+    description: Conformance tests for algorithm agility requirements.
+    dependencies:
+    - /conf/algorithms
+    guidance:
+    tests:
+
+    - name: Algorithm registry validation
+      identifier_fragment: algorithm-registry
+      targets:
+      - /req/algorithm-agility/algorithm-registry
+      purpose: Verify the algorithm registry is maintained and used.
+      method: Inspect the registry and verify it lists recognized algorithms with names,
+        references, parameters, and status. Verify conforming verifiers accept registered
+        identifiers and reject unregistered ones.
+      type: Validation
+
+    - name: Deprecation process test
+      identifier_fragment: deprecation-process
+      targets:
+      - /req/algorithm-agility/deprecation-process
+      purpose: Verify the deprecation process is followed correctly.
+      method: Deprecate an algorithm following the published process. Verify artifacts using
+        the deprecated algorithm are downgraded during the deprecation period. Verify they
+        are rejected after retirement.
+      type: Conformance
+
+    - name: Migration phase declaration validation
+      identifier_fragment: migration-declaration
+      targets:
+      - /req/algorithm-agility/migration-declaration
+      purpose: Verify deployments declare their migration phase.
+      method: Inspect deployment manifests and verify they declare active algorithms and
+        migration phase (classical-only, composite, or post-quantum-only).
+      type: Validation
+
+    - name: Composite backward compatibility test
+      identifier_fragment: composite-backward-compatibility
+      targets:
+      - /req/algorithm-agility/composite-backward-compatibility
+      purpose: Verify composite phase maintains backward compatibility.
+      method: Configure a deployment in composite phase. Verify new artifacts use composite
+        signatures. Verify existing classical-only artifacts remain verifiable. Configure
+        post-quantum-only phase and verify classical-only signatures are rejected.
+      type: Conformance

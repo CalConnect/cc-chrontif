@@ -1,0 +1,102 @@
+
+[[manifest]]
+== Deployment manifest
+
+=== General
+
+A deployment manifest is a declarative description of a CHRONTIF deployment's
+topology, authorities, algorithms, and transparency endpoints. It enables a
+deployer to declare the structure of their trust infrastructure in a
+machine-checkable format, and enables verifiers to understand the deployment's
+configuration.
+
+This clause specifies the manifest format, required fields, validation rules,
+and versioning.
+
+
+[[manifest-format]]
+=== Manifest format
+
+A deployment manifest shall be expressed in a declarative format (e.g., TOML,
+YAML, or JSON) and shall carry a manifest version identifier for evolution.
+
+The manifest shall be signed by the {{root trust authority}} whose deployment
+it describes.
+
+
+[[manifest-contents]]
+=== Manifest contents
+
+A deployment manifest shall declare the following:
+
+* **Topology type.** The trust topology profile (hierarchical, federated,
+  cross-recognized, or mesh) per <<conformance>>.
+
+* **Authorities.** The {{trust authority,trust authorities}} in the deployment,
+  each with its identifier, {{aggregate key}} or fingerprint, {{quorum}}
+  parameters (if threshold), and parent reference.
+
+* **Scope.** The root {{scope}} and any delegation narrowing rules.
+
+* **Algorithms.** The signature algorithms recognized by the deployment
+  (classical, post-quantum, or composite).
+
+* **Transparency endpoints.** The {{transparency log,transparency logs}} and
+  {{mirror,mirrors}} recognized by the deployment, with their endpoints and
+  public keys.
+
+* **Multi-log policy.** If applicable, the M-of-K multi-log attestation
+  parameters.
+
+* **Classification policy.** The scheme's classification policy that maps
+  coverage report fields to grade labels (see <<verification-classification>>).
+  The classification policy shall be a pure function of the coverage report
+  fields.
+
+* **Trust anchor references.** References to the {{trust anchor bundle}}
+  version(s) recognized by the deployment.
+
+
+[[manifest-validation]]
+=== Validation rules
+
+A deployment manifest shall satisfy the following validation rules:
+
+* All declared authorities shall form a valid {{trust graph}} — a DAG with no
+  cycles.
+
+* Every delegation link shall satisfy the {{monotonic narrowing invariant}} on
+  scope.
+
+* Quorum parameters shall be consistent: T shall not exceed N for any
+  threshold authority.
+
+* Declared algorithms shall be recognized by this document's algorithm
+  registry.
+
+* Transparency endpoints shall be reachable and their public keys shall match
+  their declared fingerprints.
+
+* The classification policy shall be deterministic — given the same coverage
+  report fields, it shall produce the same grade label.
+
+
+[[manifest-versioning]]
+=== Manifest versioning
+
+Manifest versions follow semantic compatibility rules. Major version changes
+indicate breaking structural changes. Minor version changes add fields without
+breaking existing parsers.
+
+A deployment may carry multiple manifest versions simultaneously during
+migration. The most recent signed manifest is authoritative.
+
+
+[[req-manifest]]
+=== Requirements
+
+[data2text,ar=sections/data/18-manifest-rc.yaml]
+----
+{% assign prefix = "manifest" %}
+include::templates/requirements_class.liquid[]
+----

@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Delivery and discovery conformance
+    name: Delivery and discovery conformance
+    identifier: /conf/delivery
+    target: /req/delivery
+    subject: delivery and discovery
+    description: Conformance tests for delivery and discovery requirements.
+    dependencies:
+    - /conf/architecture
+    - /conf/artifact-format
+    guidance:
+    tests:
+
+    - name: Compact barcode encoding test
+      identifier_fragment: barcode-encoding
+      targets:
+      - /req/delivery/barcode-encoding
+      purpose: Verify barcode encoding is self-contained with error correction.
+      method: Encode an artifact or passport as a two-dimensional barcode. Verify the
+        encoding is self-contained, carries a version identifier, and includes error
+        correction. Decode and verify fidelity.
+      type: Conformance
+
+    - name: Passport format validation
+      identifier_fragment: passport-format
+      targets:
+      - /req/delivery/passport-format
+      purpose: Verify passports carry required fields and are verifiable.
+      method: Produce a passport from a certificate. Verify it carries identifier, key
+        fingerprint, scope summary, and validity period. Verify it is deterministic and
+        verifiable against the trust anchor bundle and transparency log.
+      type: Conformance
+
+    - name: Embedded chain delivery test
+      identifier_fragment: embedded-delivery
+      targets:
+      - /req/delivery/embedded-delivery
+      purpose: Verify embedded chain delivery requires no network access.
+      method: Deliver an artifact with embedded chain. Verify the verifier can complete
+        chain discovery with no network access.
+      type: Conformance
+
+    - name: Transparency-log reference delivery test
+      identifier_fragment: log-reference-delivery
+      targets:
+      - /req/delivery/log-reference-delivery
+      purpose: Verify log-reference delivery enables chain reconstruction.
+      method: Deliver an artifact with transparency-log sequence references. Verify the
+        verifier can fetch and cache referenced certificates from a log or mirror.
+      type: Conformance
+
+    - name: Connected delivery integrity test
+      identifier_fragment: connected-delivery
+      targets:
+      - /req/delivery/connected-delivery
+      purpose: Verify connected delivery authenticates source and provides integrity.
+      method: Deliver artifacts via a network protocol. Verify source authentication,
+        integrity protection, and caching support.
+      type: Conformance
+
+    - name: Challenge-response protocol test
+      identifier_fragment: challenge-response
+      targets:
+      - /req/delivery/challenge-response
+      purpose: Verify challenge-response protocol produces fresh, nonce-bound artifacts.
+      method: Issue a challenge with a 128-bit nonce. Verify the device binds the nonce
+        into the canonical payload. Verify the verifier rejects mismatched nonces, stale
+        responses, and replayed nonce reuse.
+      type: Conformance

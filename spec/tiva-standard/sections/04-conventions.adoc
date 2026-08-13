@@ -1,0 +1,47 @@
+
+[[conventions]]
+== Conventions and notation
+
+=== Requirements language
+
+The verbal forms used in this document conform to the ISO/IEC Directives,
+Part 2. In particular:
+
+* "shall" indicates a requirement strictly to be followed in order to conform
+  to the document;
+
+* "should" indicates that among several possibilities one is recommended as
+  particularly suitable, without mentioning or excluding others;
+
+* "may" indicates a permissible course of action within the limits of the
+  document;
+
+* "can" indicates a possibility and capability that can be known to the user.
+
+
+=== Notation
+
+The following notation is used throughout this document:
+
+.Notation used in this document
+[cols="1,3",options="header"]
+|===
+| Notation | Meaning
+
+| `H(x)`
+| Cryptographic hash of byte-string `x`
+
+| `(T, N)`
+| Quorum: at least `T` of `N` members shall cooperate
+
+|===
+
+
+=== Identifier conventions
+
+Requirements in this document are identified by the path
+`/req/<class>/<fragment>`. Conformance tests are identified by the path
+`/conf/<class>/<fragment>` and target the corresponding requirement.
+
+Cross-references to terms use the +++{{term}}+++ syntax. Cross-references to
+clauses use the +++<<anchor>>+++ syntax.

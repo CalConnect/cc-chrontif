@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Revocation and artifact binding
+    name: Revocation and artifact binding
+    identifier: /req/revocation
+    subject: revocation
+    description: Requirements on certificate revocation lists, hash-binding to authority states, propagation to bound artifacts, and offline revocation checking.
+    dependencies:
+    - /req/architecture
+    - /req/artifact-format
+    guidance:
+
+    requirements:
+    - name: CRL profile
+      identifier_fragment: crl-profile
+      statement: A certificate revocation list shall be a signed, time-stamped list of revoked
+        credentials that identifies the issuing trust authority, carries revoked credential
+        fingerprints with revocation time and reason, carries a validity period, and is
+        recorded in a transparency log.
+      guidance:
+      - The CRL is authoritative only within its validity period.
+      - Alternative revocation list formats may be registered for non-X.509 certificate
+        profiles.
+      examples:
+      - When X.509 certificates are used, the CRL profile follows RFC 5280.
+
+    - name: Hash-binding to authority states
+      identifier_fragment: hash-binding
+      statement: A trusted artifact shall carry a cryptographic hash-binding to the authority
+        states under which it was produced, embedded in the canonical payload or referenced
+        via the transparency log.
+      guidance:
+      - Authority states include calibration, evaluation, compliance, and other states
+        whose validity is a precondition for the artifact's trustworthiness.
+
+    - name: Propagation to bound artifacts
+      identifier_fragment: propagation
+      statement: When an authority state is revoked, the revocation shall propagate to every
+        artifact transitively bound to that state across all trust dimensions and trust
+        chains, marking each affected artifact.
+      guidance:
+      - Propagation uses the transparency log index to discover bound artifacts.
+      - An artifact flagged as bound to a revoked state shall receive the scheme's rejected classification label.
+
+    - name: Flag semantics (marked not deleted)
+      identifier_fragment: flag-semantics
+      statement: Revocation propagation shall mark affected artifacts as bound to a revoked
+        state without deleting or altering them, and the marking shall be queryable and
+        reversible if the revocation is corrected.
+      guidance:
+      - This preserves the audit trail while preventing acceptance of affected artifacts.
+
+    - name: Query interface
+      identifier_fragment: query-interface
+      statement: A verifier shall be able to query the revocation status of an artifact by
+        returning its bound authority states and their revocation status, and to query the
+        set of artifacts bound to a given revoked state.
+      guidance:
+      - The query interface shall be usable offline against cached CRLs and transparency
+        log indices.
+
+    - name: Offline grace period policy
+      identifier_fragment: offline-grace-period
+      statement: A verifier shall apply a CRL grace period policy for offline verification,
+        accepting a stale CRL within a configurable grace period with a classification
+        downgrade, and rejecting artifacts whose CRL is expired beyond the grace period.
+      guidance:
+
+    - name: Scope condition withdrawal propagation
+      identifier_fragment: scope-condition-withdrawal
+      statement: When an external state referenced by a scope condition is revoked, the revocation
+        shall propagate to every artifact whose scope includes a condition referencing that state,
+        re-evaluating the condition and flagging affected artifacts.
+      guidance:
+      - Artifacts flagged through condition withdrawal shall receive the scheme's rejected classification label.
+      - This is a form of trust repudiation — trust granted under an invalidated condition is
+        formally withdrawn.
+      - If the CRL is within its validity period, revocation status is determined directly.

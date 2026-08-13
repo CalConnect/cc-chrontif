@@ -1,0 +1,356 @@
+
+[[verification]]
+== Verification pipeline
+
+=== General
+
+A verifier in the CHRONTIF framework applies an ordered sequence of checks to a
+{{trusted artifact}}, resolves the {{trust graph}} to find one or more
+verification paths to root anchors, produces an objective coverage report,
+applies the scheme's classification policy to derive a grade label, and applies
+its acceptance policy to determine whether to accept the artifact.
+
+This clause specifies the pipeline architecture, the hard and soft checks,
+the coverage report, the classification policy, the acceptance policy, and the
+time freshness window.
+
+
+[[verification-pipeline]]
+=== Pipeline architecture
+
+The {{verification pipeline}} is an ordered sequence of checks applied to an
+artifact (<<fig-pipeline>>). Checks are classified as hard or soft:
+
+[[fig-pipeline]]
+.Verification pipeline — ordered checks and classification
+image::verification-pipeline.svg[]
+
+* **Hard checks** determine pass or fail of the pipeline. If any hard check
+  fails, the pipeline short-circuits; the coverage report hard_checks field is set to fail.
+
+* **Soft checks** populate the coverage report but do not cause outright
+  failure. Each soft check that passes contributes a positive coverage field;
+  each that does not pass leaves that field unpopulated. The classification
+  policy determines how these fields map to the classification label.
+
+.Verification pipeline checks
+[cols="2,2,3"]
+|===
+| Check | Classification | Purpose
+
+| Format validity
+| Hard
+| The artifact wrapper is well-formed and self-describing.
+
+| Signature validity
+| Hard
+| The primary signature and all co-signatures are cryptographically valid.
+
+| Chain integrity
+| Hard
+| Every delegation link is signed and the chain resolves to a root anchor.
+
+| Scope narrowing
+| Hard
+| The {{monotonic narrowing invariant}} holds on every dimension at every link.
+
+| Scope conditions
+| Hard
+| All {{scope condition,scope conditions}} evaluate to true at verification time.
+
+| Revocation status
+| Hard
+| No authority on the path is revoked; no bound state is revoked.
+
+| Transparency inclusion
+| Soft
+| The artifact and all certificates are included in recognized transparency logs.
+
+| Time anchor
+| Soft
+| The artifact is anchored to an external time source via a time dimension attestation.
+
+| Cross-domain co-signatures
+| Soft
+| The artifact carries co-signatures from independent root hierarchies.
+
+| Multi-log attestation
+| Soft
+| The artifact is included in M-of-K independent transparency logs.
+|===
+
+
+[[verification-pathfinding]]
+=== Trust graph path-finding
+
+The verifier enumerates all valid verification paths from the artifact to root
+anchors in the {{trust anchor bundle}}. The coverage report is computed as a
+pure function of the set of all valid paths, not of any single path. This
+ensures that two conforming verifiers that find the same set of valid paths
+produce identical coverage reports, regardless of path enumeration order.
+
+The path enumeration algorithm proceeds as follows:
+
+[arabic]
+. Let `P` be the empty set of valid paths.
+. For each signature `s` on the artifact (primary and co-signatures):
+.. Let `path` be the singleton path containing `s`.
+.. Call `extend(path, P)`.
+. Return `P`.
+
+The `extend(path, P)` procedure:
+
+[arabic]
+. Let `node` be the tail of `path`.
+. If `node` is a root anchor in the {{trust anchor bundle}}, add `path` to
+  `P` and return.
+. For each delegation link from `node` to a parent `parent`:
+.. Validate the signature on the delegation link. If invalid, skip this link.
+.. Validate that `narrowed(scope(parent), scope(node))` holds
+   (see <<scope-monotonic-narrowing>>). If not, skip this link.
+.. Validate transparency log inclusion for the delegation certificate. If
+   not included, skip this link.
+.. Validate revocation status for `parent`. If revoked, skip this link.
+.. Let `extended` be `path` with `parent` appended.
+.. If `extended` does not contain a cycle (no repeated node), call
+   `extend(extended, P)`.
+
+The set `P` contains all valid verification paths. The cross-domain diversity
+of the artifact is the number of distinct root anchors reached across all
+paths in `P`.
+
+Two root anchors `r1` and `r2` are _independent_ if neither is reachable from
+the other via delegation links in the {{trust graph}} and they do not share a
+common delegating ancestor other than themselves. Cross-domain co-signature
+counting for higher classification labels uses the number of distinct independent roots in
+`P`, not the number of paths.
+
+Two transparency logs are _independent_ if they are operated by different
+organizations and neither organization operates a log that the other
+recognizes. Multi-log attestation quorum (higher classification labels) uses the count of
+independent logs, not total logs.
+
+
+[[verification-coverage]]
+=== Coverage report
+
+The verification pipeline produces an objective coverage report containing the
+verification facts. The coverage report is a deterministic function of the
+artifact, the set of valid verification paths, and the verifier's verification
+state (trust anchor bundle, cached CRLs, cached transparency log tree heads).
+Two conforming verifiers with the same verification state produce identical
+coverage reports.
+
+The coverage report contains the following fields:
+
+.Coverage report fields
+[cols="2,3",options="header"]
+|===
+| Field | Description
+
+| `hard_checks`
+| `pass` if all hard checks (format, signature, chain, scope narrowing, scope
+  conditions, revocation) pass; otherwise `fail` with typed failure reasons.
+
+| `transparency_included`
+| `true` if the artifact and all certificates on all paths are included in a
+  recognized transparency log with valid inclusion proofs.
+
+| `time_anchored`
+| `true` if at least one time dimension attestation anchors the artifact to an
+  external time source.
+
+| `dimensions_verified`
+| List of trust dimension tags with verified attestations on the artifact
+  (e.g., `["data", "person", "location", "environment"]`).
+
+| `dimension_count`
+| Count of verified non-data, non-time dimensions (person, location,
+  environment, authorization, identity, oracle, and others registered by the
+  scheme).
+
+| `independent_roots`
+| Count of distinct independent root anchors reached via co-signatures,
+  excluding the primary signer's root.
+
+| `multi_log_quorum`
+| `true` if the artifact meets the multi-log attestation quorum (at least
+  M-of-K independent transparency logs include the artifact).
+
+| `paths_found`
+| Number of valid verification paths from the artifact to root anchors.
+|===
+
+These fields are the objective primitives from which classification and
+acceptance decisions are derived.
+
+
+[[verification-classification]]
+=== Classification policy
+
+The scheme defines a classification policy that maps coverage report fields to
+grade labels. The classification policy is a deterministic, programmatic
+function — not a subjective judgment. The scheme publishes its classification
+policy in the deployment manifest.
+
+The classification policy shall be expressed as deterministic rules over the
+coverage report fields. Example classification policies:
+
+----
+// Example: pharmaceutical supply chain scheme
+classify(coverage) {
+  if (coverage.hard_checks != "pass") return "rejected";
+  if (!coverage.transparency_included) return "unverified";
+  if (!coverage.time_anchored) return "basic";
+  if (coverage.multi_log_quorum && coverage.dimension_count >= 2
+      && coverage.independent_roots >= 1)
+    return "certified";
+  if (coverage.dimension_count >= 2 && coverage.independent_roots >= 1)
+    return "attested";
+  if (coverage.dimension_count >= 1 || coverage.independent_roots >= 1)
+    return "verified";
+  return "basic";
+}
+----
+
+----
+// Example: financial compliance scheme
+classify(coverage) {
+  if (coverage.hard_checks != "pass") return "invalid";
+  if (coverage.dimensions_verified.length >= 4
+      && coverage.independent_roots >= 2
+      && coverage.multi_log_quorum)
+    return "tier-1";
+  if (coverage.dimensions_verified.length >= 2)
+    return "tier-2";
+  return "tier-3";
+}
+----
+
+Each scheme defines its own labels, thresholds, and rules. The standard does
+not prescribe grade labels or classification thresholds. The classification
+policy shall be a pure function of the coverage report — for a given coverage
+report, the classification produces the same label for any verifier using the
+same scheme's policy.
+
+
+[[verification-acceptance]]
+=== Acceptance policy
+
+Each verifier defines an acceptance policy that maps the classification label to
+an accept or reject decision for a given context:
+
+----
+// Example acceptance policy
+accept(grade, context) {
+  if (grade == "rejected" || grade == "invalid") return false;
+  if (context == "controlled_substance" && grade != "certified") return false;
+  if (context == "standard_import" && grade == "unverified") return false;
+  return true;
+}
+----
+
+The acceptance policy is the verifier's risk decision. The standard does not
+prescribe acceptance thresholds.
+
+
+[[verification-freshness]]
+=== Time freshness window
+
+A verifier shall apply a configurable time freshness window to time dimension
+attestations. The freshness window defines the maximum acceptable age of a time
+attestation relative to the verifier's current time.
+
+The verifier shall reject any time attestation whose timestamp falls outside the
+configured freshness window. Artifacts whose time attestations are stale but
+within a secondary grace period may be accepted at a downgraded classification
+label, as determined by the acceptance policy.
+
+The freshness window parameter shall be declared in the verifier's acceptance
+policy. The default freshness window is scheme-defined.
+
+
+[[verification-offline]]
+=== Offline verification
+
+A verifier shall be able to verify artifacts offline using:
+
+* the {{trust anchor bundle}};
+* cached CRLs within their validity or grace period (see <<revocation-offline>>);
+* cached transparency log tree heads and inclusion proofs;
+* embedded or hybrid chains carried with the artifact.
+
+Offline verification produces the same classification label as online
+verification, except where freshness-dependent checks (e.g., time freshness
+window, CRL currency)
+cannot be satisfied.
+
+
+[[verification-results]]
+=== Verification result structure
+
+The verification pipeline produces a structured result containing the
+classification label, the set of valid verification paths, and — if
+hard_checks is fail — the specific failure reason(s). Typed failure reasons enable the verifier to
+distinguish operational conditions that require different responses.
+
+The verification result shall contain:
+
+* `classified_grade`: the scheme-defined classification label.
+* `paths`: the set of valid verification paths found.
+* `dimensional_coverage`: the set of trust dimensions with verified
+  attestations.
+* `failures`: if hard_checks is fail, a list of failure entries, each containing:
+  ** `check`: the name of the hard check that failed.
+  ** `reason`: one of the typed failure reasons listed below.
+  ** `detail`: implementation-specific diagnostic text.
+* `downgrades`: a list of soft-check non-passes (e.g., transparency missing,
+  time anchor absent, cross-domain count below threshold), each containing
+  the check name and the current value. This field is populated regardless of
+  the assigned classification label.
+
+The following typed failure reasons are defined:
+
+.Typed failure reasons
+[cols="2,3",options="header"]
+|===
+| Failure reason | Meaning
+
+| `format_invalid`
+| The artifact wrapper is malformed or cannot be parsed.
+
+| `signature_invalid`
+| A signature (primary or co-signature) failed cryptographic validation.
+
+| `chain_broken`
+| No valid path exists from the artifact to any root anchor in the trust
+  anchor bundle.
+
+| `scope_widened`
+| The monotonic narrowing invariant was violated at a delegation link.
+
+| `scope_condition_failed`
+| A scope condition evaluated to false against the artifact content.
+
+| `revoked`
+| An authority on the verification path, or a state bound to the artifact, is
+  revoked.
+
+| `transparency_missing`
+| A certificate or artifact is not provably included in a recognized
+  transparency log (soft check failure; may downgrade rather than fail unless
+  policy requires transparency).
+|===
+
+An implementation may define additional failure reasons. Extensions shall use
+the `x-` prefix to avoid collision with future standardized reasons.
+
+
+[[req-verification]]
+=== Requirements
+
+[data2text,ar=sections/data/14-verification-rc.yaml]
+----
+{% assign prefix = "verification" %}
+include::templates/requirements_class.liquid[]
+----

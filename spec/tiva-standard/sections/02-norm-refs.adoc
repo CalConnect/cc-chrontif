@@ -1,0 +1,30 @@
+
+[bibliography]
+== Normative references
+
+The following documents are referred to in the text in such a way that some or
+all of their content constitutes requirements of this document. For dated
+references, only the edition cited applies. For undated references, the latest
+edition of the referenced document (including any amendments) applies.
+
+* [[[fips186-4,FIPS 186-4]]], _Digital Signature Standard (DSS)_, NIST, 2013
+
+* [[[fips204,FIPS 204]]], _Module-Lattice-Based Digital Signature Standard_, NIST, 2024
+
+* [[[fips205,FIPS 205]]], _Stateless Hash-Based Digital Signature Standard_, NIST, 2024
+
+* [[[rfc4949,RFC 4949]]], _Internet Security Glossary, Version 2_, IETF, 2007
+
+* [[[rfc5280,RFC 5280]]], _Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile_, IETF, 2008
+
+* [[[rfc6962,RFC 6962]]], _Certificate Transparency_, IETF, 2013
+
+* [[[rfc7515,RFC 7515]]], _JSON Web Signature (JWS)_, IETF, 2015
+
+* [[[rfc8032,RFC 8032]]], _Edwards-Curve Digital Signature Algorithm (EdDSA)_, IETF, 2017
+
+* [[[rfc8152,RFC 8152]]], _CBOR Object Signing and Encryption (COSE)_, IETF, 2017
+
+* [[[w3c-xmldsig,W3C Recommendation: XML Signature Syntax and Processing Version 2.0]]], W3C, 2013
+
+* [[[w3c-c14n,W3C Recommendation: Exclusive XML Canonicalization Version 1.0]]], W3C, 2002

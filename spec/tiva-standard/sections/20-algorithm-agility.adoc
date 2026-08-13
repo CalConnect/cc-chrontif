@@ -1,0 +1,67 @@
+
+[[algorithm-agility]]
+== Algorithm agility
+
+=== General
+
+Algorithm agility ensures that the CHRONTIF framework can adopt new cryptographic
+algorithms and deprecate old ones without breaking existing verifiers. This
+clause specifies the algorithm identifier registry, the deprecation process,
+and the migration governance model.
+
+
+[[algorithm-agility-registry]]
+=== Algorithm identifier registry
+
+The algorithm identifier registry is maintained by the scheme (see <<annex-c>>). Each entry in
+the registry carries the algorithm identifier, the algorithm family (classical,
+post-quantum, or composite), the standard reference, and the status (active,
+deprecated, or retired).
+
+The status field is governed by the deprecation process in
+<<algorithm-agility-deprecation>>. An implementation shall use algorithm
+identifiers from the registry. Unregistered identifiers shall not be accepted
+by conforming verifiers.
+
+
+[[algorithm-agility-deprecation]]
+=== Deprecation process
+
+When an algorithm is identified as weak or obsolete, it shall be deprecated
+through the following process:
+
+. **Announcement.** The deprecation shall be announced with a deprecation date
+   and a retirement date.
+
+. **Deprecation period.** During the deprecation period, the algorithm remains
+   usable but verifiers shall downgrade artifacts using the deprecated
+   algorithm.
+
+. **Retirement.** After the retirement date, verifiers shall reject artifacts
+   using the retired algorithm.
+
+The deprecation and retirement dates shall allow sufficient time for migration
+to replacement algorithms.
+
+
+[[algorithm-agility-migration]]
+=== Migration governance
+
+Algorithm migration shall be governed by the deployment's policy. The
+deployment manifest (see <<manifest>>) shall declare the active algorithms and
+the migration phase (classical-only, composite, or post-quantum-only).
+
+Migration between phases shall follow a published schedule. During composite
+phase, new artifacts shall use composite signatures while existing
+classical-only artifacts remain verifiable. After migration to
+post-quantum-only, classical-only signatures shall be rejected.
+
+
+[[req-algorithm-agility]]
+=== Requirements
+
+[data2text,ar=sections/data/20-algorithm-agility-rc.yaml]
+----
+{% assign prefix = "algorithm-agility" %}
+include::templates/requirements_class.liquid[]
+----

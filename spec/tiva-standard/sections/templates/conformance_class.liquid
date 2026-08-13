@@ -1,0 +1,112 @@
+{% assign cc_count = 0 %}
+{% for group in ar.groups %}
+
+{% for scope in group.scopes %}
+{% assign cc_count = cc_count | plus: 1 %}
+
+{{ scope.name }} has its formalized conformance class described in <<cc-{{prefix}}-{{cc_count}}>>{% if scope.tests.size > 0 %}, with its conformance tests listed from <<ct-{{prefix}}-{{cc_count}}-1>> to <<ct-{{prefix}}-{{cc_count}}-{{scope.tests.size}}>>{% endif %}.
+
+[[cc-{{prefix}}-{{cc_count}}]]
+.{{scope.name}}
+[conformance_class]
+====
+[%metadata]
+identifier:: {{scope.identifier}}
+description:: {{scope.description}}
+target:: {{scope.target}}
+
+{% for depend in scope.dependencies %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% for test in scope.tests %}
+{% if test.identifier_fragment %}
+{% assign test_id = scope.identifier | append: "/" | append: test.identifier_fragment %}
+{% else %}
+{% assign test_id = test.identifier %}
+{% endif %}
+
+conformance-test:: {{test_id}}
+{% endfor %}
+
+{% if {{scope.guidance}} %}
+guidance::
++
+--
+{% for rec in scope.guidance %}
+* {{rec}}
+
+{% endfor %}
+
+--
+{% endif %}
+
+{% if scope.clause %}
+Clause::
++
+--
+{{scope.clause}}
+--
+{% endif %}
+====
+
+{% assign ct_count = 0 %}
+{% for test in scope.tests %}
+{% assign ct_count = ct_count | plus: 1 %}
+{% if test.name %}
+.{{test.name}}
+{% endif %}
+{% if test.identifier_fragment %}
+{% assign test_id = scope.identifier | append: "/" | append: test.identifier_fragment %}
+{% else %}
+{% assign test_id = test.identifier %}
+{% endif %}
+[[ct-{{prefix}}-{{cc_count}}-{{ct_count}}]]
+[conformance_test]
+====
+[%metadata]
+identifier:: {{test_id}}
+description:: {{test.description}}
+
+{% for target in test.targets %}
+target:: {{target}}
+
+{% endfor %}
+
+{% for depend in test.dependencies %}
+inherit:: {{depend}}
+{% endfor %}
+
+{% if {{test.guidance}} %}
+guidance::
++
+--
+{% for rec in test.guidance %}
+* {{rec}}
+{% endfor %}
+--
+{% endif %}
+
+
+{% if {{test.purpose}} %}
+test-purpose:: {{test.purpose}}
+{% endif %}
+
+{% if {{test.method}} %}
+test-method::
++
+--
+{{test.method}}
+--
+{% endif %}
+
+{% if {{test.type}} %}
+Test type:: {{test.type}}
+{% endif %}
+====
+
+{% endfor %}
+
+{% endfor %}
+
+{% endfor %}

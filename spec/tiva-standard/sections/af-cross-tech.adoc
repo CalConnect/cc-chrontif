@@ -1,0 +1,216 @@
+
+[[annex-f]]
+[appendix,obligation=informative]
+== Cross-technology interoperability
+
+=== General
+
+Different CHRONTIF deployments may use different algorithms, formats, and
+transparency log implementations. This annex describes the mechanisms by which
+such heterogeneous deployments can verify each other's artifacts.
+
+The interoperability model is based on three principles:
+
+* **Canonical payload hash agreement.** Co-signatures from different deployments
+  attest the same canonical payload hash, regardless of the serialization format
+  each deployment uses internally.
+
+* **Registry mapping.** Deployments publish mappings between their respective
+  registry entries, enabling cross-deployment interpretation of algorithm
+  identifiers, dimension tags, and ceremony types.
+
+* **Anchor exchange.** Deployments exchange trust anchor bundles through
+  bilateral or multilateral governance agreements, enabling cross-deployment
+  chain verification.
+
+
+=== Interoperability scenario
+
+Deployment A uses SM2 signatures, XMLDSig format, and SM3 hashing. Deployment B
+uses Ed25519 signatures, JWS format, and SHA-256 hashing. The following
+describes how Deployment B's verifier can verify an artifact from Deployment A.
+
+
+=== Canonical payload hash bridge
+
+The canonical payload hash is the point of convergence. Although Deployment A
+canonicalizes using Exclusive C14N (XML) and Deployment B canonicalizes using
+JCS (JSON), both deployments agree on a common canonical payload hash for the
+same logical content.
+
+The bridge mechanism:
+
+[arabic]
+. The artifact carries a `canonical_payload_hash` field — a hash of the
+   logical content in a deployment-neutral form.
+. Each co-signature attests this hash, regardless of the signer's internal
+   format.
+. Cross-deployment co-signing requires the participating deployments to agree
+   on the canonical payload hash before signing. This agreement is established
+   out-of-band (e.g., through a shared payload schema and a neutral hash
+   computation).
+
+NOTE: In practice, cross-format canonical payload agreement requires the
+deployments to share a common logical content model (e.g., a shared JSON
+schema or a shared data dictionary) from which each deployment computes its
+format-specific canonicalization. The deployments agree on the hash of the
+logical content model, not on the format-specific canonical bytes.
+
+
+=== Registry mapping
+
+Each deployment maintains its own scheme registry (see <<annex-c>>). To enable
+cross-deployment verification, deployments publish a registry mapping:
+
+[cols="3,2,2",options="header"]
+|===
+| Concept | Deployment A value | Deployment B value
+
+| Classical signature algorithm
+| `SM2` (<<gm-t-0003-2012>>)
+| `Ed25519` (RFC 8032)
+
+| Hash function
+| `SM3` (<<gm-t-0005-2010>>)
+| `SHA-256`
+
+| Format profile
+| `/conf/format-xmldsig`
+| `/conf/format-jws`
+
+| Data dimension tag
+| `data`
+| `data`
+
+| Person dimension tag
+| `operator`
+| `person`
+
+| Time dimension tag
+| `timestamp`
+| `time`
+|===
+
+The mapping is a governance document published by both deployments. A verifier
+from Deployment B encountering an artifact from Deployment A uses the mapping
+to:
+
+* translate dimension tags from A's vocabulary to B's;
+* identify which algorithm to use for signature validation;
+* determine which hash function was used for the canonical payload and
+  transparency log entries.
+
+
+=== Transparency log interoperability
+
+Different deployments may use different transparency log constructions. To
+enable cross-deployment inclusion proof verification, the following
+interoperability profile is recommended:
+
+[arabic]
+. **Shared hash function.** Both deployments' transparency logs need to use the
+   same hash function for Merkle tree construction (e.g., both use SHA-256).
+   If different hash functions are used, cross-deployment inclusion proof
+   verification is not possible without a hash-function bridge (which does not
+   exist in general).
+
+. **Shared domain separation.** Both deployments need to use compatible domain
+   separation (e.g., RFC 6962's 0x00/0x01 prefix convention or equivalent).
+
+. **Log head format.** Both deployments need to publish log heads in a common
+   format containing: root hash, tree size, timestamp, and operator signature.
+   The signature algorithm may differ (verified via registry mapping).
+
+. **Mirror access.** Each deployment needs to operate at least one publicly
+   accessible mirror that serves inclusion proofs in the common format.
+
+
+=== Trust anchor exchange
+
+Cross-deployment verification requires each deployment's verifier to hold the
+other deployment's root anchor. The exchange mechanism:
+
+[arabic]
+. Deployment A publishes its trust anchor bundle (see <<annex-e>> for
+   format example).
+. Deployment B's governance body verifies the bundle (confirms root aggregate
+   key, quorum parameters, and transparency log operator key through
+   out-of-band channels).
+. Deployment B adds Deployment A's root anchor to its verifier's extended
+   trust anchor bundle, with a cross-recognition annotation.
+. The cross-recognition annotation records: the mapping effective date, the
+   registry mapping reference, and the governance agreement reference.
+
+
+=== Cross-verification procedure
+
+A verifier from Deployment B verifying an artifact from Deployment A:
+
+[arabic]
+. **Load mappings.** Load the A-to-B registry mapping and the extended trust
+   anchor bundle containing A's root anchor.
+. **Parse artifact.** Parse the artifact using A's format profile (XMLDSig).
+   If the verifier does not support XMLDSig, it may request a format-translated
+   representation from an A-operated gateway, or use the embedded canonical
+   payload hash directly.
+. **Verify signatures.** For each signature, use the registry mapping to
+   identify the algorithm (SM2). Validate the SM2 signature against the
+   canonical payload hash using the verifier's SM2 implementation. Validate
+   the signer's chain to A's root anchor in the extended bundle.
+. **Verify transparency.** Fetch the inclusion proof from A's transparency log
+   or mirror. Validate it using the shared hash function and domain separation.
+   Confirm the log head is observed by the gossip quorum.
+. **Translate dimensions.** Use the registry mapping to translate A's
+   dimension tags to B's vocabulary. Compute dimensional coverage and grade
+   using the translated tags.
+. **Compute grade.** Apply the scheme's classification policy from
+   <<verification-classification>> using the translated dimensional coverage
+   and the cross-domain root count (A's root is an independent root from B's
+   perspective).
+
+
+=== Minimum interoperability baseline
+
+For cross-deployment verification to be possible, the following minimum
+conditions need to be met by both deployments:
+
+* Both deployments need to support at least one common hash function for
+  transparency log construction and canonical payload hashing.
+* Both deployments need to publish registry mappings for all concepts used in
+  cross-deployment artifacts.
+* Both deployments need to operate publicly accessible transparency log mirrors.
+* Both deployments need to exchange trust anchor bundles through verified
+  governance channels.
+* Both deployments need to use compatible dimension tag vocabularies (via
+  registry mapping) for all dimensions present on cross-deployment artifacts.
+
+NOTE: If two deployments cannot agree on a common hash function, a hash-function
+bridge (computing the same logical content under both hash functions and
+carrying both hashes) may be used. This is a deployment-level decision, not a
+requirement of this document.
+
+
+=== Limitations
+
+Cross-technology interoperability has inherent limitations:
+
+* **No zero-knowledge cross-verification.** The verifier must implement (or
+  have access to) every algorithm used in the artifact's signatures. A
+  verifier that does not implement SM2 cannot verify SM2 signatures, even with
+  a registry mapping.
+
+* **Format translation is lossy.** Translating between XMLDSig and JWS
+  representations may lose format-specific metadata (e.g., XML namespace
+  information). Cross-deployment artifacts should carry format-neutral
+  metadata whenever possible.
+
+* **Different threshold schemes are not interoperable.** A threshold signature
+  produced under FROST cannot be verified by an implementation that only
+  supports BLS threshold signatures. Cross-deployment threshold signatures
+  require both deployments to use the same threshold scheme for the
+  cross-domain co-signature.
+
+These limitations mean that full cross-technology interoperability typically
+requires a bilateral or multilateral agreement that specifies the common
+technology subset both deployments support for cross-deployment
+artifacts.

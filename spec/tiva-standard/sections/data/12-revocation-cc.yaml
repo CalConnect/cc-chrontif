@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Revocation conformance
+    name: Revocation conformance
+    identifier: /conf/revocation
+    target: /req/revocation
+    subject: revocation
+    description: Conformance tests for revocation and artifact binding requirements.
+    dependencies:
+    - /conf/architecture
+    - /conf/artifact-format
+    guidance:
+    tests:
+
+    - name: CRL profile validation
+      identifier_fragment: crl-profile
+      targets:
+      - /req/revocation/crl-profile
+      purpose: Verify CRLs contain the required fields and are recorded in a transparency log.
+      method: Inspect CRL format and verify it identifies the issuing authority, carries
+        revoked credential fingerprints with time and reason, carries a validity period,
+        and is recorded in a transparency log.
+      type: Validation
+
+    - name: Hash-binding validation
+      identifier_fragment: hash-binding
+      targets:
+      - /req/revocation/hash-binding
+      purpose: Verify artifacts carry hash-bindings to authority states.
+      method: Inspect artifacts and verify each carries a cryptographic hash-binding to
+        the authority states under which it was produced. Verify the binding is part of
+        the canonical payload or referenced via the transparency log.
+      type: Validation
+
+    - name: Propagation to bound artifacts test
+      identifier_fragment: propagation
+      targets:
+      - /req/revocation/propagation
+      purpose: Verify revocation propagates to all transitively bound artifacts.
+      method: Revoke an authority state. Query the set of artifacts bound to that state.
+        Verify each bound artifact is flagged. Verify flagged artifacts receive the scheme's rejected label.
+        Verify propagation crosses trust dimensions and trust chains.
+      type: Conformance
+
+    - name: Flag semantics test
+      identifier_fragment: flag-semantics
+      targets:
+      - /req/revocation/flag-semantics
+      purpose: Verify revocation uses mark semantics, not deletion.
+      method: Revoke a state and verify affected artifacts are marked, not deleted. Verify
+        the marking is queryable. Correct the revocation and verify the marking is reversed.
+      type: Conformance
+
+    - name: Query interface test
+      identifier_fragment: query-interface
+      targets:
+      - /req/revocation/query-interface
+      purpose: Verify the revocation query interface works offline.
+      method: Query an artifact's bound states and their revocation status. Query artifacts
+        bound to a revoked state. Perform both queries offline using cached CRLs and log
+        indices.
+      type: Conformance
+
+    - name: Offline grace period test
+      identifier_fragment: offline-grace-period
+      targets:
+      - /req/revocation/offline-grace-period
+      purpose: Verify the CRL grace period policy is applied correctly.
+      method: Present an artifact with a CRL within validity, a stale CRL within grace
+        period, and a CRL expired beyond grace period. Verify direct acceptance, acceptance
+        with downgrade, and rejection respectively.
+      type: Conformance
+
+    - name: Scope condition withdrawal propagation test
+      identifier_fragment: scope-condition-withdrawal
+      targets:
+      - /req/revocation/scope-condition-withdrawal
+      purpose: Verify scope condition withdrawal propagates to affected artifacts.
+      method: Create an artifact with a scope condition referencing an external state. Revoke
+        the external state. Verify the artifact is flagged and receives the scheme's rejected label. Verify
+        artifacts without the condition are unaffected.
+      type: Conformance

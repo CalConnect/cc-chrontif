@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=./schema-cc.yaml
+---
+groups:
+- scopes:
+  - title: Transparency conformance
+    name: Transparency conformance
+    identifier: /conf/transparency
+    target: /req/transparency
+    subject: transparency
+    description: Conformance tests for transparency and multi-log attestation requirements.
+    dependencies:
+    - /conf/architecture
+    guidance:
+    tests:
+
+    - name: Merkle append-only validation
+      identifier_fragment: merkle-append-only
+      targets:
+      - /req/transparency/merkle-append-only
+      purpose: Verify the transparency log is an append-only Merkle tree with domain separation.
+      method: Inspect the log structure. Verify domain-separated hashing for leaves and
+        internal nodes. Verify entries cannot be modified or removed. Verify each tree head
+        is signed by the log operator.
+      type: Validation
+
+    - name: Inclusion proof validation
+      identifier_fragment: inclusion-proof
+      targets:
+      - /req/transparency/inclusion-proof
+      purpose: Verify inclusion proofs contain the required components and validate correctly.
+      method: Produce inclusion proofs for log entries. Verify each proof contains leaf
+        hash, audit path, tree head, and operator signature. Verify the proof validates by
+        recomputing the root and checking the signature.
+      type: Conformance
+
+    - name: Tree head anchoring validation
+      identifier_fragment: tree-head-anchoring
+      targets:
+      - /req/transparency/tree-head-anchoring
+      purpose: Verify tree heads are anchored to an external time source.
+      method: Inspect tree head anchors and verify each produces a verifiable proof of
+        commitment to an external irrefutable time source. Verify the anchor timestamp is
+        at or near the tree head timestamp.
+      type: Conformance
+
+    - name: Mirror integrity test
+      identifier_fragment: mirror-integrity
+      targets:
+      - /req/transparency/mirror-integrity
+      purpose: Verify mirrors independently verify log append-only property and serve proofs.
+      method: Operate a mirror and verify it checks that each new tree head extends the
+        previous one. Verify the mirror serves inclusion proofs and log entries. Simulate
+        a split view and verify the mirror detects it.
+      type: Conformance
+
+    - name: Gossip quorum test
+      identifier_fragment: gossip-quorum
+      targets:
+      - /req/transparency/gossip-quorum
+      purpose: Verify the verifier confirms gossip quorum before accepting tree heads.
+      method: Present a tree head observed by fewer than the quorum of independent sources.
+        Verify rejection. Present a tree head observed by the quorum. Verify acceptance.
+      type: Conformance
+
+    - name: Mandatory transparency inclusion test
+      identifier_fragment: mandatory-inclusion
+      targets:
+      - /req/transparency/mandatory-inclusion
+      purpose: Verify un-logged artifacts are downgraded or rejected.
+      method: Present artifacts with and without transparency log inclusion proofs. Verify
+        artifacts with proofs are accepted (subject to grade). Verify artifacts without proofs
+        are downgraded or rejected.
+      type: Conformance
+
+    - name: Multi-log quorum test
+      identifier_fragment: multi-log-quorum
+      targets:
+      - /req/transparency/multi-log-quorum
+      purpose: Verify multi-log attestation quorum is enforced.
+      method: Construct an FTA artifact with inclusion proofs from fewer than M logs. Verify
+        rejection. Construct with M or more log proofs. Verify acceptance. Verify each proof
+        is validated independently.
+      type: Conformance
+
+    - name: Consistency proof validation
+      identifier_fragment: consistency-proofs
+      targets:
+      - /req/transparency/consistency-proofs
+      purpose: Verify the transparency log supports consistency proofs between tree heads.
+      method: Request a consistency proof between two consecutive tree heads. Verify the
+        proof confirms the earlier tree is a prefix of the later tree. Request a consistency
+        proof between non-consecutive tree heads. Verify the proof validates.
+      type: Conformance

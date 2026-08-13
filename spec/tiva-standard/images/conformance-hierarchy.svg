@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" font-family="sans-serif" font-size="13">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="25" text-anchor="middle" font-size="15" font-weight="bold">Requirements classes and dependencies</text>
+
+  <!-- Root authority -->
+  <rect x="325" y="50" width="250" height="40" rx="5" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="450" y="68" text-anchor="middle" font-weight="bold">/req/root-authority</text>
+  <text x="450" y="83" text-anchor="middle" font-size="11">governance, manifest, delegation</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="90" x2="450" y2="120" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Issuing authority -->
+  <rect x="325" y="125" width="250" height="40" rx="5" fill="#e8f0fe" stroke="#4285f4" stroke-width="2"/>
+  <text x="450" y="143" text-anchor="middle" font-weight="bold">/req/issuing-authority</text>
+  <text x="450" y="158" text-anchor="middle" font-size="11">threshold signing, ceremony, keys</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="165" x2="450" y2="195" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Full verifier -->
+  <rect x="325" y="200" width="250" height="40" rx="5" fill="#e6f4ea" stroke="#34a853" stroke-width="2"/>
+  <text x="450" y="218" text-anchor="middle" font-weight="bold">/req/full-verifier</text>
+  <text x="450" y="233" text-anchor="middle" font-size="11">scope, revocation, time, transparency</text>
+
+  <!-- Arrow down -->
+  <line x1="450" y1="240" x2="450" y2="270" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Basic verifier -->
+  <rect x="325" y="275" width="250" height="40" rx="5" fill="#fef7e0" stroke="#fbbc04" stroke-width="2"/>
+  <text x="450" y="293" text-anchor="middle" font-weight="bold">/req/basic-verifier</text>
+  <text x="450" y="308" text-anchor="middle" font-size="11">format, signatures, chain</text>
+
+  <!-- Device signer (branch) -->
+  <line x1="325" y1="295" x2="175" y2="295" stroke="#333" stroke-width="1.5"/>
+  <line x1="175" y1="295" x2="175" y2="370" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="50" y="375" width="250" height="40" rx="5" fill="#fef7e0" stroke="#fbbc04" stroke-width="2"/>
+  <text x="175" y="393" text-anchor="middle" font-weight="bold">/req/device-signer</text>
+  <text x="175" y="408" text-anchor="middle" font-size="11">per-device keys, challenge-response</text>
+
+  <!-- Transparency operator (independent) -->
+  <rect x="625" y="125" width="250" height="40" rx="5" fill="#fce8e6" stroke="#ea4335" stroke-width="2"/>
+  <text x="750" y="143" text-anchor="middle" font-weight="bold">/req/transparency-operator</text>
+  <text x="750" y="158" text-anchor="middle" font-size="11">log operation, inclusion proofs</text>
+
+  <!-- Mirror (independent) -->
+  <line x1="750" y1="165" x2="750" y2="195" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="625" y="200" width="250" height="40" rx="5" fill="#fce8e6" stroke="#ea4335" stroke-width="2"/>
+  <text x="750" y="218" text-anchor="middle" font-weight="bold">/req/mirror</text>
+  <text x="750" y="233" text-anchor="middle" font-size="11">log mirroring, gossip</text>
+
+  <!-- Topology profiles -->
+  <text x="450" y="460" text-anchor="middle" font-weight="bold" font-size="14">Topology profiles</text>
+  <rect x="40" y="475" width="180" height="35" rx="5" fill="#f3e8fd" stroke="#9334e6" stroke-width="1.5"/>
+  <text x="130" y="497" text-anchor="middle">/conf/hierarchical</text>
+  <rect x="240" y="475" width="180" height="35" rx="5" fill="#f3e8fd" stroke="#9334e6" stroke-width="1.5"/>
+  <text x="330" y="497" text-anchor="middle">/conf/federated</text>
+  <rect x="440" y="475" width="180" height="35" rx="5" fill="#f3e8fd" stroke="#9334e6" stroke-width="1.5"/>
+  <text x="530" y="497" text-anchor="middle">/conf/cross-recognized</text>
+  <rect x="640" y="475" width="180" height="35" rx="5" fill="#f3e8fd" stroke="#9334e6" stroke-width="1.5"/>
+  <text x="730" y="497" text-anchor="middle">/conf/mesh</text>
+
+  <!-- Legend -->
+  <text x="450" y="550" text-anchor="middle" font-weight="bold" font-size="14">Legend</text>
+  <rect x="100" y="565" width="15" height="15" fill="#e8f0fe" stroke="#4285f4"/>
+  <text x="125" y="577">Issuing roles</text>
+  <rect x="300" y="565" width="15" height="15" fill="#e6f4ea" stroke="#34a853"/>
+  <text x="325" y="577">Verifiers</text>
+  <rect x="450" y="565" width="15" height="15" fill="#fef7e0" stroke="#fbbc04"/>
+  <text x="475" y="577">Device roles</text>
+  <rect x="600" y="565" width="15" height="15" fill="#fce8e6" stroke="#ea4335"/>
+  <text x="625" y="577">Transparency</text>
+  <rect x="100" y="600" width="15" height="15" fill="#f3e8fd" stroke="#9334e6"/>
+  <text x="125" y="612">Topology profiles</text>
+</svg>

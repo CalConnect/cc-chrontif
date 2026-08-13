@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Threshold signing and federated trust authorities
+    name: Threshold signing and federated trust authorities
+    identifier: /req/threshold-signing
+    subject: threshold signing
+    description: Requirements on threshold signing at every trust authority level, aggregate key continuity, federated trust authorities, and the ceremony protocol.
+    dependencies:
+    - /req/architecture
+    guidance:
+
+    requirements:
+    - name: Threshold at every level
+      identifier_fragment: threshold-every-level
+      statement: Any trust authority at any level of the trust graph shall be able to
+        operate under a threshold scheme, such that no single key compromises any level
+        of the delegation hierarchy.
+      guidance:
+      - A single-key authority (1-of-1) is permitted but does not provide threshold
+        protection.
+      - The quorum parameters (T, N) are carried in the authority's delegation certificate.
+
+    - name: Quorum parameters in delegation
+      identifier_fragment: quorum-in-delegation
+      statement: A delegation certificate for a threshold child authority shall carry
+        the child's aggregate public key, the quorum definition (T, N), and references
+        to the member identities.
+      guidance:
+      - Member identity references should be transparency-log sequence numbers or
+        equivalent verifiable identifiers.
+
+    - name: Aggregate key continuity under member rotation
+      identifier_fragment: aggregate-key-continuity
+      statement: When a threshold authority rotates a member, the aggregate key shall
+        remain unchanged, and all existing delegations from parent authorities shall
+        remain valid without re-issuance.
+      guidance:
+      - This is achieved through threshold re-share protocols that preserve the aggregate
+        public key while redistributing secret shares.
+
+    - name: Nested threshold
+      identifier_fragment: nested-threshold
+      statement: A threshold delegated trust authority whose members are themselves
+        threshold authorities shall be supported, such that signing by the outer authority
+        requires inner authorities to reach their own quorum before contributing shares.
+      guidance:
+      - Nested threshold structures may span multiple organizational layers.
+
+    - name: Federated trust authority formation
+      identifier_fragment: fta-formation
+      statement: A federated trust authority shall be formed by independent organizations
+        contributing shares to produce a single aggregate key, such that no single
+        member organization controls the authority.
+      guidance:
+      - The FTA carries its own quorum (M-of-K member organizations), scope, and ceremony
+        protocol.
+
+    - name: Federated trust authority recursive composition
+      identifier_fragment: fta-recursive-composition
+      statement: A federated trust authority shall be permitted to be a member of another
+        federated trust authority, enabling recursively composed trust structures.
+      guidance:
+      - Signing by a composite FTA may require inner FTAs to reach their own quorum
+        before contributing shares to the outer FTA.
+
+    - name: Federated trust authority hierarchy-spanning
+      identifier_fragment: fta-hierarchy-spanning
+      statement: A federated trust authority shall be permitted to include members
+        from independent root trust authorities, producing artifacts verifiable against
+        the FTA's aggregate key and recognized by all member hierarchies.
+      guidance:
+      - This creates trust bridges between otherwise independent roots.
+
+    - name: Federated trust authority re-share
+      identifier_fragment: fta-reshare
+      statement: A federated trust authority shall support member join and leave operations
+        that preserve the aggregate key, such that historical artifacts remain valid.
+      guidance:
+      - Dissolution of an FTA retires the aggregate key but does not invalidate artifacts
+        signed before dissolution whose chains and scope remain valid.
+
+    - name: Ceremony protocol threshold property
+      identifier_fragment: ceremony-threshold-property
+      statement: A ceremony protocol shall produce a signature verifiable against the
+        authority's published aggregate key and shall ensure that fewer than T members
+        cannot produce a valid signature.
+      guidance:
+      - The CHRONTIF framework is ceremony-protocol-neutral; any protocol satisfying these
+        properties may be used.
+
+    - name: Rogue-key attack prevention
+      identifier_fragment: rogue-key-prevention
+      statement: Each member of a threshold authority shall demonstrate possession of the
+        private key corresponding to their contributed public share during key generation,
+        and the aggregate key computation shall incorporate all member public keys in a
+        manner secure against rogue-key attacks.
+      guidance:
+      - Proof-of-possession prevents a malicious member from registering a crafted key
+        that makes the aggregate key equal to their solo key.
+
+    - name: Ceremony identifiable abort and nonce commitment
+      identifier_fragment: ceremony-robustness
+      statement: A conforming ceremony protocol shall provide identifiable abort (identifying
+        the member causing failure), nonce commitment to prevent nonce bias, and a documented
+        policy for handling member non-participation.
+      guidance:
+
+    - name: Ceremony record production
+      identifier_fragment: ceremony-record-production
+      statement: A ceremony shall produce a verifiable ceremony record that documents
+        the participating members, the threshold parameters, and the signature produced.
+      guidance:
+      - Detailed ceremony record requirements are specified in /req/ceremony/.

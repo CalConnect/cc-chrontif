@@ -1,0 +1,15 @@
+# Generated output
+*.pdf
+*.html
+*.doc
+*.xml
+*.rxl
+*.presentation.xml
+*.err.html
+*.pdf.err
+*.asciidoc.log.txt
+*.xml.abort
+
+# Temp files
+*_files/
+.document*

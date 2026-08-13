@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 720" font-family="sans-serif" font-size="12">
+  <defs>
+    <marker id="parr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+    </marker>
+    <marker id="parrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#d32f2f"/>
+    </marker>
+    <marker id="parrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2e7d32"/>
+    </marker>
+  </defs>
+
+  <text x="450" y="25" text-anchor="middle" font-size="15" font-weight="bold">Verification pipeline — ordered checks and grade assignment</text>
+
+  <!-- Input -->
+  <ellipse cx="450" cy="65" rx="120" ry="25" fill="#f3e8fd" stroke="#9334e6" stroke-width="2"/>
+  <text x="450" y="70" text-anchor="middle" font-weight="bold">Trusted Artifact + Trust Anchor Bundle</text>
+  <line x1="450" y1="90" x2="450" y2="110" stroke="#555" stroke-width="2" marker-end="url(#parr)"/>
+
+  <!-- HARD CHECKS label -->
+  <text x="180" y="105" font-weight="bold" font-size="13" fill="#d32f2f">HARD CHECKS (short-circuit → F)</text>
+  <line x1="180" y1="110" x2="720" y2="110" stroke="#d32f2f" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Hard check 1: Format -->
+  <rect x="350" y="125" width="200" height="35" rx="5" fill="#ffebee" stroke="#d32f2f" stroke-width="1.5"/>
+  <text x="450" y="147" text-anchor="middle">1. Format validity</text>
+  <line x1="450" y1="160" x2="450" y2="175" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Hard check 2: Signature -->
+  <rect x="350" y="180" width="200" height="35" rx="5" fill="#ffebee" stroke="#d32f2f" stroke-width="1.5"/>
+  <text x="450" y="202" text-anchor="middle">2. Signature validity (all co-sigs)</text>
+  <line x1="450" y1="215" x2="450" y2="230" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Hard check 3: Chain -->
+  <rect x="350" y="235" width="200" height="35" rx="5" fill="#ffebee" stroke="#d32f2f" stroke-width="1.5"/>
+  <text x="450" y="257" text-anchor="middle">3. Chain integrity (graph path)</text>
+  <line x1="450" y1="270" x2="450" y2="285" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Hard check 4: Scope -->
+  <rect x="350" y="290" width="200" height="35" rx="5" fill="#ffebee" stroke="#d32f2f" stroke-width="1.5"/>
+  <text x="450" y="312" text-anchor="middle">4. Scope narrowing + conditions</text>
+  <line x1="450" y1="325" x2="450" y2="340" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Hard check 5: Revocation -->
+  <rect x="350" y="345" width="200" height="35" rx="5" fill="#ffebee" stroke="#d32f2f" stroke-width="1.5"/>
+  <text x="450" y="367" text-anchor="middle">5. Revocation status</text>
+
+  <!-- Fail branch to F -->
+  <line x1="550" y1="142" x2="750" y2="142" stroke="#d32f2f" stroke-width="1.5"/>
+  <line x1="550" y1="197" x2="750" y2="197" stroke="#d32f2f" stroke-width="1.5"/>
+  <line x1="550" y1="252" x2="750" y2="252" stroke="#d32f2f" stroke-width="1.5"/>
+  <line x1="550" y1="307" x2="750" y2="307" stroke="#d32f2f" stroke-width="1.5"/>
+  <line x1="550" y1="362" x2="750" y2="362" stroke="#d32f2f" stroke-width="1.5"/>
+  <line x1="750" y1="142" x2="750" y2="362" stroke="#d32f2f" stroke-width="1.5"/>
+  <rect x="710" y="370" width="80" height="35" rx="5" fill="#d32f2f" stroke="#b71c1c" stroke-width="2"/>
+  <text x="750" y="392" text-anchor="middle" font-weight="bold" fill="white">Grade F</text>
+  <text x="750" y="420" text-anchor="middle" font-size="10" fill="#d32f2f">INVALID</text>
+
+  <!-- Continue from hard checks -->
+  <line x1="450" y1="380" x2="450" y2="420" stroke="#2e7d32" stroke-width="2" marker-end="url(#parrG)"/>
+
+  <!-- SOFT CHECKS label -->
+  <text x="180" y="415" font-weight="bold" font-size="13" fill="#1565c0">SOFT CHECKS (accumulate grade)</text>
+  <line x1="180" y1="420" x2="720" y2="420" stroke="#1565c0" stroke-width="1" stroke-dasharray="4,3"/>
+
+  <!-- Starting grade D -->
+  <rect x="375" y="425" width="150" height="30" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="450" y="444" text-anchor="middle">Start: Grade D</text>
+  <line x1="450" y1="455" x2="450" y2="470" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Soft check: Transparency -->
+  <rect x="325" y="475" width="250" height="30" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="450" y="494" text-anchor="middle">Transparency inclusion → raise to C</text>
+  <line x1="450" y1="505" x2="450" y2="520" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Soft check: Time -->
+  <rect x="325" y="525" width="250" height="30" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="450" y="544" text-anchor="middle">Time anchor → raise to B</text>
+  <line x1="450" y1="555" x2="450" y2="570" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Soft check: Cross-domain -->
+  <rect x="325" y="575" width="250" height="30" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="450" y="594" text-anchor="middle">Cross-domain co-signatures → A / A+</text>
+  <line x1="450" y1="605" x2="450" y2="620" stroke="#555" stroke-width="1.5" marker-end="url(#parr)"/>
+
+  <!-- Soft check: Multi-log -->
+  <rect x="325" y="625" width="250" height="30" rx="5" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+  <text x="450" y="644" text-anchor="middle">Multi-log quorum → A++ / A+++</text>
+  <line x1="450" y1="655" x2="450" y2="670" stroke="#555" stroke-width="2" marker-end="url(#parr)"/>
+
+  <!-- Policy comparison -->
+  <rect x="325" y="675" width="250" height="35" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text x="450" y="697" text-anchor="middle" font-weight="bold">Compare against policy → Accept/Reject</text>
+</svg>

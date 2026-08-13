@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=./schema-rc.yaml
+---
+groups:
+- scopes:
+  - title: Verification pipeline
+    name: Verification pipeline
+    identifier: /req/verification
+    subject: verification
+    description: Requirements on the verification pipeline, trust graph path-finding, coverage report production, classification policy, and acceptance policy.
+    dependencies:
+    - /req/architecture
+    - /req/artifact-format
+    - /req/scope
+    - /req/revocation
+    - /req/transparency
+    guidance:
+
+    requirements:
+    - name: Ordered pipeline with hard and soft checks
+      identifier_fragment: pipeline-architecture
+      statement: The verification pipeline shall apply an ordered sequence of checks classified
+        as hard or soft, short-circuiting to the scheme's rejected label on any hard check failure and accumulating
+        soft check results into the coverage report.
+      guidance:
+      - Hard checks are format validity, signature validity, chain integrity, scope narrowing,
+        scope conditions, and revocation status.
+      - Soft checks are transparency inclusion, time anchor, cross-domain co-signatures,
+        and multi-log attestation.
+
+    - name: Hard check classification
+      identifier_fragment: hard-checks
+      statement: The following checks shall be hard checks whose failure causes the pipeline
+        to short-circuit to the scheme's rejected label, covering format validity, signature validity, chain integrity,
+        scope narrowing invariant, scope condition evaluation, and revocation status.
+      guidance:
+      - Hard checks determine pass or fail of the pipeline.
+
+    - name: Trust graph path-finding
+      identifier_fragment: pathfinding
+      statement: The verifier shall find one or more paths in the trust graph from each signature
+        on the artifact to root anchors in the trust anchor bundle, validating signature and
+        scope narrowing at every link, and shall collect all valid paths and their distinct
+        roots for cross-domain diversity scoring.
+      guidance:
+      - Multiple valid paths may exist. The coverage report may reflect the best path or require paths
+        through multiple independent roots.
+
+    - name: Coverage report production
+      identifier_fragment: coverage-report
+      statement: The verification pipeline shall produce a coverage report containing objective
+        verification facts including hard check status, transparency inclusion status, time
+        anchor status, verified dimension list, dimension count, independent root count, and
+        multi-log quorum status.
+      guidance:
+      - The coverage report is a deterministic function of the artifact and the verifier's
+        verification state.
+      - Two conforming verifiers with the same state produce identical coverage reports.
+
+    - name: Scheme-defined classification policy
+      identifier_fragment: classification-policy
+      statement: The scheme shall define a deterministic classification policy that maps coverage
+        report fields to grade labels. The classification policy shall be a pure function of the
+        coverage report, published in the deployment manifest.
+      guidance:
+      - The standard does not prescribe grade labels or classification thresholds.
+      - Each scheme defines its own labels, thresholds, and rules appropriate to its domain.
+
+    - name: Verifier acceptance policy
+      identifier_fragment: acceptance-policy
+      statement: The verifier shall define an acceptance policy that maps the classified grade to
+        an accept or reject decision for a given decision context.
+      guidance:
+      - The acceptance policy is the verifier's risk decision.
+      - The standard does not prescribe acceptance thresholds.
+
+    - name: Time freshness window
+      identifier_fragment: time-freshness-window
+      statement: A verifier shall apply a configurable time freshness window to time dimension
+        attestations and shall reject any time attestation whose timestamp falls outside the
+        configured window. Artifacts whose time attestations are within a secondary grace period
+        may be accepted at a downgraded classification label as determined by the acceptance policy.
+      guidance:
+      - The freshness window parameter is declared in the verifier's acceptance policy.
+      - The default freshness window is scheme-defined.
+
+    - name: Offline verification capability
+      identifier_fragment: offline-verification
+      statement: A verifier shall be able to verify artifacts offline using the trust anchor
+        bundle, cached CRLs within validity or grace period, cached transparency tree heads
+        and inclusion proofs, and embedded or hybrid chains.
+      guidance:
+      - Offline verification produces the same grade as online verification except where
+        freshness-dependent checks cannot be satisfied.
