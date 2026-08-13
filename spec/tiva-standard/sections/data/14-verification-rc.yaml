@@ -89,5 +89,5 @@ groups:
         bundle, cached CRLs within validity or grace period, cached transparency tree heads
         and inclusion proofs, and embedded or hybrid chains.
       guidance:
-      - Offline verification produces the same grade as online verification except where
+      - Offline verification produces the same classification label as online verification except where
         freshness-dependent checks cannot be satisfied.
