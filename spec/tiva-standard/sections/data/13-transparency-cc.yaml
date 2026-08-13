@@ -68,7 +68,7 @@ groups:
       - /req/transparency/mandatory-inclusion
       purpose: Verify un-logged artifacts are downgraded or rejected.
       method: Present artifacts with and without transparency log inclusion proofs. Verify
-        artifacts with proofs are accepted (subject to grade). Verify artifacts without proofs
+        artifacts with proofs are accepted (subject to classification label). Verify artifacts without proofs
         are downgraded or rejected.
       type: Conformance
 

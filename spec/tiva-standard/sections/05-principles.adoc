@@ -191,4 +191,4 @@ timestamp shall not be the sole evidence of when an artifact was signed.
 The {{classification label}} of a {{trusted artifact}} shall reflect the depth and
 breadth of its {{dimensional coverage}}, not merely the binary validity of its
 primary signature. A verifier shall be able to apply risk-based policy to the
-grade.
+classification label.

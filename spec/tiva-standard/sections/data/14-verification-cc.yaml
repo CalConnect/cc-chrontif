@@ -72,9 +72,9 @@ groups:
       identifier_fragment: acceptance-policy
       targets:
       - /req/verification/acceptance-policy
-      purpose: Verify the verifier's acceptance policy maps grades to accept/reject decisions.
+      purpose: Verify the verifier's acceptance policy maps classification labels to accept/reject decisions.
       method: Configure acceptance policies for different decision contexts. Verify artifacts
-        are accepted or rejected correctly based on their classified grade and the context.
+        are accepted or rejected correctly based on their classification label and the context.
       type: Conformance
 
     - name: Time freshness window test
