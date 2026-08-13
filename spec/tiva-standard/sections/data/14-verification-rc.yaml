@@ -67,7 +67,7 @@ groups:
 
     - name: Verifier acceptance policy
       identifier_fragment: acceptance-policy
-      statement: The verifier shall define an acceptance policy that maps the classified grade to
+      statement: The verifier shall define an acceptance policy that maps the classification label to
         an accept or reject decision for a given decision context.
       guidance:
       - The acceptance policy is the verifier's risk decision.

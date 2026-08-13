@@ -13,7 +13,7 @@ not provably included in a recognized log are downgraded (see
 <<verification>>). A verifier whose policy sets
 `requires_transparency` to true (the default) rejects artifacts without
 inclusion proofs; a verifier whose policy sets it to false accepts them at a
-downgraded grade.
+downgraded classification label.
 
 This clause specifies the transparency log structure, inclusion proofs, external
 time anchoring, {{gossip}} between {{mirror,mirrors}}, and the multi-log

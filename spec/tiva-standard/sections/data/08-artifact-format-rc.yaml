@@ -118,7 +118,7 @@ groups:
       identifier_fragment: trust-cement
       statement: Once co-signatures are applied to an artifact, it shall not be possible
         to strip a co-signature without breaking the artifact's self-description, and
-        each co-signer's commitment to the canonical payload shall be non-repudiable.
+        each co-signer's commitment to the canonical payload shall be undeniable.
       guidance:
       - The transparency log records the artifact with all co-signatures and cannot
         be rewritten.
@@ -137,7 +137,7 @@ groups:
         from a time authority that records the existence of the artifact hash at a
         stated time and anchors that record to an external time source.
       guidance:
-      - The time dimension is objective, non-repudiable, and cross-domain.
+      - The time dimension is objective, tamper-evident, and cross-domain.
 
     - name: Living artifact accumulation
       identifier_fragment: living-artifact

@@ -144,7 +144,7 @@ groups:
       identifier_fragment: trust-cement
       targets:
       - /req/artifact-format/trust-cement
-      purpose: Verify co-signatures cannot be stripped and commitments are non-repudiable.
+      purpose: Verify co-signatures cannot be stripped and commitments are undeniable.
       method: Attempt to remove a co-signature from an artifact and verify the artifact's
         self-description is broken. Verify the transparency log entry includes all
         co-signatures and cannot be rewritten.
