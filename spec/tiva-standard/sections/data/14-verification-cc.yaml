@@ -24,7 +24,7 @@ groups:
       purpose: Verify the pipeline applies ordered hard and soft checks correctly.
       method: Construct artifacts that fail each hard check and verify the pipeline short-circuits
         to the scheme's rejected label. Construct artifacts with varying soft check coverage and
-        verify the grade accumulates correctly.
+        verify the classification label accumulates correctly.
       type: Conformance
 
     - name: Hard check classification test
