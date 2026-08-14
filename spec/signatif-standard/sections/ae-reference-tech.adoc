@@ -5,7 +5,7 @@
 
 === General
 
-This annex demonstrates CHRONTIF instantiated with a concrete technology
+This annex demonstrates SIGNATIF instantiated with a concrete technology
 stack. It provides implementation-level detail — artifact structure,
 computation steps, verification examples, and test scenarios — sufficient for
 an implementer to build a conforming system against this stack. All technology
@@ -15,7 +15,7 @@ The reference stack:
 
 [cols="2,3",options="header"]
 |===
-| CHRONTIF concept | Reference technology
+| SIGNATIF concept | Reference technology
 
 | Classical signature algorithm
 | Ed25519 (<<rfc8032>>)

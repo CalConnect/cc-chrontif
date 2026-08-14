@@ -4,7 +4,7 @@
 
 === General
 
-The {{authorization scope,scope}} is a first-class concept in the CHRONTIF
+The {{authorization scope,scope}} is a first-class concept in the SIGNATIF
 framework. Unlike traditional PKI, in which a CA's authorization boundary is
 defined by external policy and is not verifiable from the certificate itself,
 the authorization scope in this document is a signed field carried in every

@@ -4,7 +4,7 @@
 
 === General
 
-This clause specifies the lifecycle of cryptographic keys in the CHRONTIF
+This clause specifies the lifecycle of cryptographic keys in the SIGNATIF
 framework: generation, encrypted storage, import and export, hardware
 security module interfaces, and certificate signing requests.
 

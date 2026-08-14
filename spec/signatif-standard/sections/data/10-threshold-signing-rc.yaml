@@ -87,7 +87,7 @@ groups:
         authority's published aggregate key and shall ensure that fewer than T members
         cannot produce a valid signature.
       guidance:
-      - The CHRONTIF framework is ceremony-protocol-neutral; any protocol satisfying these
+      - The SIGNATIF framework is ceremony-protocol-neutral; any protocol satisfying these
         properties may be used.
 
     - name: Rogue-key attack prevention

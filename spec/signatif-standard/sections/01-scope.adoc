@@ -52,7 +52,7 @@ This document specifies the following:
 
 The following are out of scope of this document:
 
-* implementation details for the realization of any CHRONTIF component;
+* implementation details for the realization of any SIGNATIF component;
 
 * domain-specific content, schemas, or data models that a particular adopter
   community may define as profiles of this document;
@@ -67,4 +67,4 @@ The following are out of scope of this document:
 * network transport protocols for artifact delivery, except for the
   requirements on chain resolution and discovery;
 
-* legal or regulatory recognition of CHRONTIF-based artifacts in any jurisdiction.
+* legal or regulatory recognition of SIGNATIF-based artifacts in any jurisdiction.

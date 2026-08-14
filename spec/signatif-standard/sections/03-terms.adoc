@@ -141,7 +141,7 @@ multi-dimensional authorization boundary that defines the extent of a
 {{trust authority}}'s signing power, carried as a signed field in every
 certificate and cryptographically enforced at every delegation link
 
-NOTE: Authorization scope is the foundational concept of the CHRONTIF trust
+NOTE: Authorization scope is the foundational concept of the SIGNATIF trust
 model: an entity is not trusted in the abstract, but only within its
 authorization scope. The scope constrains the class of {{trusted
 artifact,trusted artifacts}} that the authority's keys are authorized to sign.
@@ -238,7 +238,7 @@ formal revocation of previously-granted trust, executed by authorized parties
 through threshold-gated revocation mechanisms, in response to key compromise,
 scope violation, or fraud
 
-NOTE: Trust repudiation is a defining property of the CHRONTIF framework.
+NOTE: Trust repudiation is a defining property of the SIGNATIF framework.
 Trust is treated as a lifecycle with a defined termination, not as a permanent
 state. This contrasts with traditional PKI, which assumes trust persists once
 granted. Repudiation propagates to all {{trusted artifact,trusted artifacts}}
@@ -384,7 +384,7 @@ underlying certificate or artifact remains the authoritative source.
 |===
 | Abbreviation | Meaning
 
-| CHRONTIF | Convergent hierarchical repudiable open network trust infrastructure framework
+| SIGNATIF | Convergent hierarchical repudiable open network trust infrastructure framework
 | CA | Certificate Authority
 | COSE | CBOR Object Signing and Encryption
 | CRL | Certificate Revocation List

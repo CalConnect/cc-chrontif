@@ -4,7 +4,7 @@
 
 === General
 
-A trust infrastructure that conforms to the CHRONTIF framework as described in this
+A trust infrastructure that conforms to the SIGNATIF framework as described in this
 document aims to provide verifiable artifacts whose trustworthiness is
 established by the convergence of multiple independent trust dimensions, each
 backed by its own trust tree.
@@ -30,7 +30,7 @@ The architecture consists of four main areas of concern:
 
 ==== The four-level model
 
-Signing authority in the CHRONTIF framework flows through four levels:
+Signing authority in the SIGNATIF framework flows through four levels:
 
 .Four-level delegation model
 [cols="1,3,2,1"]
@@ -100,7 +100,7 @@ An end certificate shall carry:
 ==== From chain to graph
 
 Traditional PKI models trust as a linear chain: root, intermediate CA, leaf
-certificate. The CHRONTIF framework generalizes this to a {{trust graph}} — a
+certificate. The SIGNATIF framework generalizes this to a {{trust graph}} — a
 directed acyclic graph (DAG) in which multiple valid paths may exist between
 an artifact and a root anchor (<<fig-trust-graph>>).
 
@@ -125,7 +125,7 @@ The trust graph arises from four structural features:
 
 ==== Path-finding
 
-The verifier's task in the CHRONTIF framework is not to walk a single chain but to
+The verifier's task in the SIGNATIF framework is not to walk a single chain but to
 find paths in the trust graph from the artifact to any anchor in the {{trust
 anchor bundle}}. Multiple valid paths may exist; the coverage report records all
 valid paths, and the classification policy may require paths through multiple

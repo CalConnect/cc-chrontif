@@ -5,7 +5,7 @@
 
 === General
 
-Different CHRONTIF deployments may use different algorithms, formats, and
+Different SIGNATIF deployments may use different algorithms, formats, and
 transparency log implementations. This annex describes the mechanisms by which
 such heterogeneous deployments can verify each other's artifacts.
 

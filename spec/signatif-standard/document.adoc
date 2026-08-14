@@ -1,4 +1,4 @@
-= Convergent hierarchical repudiable open network trust infrastructure framework —
+= Trust infrastructure framework for verifiable artifacts —
   Distributed threshold issuance, multi-dimensional attestation, and offline verification
 :docnumber: 99999
 :edition: 1

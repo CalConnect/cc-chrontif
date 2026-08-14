@@ -4,7 +4,7 @@
 
 === General
 
-In the CHRONTIF framework, {{threshold signing}} is not a property of the root
+In the SIGNATIF framework, {{threshold signing}} is not a property of the root
 alone. Any {{trust authority}} at any level of the {{trust graph}} may operate
 under a threshold scheme, ensuring that no single key compromises any level of
 the delegation hierarchy.
@@ -128,7 +128,7 @@ An FTA lifecycle consists of:
 === Ceremony protocol
 
 A {{ceremony}} is the protocol by which a {{quorum}} of key holders cooperates
-to produce a {{threshold signing}} signature. The CHRONTIF framework is
+to produce a {{threshold signing}} signature. The SIGNATIF framework is
 ceremony-protocol-neutral: any protocol that produces a verifiable threshold
 signature under the authority's aggregate key may be used.
 

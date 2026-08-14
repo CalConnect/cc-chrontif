@@ -13,3 +13,5 @@
 # Temp files
 *_files/
 .document*
+# Metanorma retry artifacts
+*.pdf.err.*
