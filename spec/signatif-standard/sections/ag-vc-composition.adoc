@@ -12,6 +12,7 @@ specify requirements.
 
 === Concept mapping
 
+.Concept mapping between W3C Verifiable Credentials and SIGNATIF
 [cols="2,2,3",options="header"]
 |===
 | W3C VC concept | SIGNATIF equivalent | Relationship

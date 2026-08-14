@@ -13,6 +13,7 @@ choices are examples; this annex does not mandate them.
 
 The reference stack:
 
+.Reference technology mapping
 [cols="2,3",options="header"]
 |===
 | SIGNATIF concept | Reference technology
@@ -138,6 +139,7 @@ using different format profiles may use different structures.
 
 Key fields:
 
+.Reference artifact key fields
 [cols="2,3",options="header"]
 |===
 | Field | Purpose
@@ -367,6 +369,7 @@ artifact configuration, the verification state, and the expected result.
 Grade labels shown are for the reference stack's example classification
 policy; other schemes may use different labels.
 
+.Test scenarios and expected grades
 [cols="3,4,2,1",options="header"]
 |===
 | Scenario | Configuration | Expected grade | Pass/fail
@@ -465,6 +468,7 @@ and checks the `valid_until` date.
 The reference stack uses JSON Logic for scope conditions. JSON Logic is
 deterministic, Turing-incomplete, and widely implemented.
 
+.Scope condition expressions
 [cols="2,3",options="header"]
 |===
 | Purpose | Expression
