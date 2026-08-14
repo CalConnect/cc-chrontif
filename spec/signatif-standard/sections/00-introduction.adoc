@@ -38,17 +38,18 @@ calls for machine-verifiable metrological conformity. These mandates create a
 demand for standardized trust infrastructure that no existing technology
 satisfies.
 
-=== CHRONTIF
+=== SIGNATIF
 
-This document specifies CHRONTIF — the Convergent Hierarchical Repudiable Open
-Network Trust Infrastructure Framework. CHRONTIF binds signing authority to a
+This document specifies SIGNATIF — the Sealed Interoperable Graduated
+Non-repudiable Anchored Trust Infrastructure Framework. SIGNATIF binds
+signing authority to a
 multi-dimensional scope, establishes artifact trustworthiness through the
 convergence of independent attestations from multiple trust dimensions
 (authority, person, time, location, environment, and extensible others), and
 treats trust as a lifecycle: trust is granted, sustained, and repudiated
 through formal threshold-gated mechanisms.
 
-CHRONTIF is designed for the regulated-artifact trust problem: artifacts that
+SIGNATIF is designed for the regulated-artifact trust problem: artifacts that
 must be verifiable offline by anyone holding the trust anchor bundle, graduated
 in confidence through objective coverage assessment, and revocable
 retroactively when the real-world conditions that made them trustworthy no
@@ -59,9 +60,11 @@ metrology certificate system developed under the OIML SMART program, which
 demonstrated multi-dimensional attestation, threshold signing, transparency
 logging, and scope enforcement in a five-tier legal metrology hierarchy.
 
-NOTE: The name CHRONTIF derives from Greek _chronos_ (χρόνος, "time") and the
-French adjectival suffix _-tif_. The time root captures the endurance property:
-records must outlive their issuers structurally, not by policy.
+NOTE: The name SIGNATIF derives from Latin _signare_ ("to mark with a seal, to
+sign"), the root of _sign_, _signature_, and _signet_, combined with the
+adjectival suffix _-tif_. The signing root captures the framework's premise:
+trustworthiness is established by what is verifiably signed, not by who is
+trusted.
 
 === Challenges with traditional PKI
 
@@ -80,7 +83,7 @@ where the signer and verifier interact in real time — this model is sufficient
 and its ecosystem maturity is a significant advantage. PKI's standardized
 certificate formats, interoperable trust stores, mature HSM and key management
 infrastructure, established audit frameworks (WebTrust, ETSI), and decades of
-operational experience are substantial engineering assets. CHRONTIF reuses
+operational experience are substantial engineering assets. SIGNATIF reuses
 PKI's cryptographic primitives and builds on its organizational assurance
 frameworks.
 
@@ -95,7 +98,7 @@ content:
   signing at intermediate tiers — cryptographic threshold schemes
   implementations exist and HSM-based M-of-N quorum is common at the root.
   However, X.509 does not require threshold, and deployment practice
-  overwhelmingly uses single-key intermediates. CHRONTIF makes threshold
+  overwhelmingly uses single-key intermediates. SIGNATIF makes threshold
   mandatory at every authority level as a conformance requirement.
 
 * **Scope extensions exist but are inconsistently enforced.** X.509 Name
@@ -103,7 +106,7 @@ content:
   extensions that constrain a CA's authority. However, enforcement is
   implementation-dependent — many verifiers do not check Name Constraints —
   and these mechanisms constrain only names and key-usage types, not
-  multi-dimensional authorization boundaries. CHRONTIF requires
+  multi-dimensional authorization boundaries. SIGNATIF requires
   multi-dimensional scope enforcement as a hard, mandatory verification step
   at every delegation link.
 
@@ -112,7 +115,7 @@ content:
   signerInfos, PAdES, XMLDSig). However, the PKI model provides no
   standardized mechanism to evaluate the combined trustworthiness of
   independently-signed attestations — their semantic relationship, their
-  independence, or how their convergence should be assessed. CHRONTIF
+  independence, or how their convergence should be assessed. SIGNATIF
   provides a coverage report and classification policy for this purpose.
 
 * **Chain validation is binary; trust graduation is policy-interpreted.** A
@@ -120,7 +123,7 @@ content:
   does carry assurance metadata (EV/OV/DV certificate types, Certificate
   Policy OIDs, eIDAS qualified status), and verifiers can apply graduated
   policies based on these. However, the graduation is policy-interpreted and
-  non-standardized in its computation. CHRONTIF provides a normatively
+  non-standardized in its computation. SIGNATIF provides a normatively
   specified coverage report and classification policy so that two conforming
   verifiers compute identical classification labels for the same dimensional
   coverage.
@@ -138,7 +141,7 @@ content:
   content validity is a deliberate design boundary in PKI — the certificate
   validates the key; the application validates the content. Long-term
   validation schemes (CAdES-A, PAdES-LTV) partially address archive-time
-  validity but still operate at the certificate/signature level. CHRONTIF
+  validity but still operate at the certificate/signature level. SIGNATIF
   integrates condition binding into the verification framework itself.
 
 * **Timestamps are available but not required for verification.** RFC 3161
@@ -146,7 +149,7 @@ content:
   time evidence and are legally recognized in many jurisdictions (e.g., eIDAS
   qualified electronic timestamps). However, standard PKI path validation
   does not require timestamp evidence — `notBefore`/`notAfter` are
-  issuer-asserted and suffice for chain validation. CHRONTIF makes
+  issuer-asserted and suffice for chain validation. SIGNATIF makes
   independent time attestation a first-class trust dimension.
 
 * **Transparency is mandatory in web PKI but not in PKI generally.**
@@ -154,50 +157,50 @@ content:
   TLS certificate issuance, and major browsers reject certificates without
   embedded SCTs. However, CT is specific to the web PKI; code signing,
   email (S/MIME), document signing, and private PKI deployments do not
-  require transparency. CHRONTIF makes transparency log inclusion a
+  require transparency. SIGNATIF makes transparency log inclusion a
   universal requirement across all deployment types.
 
 * **Authorization is static at the certificate level.** Certificates assert
   "this key is authorized" as a fact for the certificate's validity period.
   X.509 attribute certificates can bind attributes to a holder, but these
   attributes describe the holder, not conditions about a specific artifact's
-  content. CHRONTIF scope conditions are predicates about the artifact's
+  content. SIGNATIF scope conditions are predicates about the artifact's
   content and production context, evaluated at verification time.
 
 * **Possession-based authenticity by default.** A static PKI certificate and
   its signed artifact can be copied and replayed. Challenge-response
   mechanisms exist in PKI ecosystems (mTLS channel binding, nonce-based
-  protocols) but are application-layer additions. CHRONTIF specifies
+  protocols) but are application-layer additions. SIGNATIF specifies
   challenge-response as a conformance capability for device signers.
 
 * **Attributes bind to holders, not to artifact production conditions.** X.509
   attribute certificates and qualified certificates carry cryptographically
   signed attributes (roles, clearance levels, qualifications). However,
   these describe the certificate holder, not the conditions under which a
-  specific artifact was produced. CHRONTIF scope conditions bind to the
+  specific artifact was produced. SIGNATIF scope conditions bind to the
   artifact's content and production context.
 
 These limitations are specific to the persistent-artifact trust problem. For
 server authentication, code signing under active policy enforcement, and
 document signing within organizational trust boundaries, PKI remains the
 appropriate and mature choice (see <<annex-b>> for a detailed comparison).
-CHRONTIF addresses the problem space where these limitations become
+SIGNATIF addresses the problem space where these limitations become
 operationally significant: artifacts that must be verifiable offline, graduated
 in trust, revocable retroactively, and attested by multiple independent
 dimensions of reality.
 
 ==== Simplicity and complexity: a nuanced comparison
 
-Whether CHRONTIF is simpler or more complex than PKI depends on the dimension
+Whether SIGNATIF is simpler or more complex than PKI depends on the dimension
 of comparison and the perspective of the stakeholder:
 
-**Where CHRONTIF is simpler:**
+**Where SIGNATIF is simpler:**
 
 * **Scope enforcement is algorithmic, not policy-interpreted.** PKI constrains
   CA authority through dozens of certificate extensions (Name Constraints, EKU,
   Certificate Policies, Policy Mappings, Inhibit Any-Policy) that interact in
   implementation-dependent ways, backed by external policy documents (the CA/B
-  Forum Baseline Requirements run to hundreds of pages). CHRONTIF uses one
+  Forum Baseline Requirements run to hundreds of pages). SIGNATIF uses one
   multi-dimensional scope structure verified by one deterministic narrowing
   algorithm. The verifier does not interpret policy; it runs an algorithm on
   signed fields.
@@ -205,21 +208,21 @@ of comparison and the perspective of the stakeholder:
 * **Trust assessment is standardized.** In PKI, deciding how much to trust a
   certificate requires each application to interpret EV/OV/DV status,
   Certificate Policy OIDs, CT presence, and revocation freshness — each
-  application re-derives the logic. CHRONTIF provides one coverage report;
+  application re-derives the logic. SIGNATIF provides one coverage report;
   the application compares the classification to its acceptance threshold.
 
 * **Cross-domain trust is artifact-level, not CA-level.** PKI cross-
   certification involves bridge CA topology, cross-certificates with
-  constraints, and path building across multiple hierarchies. CHRONTIF handles
+  constraints, and path building across multiple hierarchies. SIGNATIF handles
   cross-domain trust through co-signatures on the artifact itself — no bridge
   CAs, no cross-certificate management.
 
 * **Revocation is unified.** PKI offers CRLs, OCSP, OCSP stapling, OCSP
   must-staple, CRLite, CRLSets, and short-lived certificates — multiple
-  competing mechanisms with different deployment profiles. CHRONTIF has one
+  competing mechanisms with different deployment profiles. SIGNATIF has one
   propagation model with one offline strategy (CRL grace period).
 
-**Where CHRONTIF is more complex — or can be, depending on configuration:**
+**Where SIGNATIF is more complex — or can be, depending on configuration:**
 
 * **Issuance scales with dimensional coverage.** An artifact may carry N
   co-signatures from independent trust dimensions. However, a minimal
@@ -229,13 +232,13 @@ of comparison and the perspective of the stakeholder:
   where its trust model requires them.
 
 * **Threshold is required at every level — but 1-of-1 is conforming.** PKI's
-  single-key CA model is a special case of CHRONTIF's threshold model with
+  single-key CA model is a special case of SIGNATIF's threshold model with
   T = N = 1. A single party holding all signing keys (N-of-N with one party)
   is also conforming. No ceremony infrastructure is needed for 1-of-1.
-  CHRONTIF generalizes PKI: PKI-like deployments are one configuration of
-  the CHRONTIF framework.
+  SIGNATIF generalizes PKI: PKI-like deployments are one configuration of
+  the SIGNATIF framework.
 
-* **Transparency infrastructure is mandatory — but can be minimal.** CHRONTIF
+* **Transparency infrastructure is mandatory — but can be minimal.** SIGNATIF
   requires a transparency log, but the minimum is a single operator with a
   single mirror and no gossip quorum (a lower classification label). Deployments
   add mirrors, gossip, and multi-log attestation proportionate to their
@@ -249,14 +252,14 @@ of comparison and the perspective of the stakeholder:
   checks that contribute to the classification label but are not required
   for basic acceptance.
 
-**PKI as a special case of CHRONTIF:** A CHRONTIF deployment configured with
+**PKI as a special case of SIGNATIF:** A SIGNATIF deployment configured with
 1-of-1 threshold at every level, a single data dimension, no scope conditions,
 transparency with a single log and no gossip, and a binary acceptance policy
 (accept the minimum classification label) is functionally equivalent to a PKI deployment. This
 is not a degenerate case — it is a conforming configuration. Organizations
 can start with this PKI-equivalent baseline and incrementally add dimensions,
 threshold protection, transparency infrastructure, and graduated trust as
-their requirements evolve. CHRONTIF is not PKI plus extra complexity; it is a
+their requirements evolve. SIGNATIF is not PKI plus extra complexity; it is a
 general framework in which PKI's trust model is one configuration among many.
 
 **The net trade-off:** For simple trust problems — single signer, binary
@@ -264,7 +267,7 @@ acceptance, no offline verification beyond cached CRLs — PKI is the simpler
 choice and benefits from decades of ecosystem maturity. For problems requiring
 multi-party attestation, graduated assessment, condition lifecycle management,
 offline verification, or threshold protection at intermediate levels,
-CHRONTIF provides these as integrated, standardized, algorithmically verified
+SIGNATIF provides these as integrated, standardized, algorithmically verified
 mechanisms — rather than requiring each application to assemble them ad hoc
 from PKI primitives, policy documents, and custom code.
 
@@ -296,12 +299,12 @@ cryptographically. The remaining dimensions are carried as unsigned metadata,
 trusting the signer to report them honestly. A compromised key is sufficient to
 forge an artifact with fabricated time, location, and environmental context.
 
-CHRONTIF makes every dimension a cryptographic co-signature dimension, each backed
+SIGNATIF makes every dimension a cryptographic co-signature dimension, each backed
 by its own trust tree, each independently verifiable. The artifact becomes a
 convergence point of independent attestations rather than a single-authority
 assertion.
 
-=== Why CHRONTIF
+=== Why SIGNATIF
 
 Persistent artifacts — records whose trustworthiness must outlive the signing
 session and, in many cases, outlive their issuers — face a problem that
@@ -312,7 +315,7 @@ dimensions, does not graduate trust based on the depth and breadth of
 attestation, and cannot revoke an artifact when the conditions that made it
 trustworthy no longer hold.
 
-CHRONTIF exists because these capabilities are not optional refinements of PKI
+SIGNATIF exists because these capabilities are not optional refinements of PKI
 — they cannot be achieved in a standardized, interoperable, cryptographically enforced manner within the PKI model as currently specified. Adding scope
 enforcement to X.509 certificates does not make scope machine-checkable;
 adding multiple signatures to a PDF does not create a convergence model;
@@ -326,7 +329,7 @@ hierarchies — one for authority, one for operator identity, one for
 timestamping, one for location — and have each independently sign the same
 artifact?
 
-Multiple PKIs can achieve multi-party signing, and several of CHRONTIF's
+Multiple PKIs can achieve multi-party signing, and several of SIGNATIF's
 capabilities can be approximated with PKI extensions and application-level
 glue. X.509 Name Constraints can restrict a CA's domain; PAdES supports
 multiple signatures on a PDF; OCSP provides real-time revocation status; CT
@@ -335,20 +338,20 @@ developer could build an ad-hoc convergence system on top of multiple PKIs.
 
 However, the result would be non-standardized, non-interoperable, and
 enforced by application policy rather than by cryptographic invariant. The
-following distinctions explain why CHRONTIF exists as a separate framework:
+following distinctions explain why SIGNATIF exists as a separate framework:
 
 * **Convergence is enforced, not assumed.** Multiple PKI signatures can be
   applied to the same document, but nothing in the PKI model ensures all
   signers attest the same canonical bytes. PAdES counter-signatures create
   ordering dependencies (signature 3 signs over signature 2); if signature 2
-  is later revoked, the dependency chain becomes ambiguous. CHRONTIF requires
+  is later revoked, the dependency chain becomes ambiguous. SIGNATIF requires
   all co-signatures to attest the same canonical payload hash independently,
   with no ordering dependency, and partial attestation is non-conforming.
 
 * **Scope is cryptographically checked, not policy-defined.** X.509 Name
   Constraints and Extended Key Usage can restrict a CA's authority, but
   enforcement is implementation-dependent — many verifiers ignore Name
-  Constraints. CHRONTIF's scope is checked at every delegation link as a hard
+  Constraints. SIGNATIF's scope is checked at every delegation link as a hard
   verification failure. The scope is multi-dimensional (domain, class,
   conditions), not name-based.
 
@@ -357,7 +360,7 @@ following distinctions explain why CHRONTIF exists as a separate framework:
   real-time certificate status. But neither mechanism can express "this
   attestation is valid only if the measured value in the artifact is within
   tolerance" — a predicate about the artifact's content evaluated at
-  verification time. CHRONTIF scope conditions are such predicates.
+  verification time. SIGNATIF scope conditions are such predicates.
 
 * **Revocation propagates to conditions, not just keys.** In multiple PKIs,
   revoking a calibration certificate tells the verifier the certificate is
@@ -365,23 +368,23 @@ following distinctions explain why CHRONTIF exists as a separate framework:
   calibration — there is no hash-binding between the artifact and the
   real-world states under which it was produced. The application must
   discover and enforce this link itself, with no standardized mechanism.
-  CHRONTIF standardizes the hash-binding and propagates state revocation to
+  SIGNATIF standardizes the hash-binding and propagates state revocation to
   all dependent artifacts.
 
 * **Combination is standardized, not reinvented.** Multiple PKIs produce N
   independent pass/fail results. Each application decides what these mean —
-  and every application reinvents the logic. CHRONTIF provides a
+  and every application reinvents the logic. SIGNATIF provides a
   coverage report and classification policy that two conforming verifiers compute
   identically, enabling interoperability between independently developed
   verification systems.
 
 * **Transparency covers artifacts, not just certificates.** CT logs track
   certificate issuance, not artifacts. A multi-PKI deployment would need
-  separate, ad-hoc logging for each PKI's signed artifacts. CHRONTIF
+  separate, ad-hoc logging for each PKI's signed artifacts. SIGNATIF
   requires every certificate and artifact to be in a transparency log, and
   inclusion is a verification requirement.
 
-The argument is not that multiple PKIs cannot approximate some CHRONTIF
+The argument is not that multiple PKIs cannot approximate some SIGNATIF
 capabilities. The argument is that standardization, cryptographic
 enforcement, and cross-implementation interoperability require a framework
 that treats convergence, scope, conditions, transparency, and graduated trust
@@ -389,9 +392,9 @@ as integrated, normatively specified mechanisms — not as ad-hoc
 application-level conventions layered on top of disconnected certificate
 hierarchies.
 
-=== How CHRONTIF works
+=== How SIGNATIF works
 
-CHRONTIF addresses the persistent-artifact trust problem through five
+SIGNATIF addresses the persistent-artifact trust problem through five
 integrated mechanisms:
 
 * **Cryptographic scope.** Each authority's authorization boundary is a
@@ -437,7 +440,7 @@ retrofitted to authenticate the trustworthiness of persistent artifacts.
 .Differentiation from traditional PKI
 [%header,cols="1,2,2"]
 |===
-| # | Traditional PKI | This document (CHRONTIF)
+| # | Traditional PKI | This document (SIGNATIF)
 
 | 1
 | Scope is policy-defined (Baseline Requirements), not carried in the certificate.
@@ -518,7 +521,7 @@ This document is organized as follows:
   governance, and algorithm agility.
 * <<security>> specifies the security considerations and threat model.
 * <<annex-a>> provides the normative conformance test suite.
-* <<annex-b>> compares CHRONTIF with traditional PKI and provides use case
+* <<annex-b>> compares SIGNATIF with traditional PKI and provides use case
   guidance.
 * <<annex-c>> specifies the scheme-maintained registry requirements.
 * <<annex-d>> presents a sample supply-chain provenance domain profile.

@@ -4,7 +4,7 @@
 
 === General
 
-A deployment manifest is a declarative description of a CHRONTIF deployment's
+A deployment manifest is a declarative description of a SIGNATIF deployment's
 topology, authorities, algorithms, and transparency endpoints. It enables a
 deployer to declare the structure of their trust infrastructure in a
 machine-checkable format, and enables verifiers to understand the deployment's

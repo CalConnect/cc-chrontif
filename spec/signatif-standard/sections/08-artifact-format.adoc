@@ -4,7 +4,7 @@
 
 === General
 
-A {{trusted artifact}} is the deliverable of the CHRONTIF framework. It is a signed
+A {{trusted artifact}} is the deliverable of the SIGNATIF framework. It is a signed
 data object carrying one or more signatures over a deterministic canonical
 representation of its payload. This clause specifies the format-agnostic
 binding requirements that all conforming artifact formats shall satisfy, the
@@ -138,7 +138,7 @@ binding requirements and specification of their canonicalization algorithm.
 
 The payload of a {{trusted artifact}} follows a domain-specific schema. The
 schema is identified by a URI (`$id`) and is versioned. Multiple payload
-schemas may coexist within one CHRONTIF deployment, enabling different domains to
+schemas may coexist within one SIGNATIF deployment, enabling different domains to
 define their own artifact content structures.
 
 A payload schema shall be deterministic: two artifacts with the same logical

@@ -14,20 +14,20 @@ specify requirements.
 
 [cols="2,2,3",options="header"]
 |===
-| W3C VC concept | CHRONTIF equivalent | Relationship
+| W3C VC concept | SIGNATIF equivalent | Relationship
 
 | Verifiable Credential
 | {{trusted artifact}}
-| A VC is a payload; a CHRONTIF artifact wraps and attests it with
+| A VC is a payload; a SIGNATIF artifact wraps and attests it with
   multi-dimensional co-signatures.
 
 | Issuer
 | {{end certificate}} holder
-| The VC issuer's signing key is authorized by a CHRONTIF delegation chain.
+| The VC issuer's signing key is authorized by a SIGNATIF delegation chain.
 
 | `proof`
 | Co-signature (data dimension)
-| The VC proof is the primary attestation; CHRONTIF co-signatures add
+| The VC proof is the primary attestation; SIGNATIF co-signatures add
   independent dimension attestations on the same content.
 
 | `credentialSubject`
@@ -35,34 +35,34 @@ specify requirements.
 | The claims about the subject that all co-signers attest.
 
 | Verifiable Presentation
-| (no CHRONTIF equivalent)
-| A VP can wrap a CHRONTIF artifact, adding holder binding.
+| (no SIGNATIF equivalent)
+| A VP can wrap a SIGNATIF artifact, adding holder binding.
 
 | Credential revocation
 | Revocation propagation
-| VC revocation invalidates the credential; CHRONTIF revocation propagates
+| VC revocation invalidates the credential; SIGNATIF revocation propagates
   to condition-dependent artifacts.
 
 | (no equivalent)
 | Cryptographic scope
-| CHRONTIF adds machine-checkable, multi-dimensional scope enforced at every
+| SIGNATIF adds machine-checkable, multi-dimensional scope enforced at every
   delegation link.
 
 | (no equivalent)
 | Coverage report + classification
-| CHRONTIF adds objective dimensional coverage assessment and scheme-defined
+| SIGNATIF adds objective dimensional coverage assessment and scheme-defined
   classification.
 
 | (no equivalent)
 | Transparency logging
-| CHRONTIF requires every artifact in a recognized transparency log; VC has
+| SIGNATIF requires every artifact in a recognized transparency log; VC has
   no mandatory transparency.
 |===
 
-=== Composition pattern 1: VC as CHRONTIF payload
+=== Composition pattern 1: VC as SIGNATIF payload
 
-The VC JSON object is the logical payload. The CHRONTIF artifact wraps it,
-replacing the VC's single `proof` with CHRONTIF multi-dimensional co-signatures:
+The VC JSON object is the logical payload. The SIGNATIF artifact wraps it,
+replacing the VC's single `proof` with SIGNATIF multi-dimensional co-signatures:
 
 ----
 {
@@ -90,20 +90,20 @@ replacing the VC's single `proof` with CHRONTIF multi-dimensional co-signatures:
 }
 ----
 
-In this pattern, the VC `proof` field is omitted — CHRONTIF co-signatures
+In this pattern, the VC `proof` field is omitted — SIGNATIF co-signatures
 serve as the proof. The VC data model is preserved (`@context`, `type`,
 `issuer`, `credentialSubject`); only the proof mechanism changes from
 single-signer to multi-dimensional convergence.
 
-=== Composition pattern 2: CHRONTIF co-signatures as VC proofs
+=== Composition pattern 2: SIGNATIF co-signatures as VC proofs
 
-Each CHRONTIF dimension attestation is expressed as a VC proof entry. The
+Each SIGNATIF dimension attestation is expressed as a VC proof entry. The
 artifact is a standard VC with multiple proofs:
 
 ----
 {
   "@context": ["https://www.w3.org/2018/credentials/v1",
-               "https://chrontif.org/contexts/v1"],
+               "https://signatif.org/contexts/v1"],
   "id": "urn:uuid:batch-2026-001",
   "type": ["VerifiableCredential", "BatchReleaseCredential"],
   "issuer": "did:web:pharmaco.example",
@@ -111,44 +111,44 @@ artifact is a standard VC with multiple proofs:
   "credentialSubject": { ... },
   "proof": [
     {
-      "type": "ChrontifDataSignature",
+      "type": "SignatifDataSignature",
       "verificationMethod": "did:web:pharmaco.example#device-key",
       "proofPurpose": "assertionMethod",
       "proofValue": "<Ed25519 signature>",
-      "chrontif_dimension": "data"
+      "signatif_dimension": "data"
     },
     {
-      "type": "ChrontifPersonSignature",
+      "type": "SignatifPersonSignature",
       "verificationMethod": "did:web:pharmaco.example#operator-key",
       "proofPurpose": "assertionMethod",
       "proofValue": "<Ed25519 signature>",
-      "chrontif_dimension": "person"
+      "signatif_dimension": "person"
     },
     {
-      "type": "ChrontifTimeAttestation",
+      "type": "SignatifTimeAttestation",
       "verificationMethod": "did:web:time-authority.example#key-1",
       "proofPurpose": "assertionMethod",
       "proofValue": "<Ed25519 signature>",
-      "chrontif_dimension": "time"
+      "signatif_dimension": "time"
     }
   ]
 }
 ----
 
 In this pattern, a standard VC verifier validates each proof independently.
-A CHRONTIF-aware verifier additionally computes the coverage report and applies
+A SIGNATIF-aware verifier additionally computes the coverage report and applies
 the scheme's classification policy. This is the most interoperable pattern —
-VC-only systems continue to work; CHRONTIF verifiers get the full convergence
+VC-only systems continue to work; SIGNATIF verifiers get the full convergence
 assessment.
 
-NOTE: The CHRONTIF proof types (`ChrontifDataSignature`, etc.) and the
-`chrontif_dimension` field are scheme-defined. The scheme registers them in its
+NOTE: The SIGNATIF proof types (`SignatifDataSignature`, etc.) and the
+`signatif_dimension` field are scheme-defined. The scheme registers them in its
 format profile registry. The W3C VC proof format extension mechanism supports
 custom proof types.
 
-=== Composition pattern 3: Verifiable Presentation wrapping CHRONTIF artifact
+=== Composition pattern 3: Verifiable Presentation wrapping SIGNATIF artifact
 
-A holder creates a Verifiable Presentation that wraps a CHRONTIF artifact:
+A holder creates a Verifiable Presentation that wraps a SIGNATIF artifact:
 
 ----
 {
@@ -156,9 +156,9 @@ A holder creates a Verifiable Presentation that wraps a CHRONTIF artifact:
   "type": ["VerifiablePresentation"],
   "verifiableCredential": [
     {
-      "type": ["VerifiableCredential", "ChrontifArtifact"],
+      "type": ["VerifiableCredential", "SignatifArtifact"],
       "credentialSubject": { ... },
-      "proof": [ ...CHRONTIF co-signatures... ]
+      "proof": [ ...SIGNATIF co-signatures... ]
     }
   ],
   "proof": {
@@ -170,63 +170,63 @@ A holder creates a Verifiable Presentation that wraps a CHRONTIF artifact:
 ----
 
 The holder binds themselves to the presentation (standard VC holder binding).
-The CHRONTIF co-signatures inside the credential provide the trust convergence
+The SIGNATIF co-signatures inside the credential provide the trust convergence
 assessment. Selective disclosure mechanisms (e.g., BBS+ signatures) can be
-combined with CHRONTIF co-signatures for privacy-preserving presentations.
+combined with SIGNATIF co-signatures for privacy-preserving presentations.
 
-=== What CHRONTIF adds to the VC data model
+=== What SIGNATIF adds to the VC data model
 
 VC provides tamper-evidence, issuer identification, and claims structure.
-CHRONTIF adds the trust infrastructure layer that VC does not specify:
+SIGNATIF adds the trust infrastructure layer that VC does not specify:
 
 * **Delegation hierarchy with scope enforcement.** VC identifies the issuer
   but does not specify the chain of authority from root to issuer, nor
-  machine-checkable scope constraints. CHRONTIF adds a delegation chain with
+  machine-checkable scope constraints. SIGNATIF adds a delegation chain with
   monotonic scope narrowing enforced at every link.
 
 * **Multi-dimensional convergence.** VC supports one proof (or multiple
-  proofs, but with no convergence assessment model). CHRONTIF adds independent
+  proofs, but with no convergence assessment model). SIGNATIF adds independent
   dimension attestations (data, person, time, location, environment, and
   extensible others) with a coverage report and scheme-defined classification.
 
-* **Threshold protection.** VC issuers use single keys. CHRONTIF requires
+* **Threshold protection.** VC issuers use single keys. SIGNATIF requires
   threshold at every authority level, preventing single-key compromise.
 
 * **Mandatory transparency.** VCs can be issued without any public record.
-  CHRONTIF requires every artifact in a recognized transparency log with
+  SIGNATIF requires every artifact in a recognized transparency log with
   inclusion proofs as a verification input.
 
-* **Trust lifecycle.** VC revocation invalidates the credential. CHRONTIF
+* **Trust lifecycle.** VC revocation invalidates the credential. SIGNATIF
   revocation propagates to condition-dependent artifacts, including scope
   condition withdrawal — revoking trust when the real-world conditions that
   made the artifact trustworthy no longer hold.
 
 * **Graduated, reproducible assessment.** VC verification is binary (valid or
-  invalid). CHRONTIF produces an objective coverage report that the scheme's
+  invalid). SIGNATIF produces an objective coverage report that the scheme's
   classification policy maps to domain-specific grade labels.
 
 === Adoption paths
 
-Organizations already using VCs can adopt CHRONTIF incrementally:
+Organizations already using VCs can adopt SIGNATIF incrementally:
 
 * **Add dimensions.** Keep the existing VC issuance pipeline. Add person,
   time, or environment co-signatures as additional VC proofs (pattern 2). The
-  existing VC verifier continues to work; CHRONTIF-aware verifiers get the
+  existing VC verifier continues to work; SIGNATIF-aware verifiers get the
   coverage report.
 
-* **Add scope and transparency.** Wrap the VC in a CHRONTIF artifact
+* **Add scope and transparency.** Wrap the VC in a SIGNATIF artifact
   (pattern 1). Add scope enforcement and transparency logging. The VC
   payload is unchanged; the trust infrastructure is added around it.
 
-* **Full CHRONTIF deployment.** Issue CHRONTIF artifacts natively, using VC
-  as the payload format (pattern 3 with native CHRONTIF co-signatures). This
+* **Full SIGNATIF deployment.** Issue SIGNATIF artifacts natively, using VC
+  as the payload format (pattern 3 with native SIGNATIF co-signatures). This
   gives the full feature set: scope, threshold, transparency, convergence,
   revocation propagation, and condition lifecycle.
 
-NOTE: CHRONTIF does not replace the W3C VC data model. The two standards
+NOTE: SIGNATIF does not replace the W3C VC data model. The two standards
 operate at different layers: VC defines the credential data model and proof
-verification; CHRONTIF defines the trust infrastructure (delegation, scope,
+verification; SIGNATIF defines the trust infrastructure (delegation, scope,
 convergence, transparency, lifecycle). Organizations can use VC for data
-modeling and CHRONTIF for trust infrastructure simultaneously.
+modeling and SIGNATIF for trust infrastructure simultaneously.
 
 

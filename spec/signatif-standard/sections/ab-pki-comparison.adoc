@@ -32,7 +32,7 @@ The following standards define traditional PKI:
 * <<rfc6962>> specifies Certificate Transparency, an optional overlay for
   monitoring certificate issuance in the web PKI.
 
-This document specifies CHRONTIF, which addresses a different problem space:
+This document specifies SIGNATIF, which addresses a different problem space:
 establishing the trustworthiness of persistent artifacts through multi-party,
 multi-dimensional attestation.
 
@@ -41,7 +41,7 @@ multi-dimensional attestation.
 
 [%header,cols="2,3,3"]
 |===
-| Property | Traditional PKI | CHRONTIF (this document)
+| Property | Traditional PKI | SIGNATIF (this document)
 
 | Authorization boundary
 | Policy-defined (Baseline Requirements); not verifiable from the certificate
@@ -113,9 +113,9 @@ multi-dimensional attestation.
 
 === Use case suitability
 
-==== Use cases for which CHRONTIF is the appropriate technology
+==== Use cases for which SIGNATIF is the appropriate technology
 
-CHRONTIF is appropriate when one or more of the following properties are required:
+SIGNATIF is appropriate when one or more of the following properties are required:
 
 * **Multi-party attestation.** The artifact's trustworthiness depends on
   independent attestations from multiple parties (e.g., operator, laboratory,
@@ -150,7 +150,7 @@ A regulatory compliance regime that requires a signed data record to be
 attested by the issuing device (data dimension), a certified operator
 (person dimension), an accredited time authority (time dimension), and an
 environmental sensor (environment dimension) cannot be satisfied by PKI. The
-multi-dimensional convergence model of CHRONTIF is a hard requirement.
+multi-dimensional convergence model of SIGNATIF is a hard requirement.
 ====
 
 
@@ -177,24 +177,24 @@ Traditional PKI is appropriate when the following conditions hold:
 
 ==== Use cases where either technology is viable
 
-For the following use cases, both PKI and CHRONTIF are technically viable; the
+For the following use cases, both PKI and SIGNATIF are technically viable; the
 choice is a preference decision based on deployment constraints:
 
-* **Code signing.** Both can bind a signing key to a publisher. CHRONTIF adds
+* **Code signing.** Both can bind a signing key to a publisher. SIGNATIF adds
   multi-party attestation and graduated trust; PKI is simpler and more widely
   deployed.
 
-* **Document signing.** Both can sign documents. CHRONTIF adds scope enforcement
+* **Document signing.** Both can sign documents. SIGNATIF adds scope enforcement
   and revocation propagation; PKI is interoperable with existing document
   formats.
 
-* **Device identity.** Both can issue device certificates. CHRONTIF adds
+* **Device identity.** Both can issue device certificates. SIGNATIF adds
   threshold signing and challenge-response authenticity; PKI is simpler.
 
 
 === Hard requirements and preference decisions
 
-The choice between CHRONTIF and PKI can be decomposed into hard requirements
+The choice between SIGNATIF and PKI can be decomposed into hard requirements
 (structural properties that one technology provides and the other does not)
 and preference decisions (properties that both provide or that depend on
 deployment context).
@@ -207,42 +207,42 @@ structurally cannot be used.
 
 [%header,cols="3,2,2,2"]
 |===
-| Required property | CHRONTIF | PKI | Decision driver
+| Required property | SIGNATIF | PKI | Decision driver
 
 | Multi-party co-signed artifacts
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Cryptographic scope enforcement
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Threshold at every authority level
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Transparency as verification requirement
 | Provides
 | Does not provide (CT is optional)
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Revocation propagation to artifacts
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Multi-dimensional attestation
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Graduated classification labels
 | Provides
 | Does not provide
-| Hard requirement for CHRONTIF
+| Hard requirement for SIGNATIF
 
 | Web browser interoperability
 | Does not provide
@@ -262,65 +262,65 @@ depends on deployment context, ecosystem maturity, or operational preference.
 
 [%header,cols="3,2,2,3"]
 |===
-| Property | CHRONTIF | PKI | Consideration
+| Property | SIGNATIF | PKI | Consideration
 
 | Single-signer document signing
 | Viable
 | Viable
-| PKI preferred for ecosystem interoperability; CHRONTIF preferred if scope
+| PKI preferred for ecosystem interoperability; SIGNATIF preferred if scope
   enforcement or revocation propagation is desired.
 
 | Code signing
 | Viable
 | Viable
-| PKI preferred for platform compatibility; CHRONTIF preferred for multi-party
+| PKI preferred for platform compatibility; SIGNATIF preferred for multi-party
   attestation or threshold protection.
 
 | Device identity
 | Viable
 | Viable
-| PKI preferred for simplicity; CHRONTIF preferred for challenge-response
+| PKI preferred for simplicity; SIGNATIF preferred for challenge-response
   authenticity or graduated trust.
 
 | Internal CA for an organization
 | Viable
 | Viable
-| PKI preferred for existing tooling; CHRONTIF preferred if threshold signing or
+| PKI preferred for existing tooling; SIGNATIF preferred if threshold signing or
   mandatory transparency is desired.
 |===
 
 
 === Coexistence
 
-CHRONTIF and PKI are not mutually exclusive. A deployment may use both:
+SIGNATIF and PKI are not mutually exclusive. A deployment may use both:
 
 * PKI for server authentication and transport-layer security (TLS).
 
-* CHRONTIF for artifact attestation, regulatory compliance records, and
+* SIGNATIF for artifact attestation, regulatory compliance records, and
   multi-party signing.
 
-A CHRONTIF {{end certificate}} may reference a PKI certificate for the identity
+A SIGNATIF {{end certificate}} may reference a PKI certificate for the identity
 dimension, establishing the signer's organizational identity via PKI while
-adding CHRONTIF's scope enforcement and multi-dimensional attestation. This
+adding SIGNATIF's scope enforcement and multi-dimensional attestation. This
 composition is permitted by the format-agnostic binding requirements in
 <<artifact-binding>>.
 
 
 === Migration considerations
 
-An organization migrating from PKI to CHRONTIF should consider:
+An organization migrating from PKI to SIGNATIF should consider:
 
-* **Key reuse.** Existing PKI keys may be reused as CHRONTIF end certificate keys,
+* **Key reuse.** Existing PKI keys may be reused as SIGNATIF end certificate keys,
   provided the scope is narrowed appropriately.
 
-* **Certificate mapping.** Existing X.509 certificates map to CHRONTIF end
+* **Certificate mapping.** Existing X.509 certificates map to SIGNATIF end
   certificates. The X.509 subject and extensions provide initial scope and
   identity information.
 
-* **Transparency log bootstrapping.** A new CHRONTIF deployment starts with an
+* **Transparency log bootstrapping.** A new SIGNATIF deployment starts with an
   empty transparency log. Existing artifacts may be retroactively logged.
 
-* **Graduated adoption.** An organization may adopt CHRONTIF incrementally — for
+* **Graduated adoption.** An organization may adopt SIGNATIF incrementally — for
   example, starting with the data dimension only (PKI-compatible) and adding
   person, time, location, and environment dimensions over time as the living
   artifact model permits.

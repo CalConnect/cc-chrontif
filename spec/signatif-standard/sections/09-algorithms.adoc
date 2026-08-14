@@ -4,12 +4,12 @@
 
 === General
 
-This clause specifies the cryptographic algorithms recognized in the CHRONTIF
+This clause specifies the cryptographic algorithms recognized in the SIGNATIF
 framework, the {{composite signature}} model for post-quantum readiness, and
 the algorithm agility framework that governs algorithm identifier assignment,
 negotiation, and deprecation.
 
-The CHRONTIF framework recognizes classical signature algorithms, post-quantum
+The SIGNATIF framework recognizes classical signature algorithms, post-quantum
 signature algorithms, and composite signatures that combine both. An
 implementation may support any subset, subject to the requirements of its
 claimed conformance classes.

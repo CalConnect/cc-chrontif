@@ -5,9 +5,9 @@
 
 === General
 
-This annex presents a sample profile of the CHRONTIF framework for a supply-chain
+This annex presents a sample profile of the SIGNATIF framework for a supply-chain
 provenance deployment. It demonstrates how a specific domain configures the
-CHRONTIF framework into a concrete, implementable system. The profile specifies the
+SIGNATIF framework into a concrete, implementable system. The profile specifies the
 algorithm classes, format characteristics, scope dimensions, transparency
 configuration, threshold parameters, and dimensional attestations used.
 
@@ -42,11 +42,11 @@ the following conformance classes:
 === Hierarchy mapping
 
 A pharmaceutical supply-chain deployment maps its organizational tiers to the
-CHRONTIF delegation model as follows:
+SIGNATIF delegation model as follows:
 
 [cols="2,2,3,1",options="header"]
 |===
-| Supply-chain tier | CHRONTIF level | Role | Threshold
+| Supply-chain tier | SIGNATIF level | Role | Threshold
 
 | Global regulatory body
 | Root trust authority

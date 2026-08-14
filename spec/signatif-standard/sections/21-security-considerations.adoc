@@ -4,12 +4,12 @@
 
 === General
 
-This clause describes security threats relevant to the CHRONTIF framework and the
+This clause describes security threats relevant to the SIGNATIF framework and the
 mitigations specified in the normative clauses. The threats are organized by
 attack surface. For each threat, the relevant normative requirements are
 identified.
 
-The security of the CHRONTIF framework depends on the correctness of the
+The security of the SIGNATIF framework depends on the correctness of the
 underlying cryptographic algorithms, the integrity of the {{trust anchor
 bundle}}, the append-only property of {{transparency log,transparency logs}},
 and the threshold properties of {{ceremony}} protocols. Compromise of any of
@@ -263,7 +263,7 @@ only the specific inclusion proofs for the artifacts it verifies.
 [[security-privacy]]
 === Privacy considerations
 
-CHRONTIF artifacts may carry {{dimension attestation,dimension attestations}} that
+SIGNATIF artifacts may carry {{dimension attestation,dimension attestations}} that
 reveal information about the signer, the location, the environmental
 conditions, and the device identity. Implementers should consider the privacy
 implications of including these attestations:
@@ -505,11 +505,11 @@ re-signing of long-lived artifacts before algorithm retirement.
 [[security-key-escrow]]
 === Key escrow and lawful intercept
 
-The CHRONTIF framework does not provide a key escrow or lawful intercept
+The SIGNATIF framework does not provide a key escrow or lawful intercept
 capability. Threshold schemes are designed so that no single party can produce
 signatures, and the aggregate key is not reconstructable from individual
 shares. Deployments in jurisdictions requiring key escrow shall document how
-their CHRONTIF conformance interacts with applicable legal requirements.
+their SIGNATIF conformance interacts with applicable legal requirements.
 
 The framework's trust repudiation mechanisms (revocation, scope condition
 withdrawal) operate on artifact validity, not on key recovery, and do not
@@ -519,9 +519,9 @@ provide a decryption or signature-forcing capability.
 [[security-sc27-alignment]]
 === Alignment with ISO/IEC security standards
 
-Organizations operating CHRONTIF trust authorities should maintain an
+Organizations operating SIGNATIF trust authorities should maintain an
 information security management system conforming to ISO/IEC 27001, with
-CHRONTIF-specific risks (key compromise, ceremony disruption, transparency
+SIGNATIF-specific risks (key compromise, ceremony disruption, transparency
 log integrity, scope violation) documented in the risk assessment.
 
 Threshold key shares and root aggregate key material should be stored and

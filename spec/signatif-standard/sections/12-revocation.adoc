@@ -5,7 +5,7 @@
 === General
 
 PKI provides robust certificate-level revocation through CRLs and OCSP. In the
-CHRONTIF framework, revocation additionally propagates to artifacts: revoking a
+SIGNATIF framework, revocation additionally propagates to artifacts: revoking a
 {{trust authority}} state flags every {{trusted artifact}} transitively bound to
 that state, across all {{trust dimension,trust dimensions}} and all
 {{trust chain,trust chains}}.

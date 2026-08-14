@@ -14,69 +14,81 @@ NOTE: This clause is motivational. The binding normative requirements derived
 from these principles are specified in clauses 8 through 20. In case of any
 apparent conflict, the normative clauses take precedence.
 
-The name CHRONTIF encodes seven architectural properties. These properties are
+The name SIGNATIF encodes eight architectural properties. These properties are
 not merely descriptive — each maps to normative requirements in this document:
 
-.CHRONTIF architectural properties by letter
+.SIGNATIF architectural properties by letter
 [cols="1,2,4",options="header"]
 |===
 | Letter | Property | Architectural meaning
 
-| C
-| Convergent
-| Multiple independent attestation paths converge into one verifiable record.
-Each {{trust dimension}} (data, person, time, location, environment, and others
-defined by the scheme) produces an independent {{co-signature}} on the same
-{{canonical payload}}. Convergence, not single-signer authority, establishes
-trustworthiness. See <<artifact-multi-dimensional>>.
+| S
+| Sealed
+| Every {{trusted artifact}} is cryptographically sealed: independent
+{{co-signature,co-signatures}} cover the same {{canonical payload}}, one per
+{{trust dimension}} (data, person, time, location, environment, and others
+defined by the scheme). Convergence of independent attestations, not
+single-signer authority, establishes trustworthiness. See
+<<artifact-multi-dimensional>>.
 
-| H
-| Hierarchical
-| Signing authority flows through a delegation hierarchy — {{root trust
-authority}} through {{delegated trust authority,delegated trust authorities}}
-to {{end certificate}} to {{trusted artifact}} — with {{scope}} narrowing
-monotonically at every link. See <<architecture-authorities>> and
-<<scope-monotonic-narrowing>>.
+| I
+| Interoperable
+| The framework is scheme-independent. One verification pipeline and one
+coverage-report format serve many application schemes; scheme-specific rules
+enter through published registries and deployment profiles rather than
+forked technology. See <<conformance>>.
 
-| R
-| Repudiable
-| Trust is a lifecycle, not a permanent state. Previously-granted trust can be
-formally revoked through {{trust repudiation}} — threshold-gated revocation
-mechanisms that propagate to all artifacts transitively bound to the revoked
-state. This introduces a trust lifecycle concept not present in traditional PKI's certificate-validity model: trust granted under conditions can be withdrawn when those conditions cease to hold. See
-<<revocation-propagation>>.
-
-| O
-| Open
-| Verification requires no phone-home to the issuer. The {{trust anchor
-bundle}} enables fully offline verification. Transparency logs are publicly
-auditable. No proprietary component is required to verify a CHRONTIF artifact.
-See <<architecture-anchors>> and <<transparency>>.
+| G
+| Graduated
+| Trustworthiness is graduated, not binary. The verifier produces an objective
+coverage report of hard and soft check results; the scheme's classification
+policy maps it to a {{classification label}}; the verifier's acceptance
+policy turns the label into a decision. See <<verification-classification>>.
 
 | N
-| Network
-| Authority is exercised through threshold groups and federated trust
-authorities that span organizational boundaries. The {{trust graph}} is a
-directed acyclic graph, not a linear chain. No single entity controls any
-level of the hierarchy. See <<threshold-signing>> and <<threshold-federated>>.
+| Non-repudiable
+| Issuance is attributable and undeniable. Authority is exercised by
+threshold quorum and by {{federated trust authority,federated trust
+authorities}} spanning organizational boundaries — never by an unaccountable
+single key — and inclusion in publicly auditable {{transparency
+log,transparency logs}} provides third-party evidence of what was issued.
+After the fact, no participant can credibly deny an attestation made in its
+name. See <<threshold-signing>> and <<transparency>>.
+
+| A
+| Anchored
+| Signing authority flows through a delegation hierarchy — {{root trust
+authority}} through {{delegated trust authority,delegated trust authorities}}
+to {{end certificate}} to {{trusted artifact}} — with the {{scope}} narrowing
+monotonically at every link, and every verification path terminating at a
+root anchor in the {{trust anchor bundle}}. Verification requires no
+phone-home to the issuer and no proprietary component. See
+<<architecture-authorities>>, <<scope-monotonic-narrowing>>, and
+<<architecture-anchors>>.
 
 | T
 | Trust
 | The domain of this document is trust: the establishment, assessment, and
-withdrawal of confidence in signed artifacts. Trust is graduated (via the
-{{classification label}}), not binary. See <<verification-classification>>.
+withdrawal of confidence in signed artifacts. Trust is graduated — the
+verifier maps an objective coverage report to a {{classification label}} —
+and it is a lifecycle: granted authority can be withdrawn through
+threshold-gated revocation that propagates to every transitively bound
+artifact. See <<verification-classification>> and
+<<revocation-propagation>>.
 
 | I, F
 | Infrastructure, Framework
-| CHRONTIF is an infrastructure-level framework, not a single product or
-protocol. It defines requirements that independent implementations conform to,
-and that domain-specific profiles instantiate. See <<conformance>>.
+| SIGNATIF operates at the infrastructure level — shared anchors, logs, and
+registries independent of any single application — and is a framework, not a
+product or protocol: it defines requirements that independent implementations
+conform to, and that domain-specific profiles instantiate. See
+<<conformance>>.
 |===
 
 The principles are grouped thematically below. Each principle appears in at
 least one requirements class defined in <<conformance>>.
 
-NOTE: These principles distinguish CHRONTIF from traditional PKI patterns
+NOTE: These principles distinguish SIGNATIF from traditional PKI patterns
 optimized for server-identity authentication. They address the persistent-
 artifact trust problem specifically; they are not criticisms of PKI, which
 remains the appropriate and mature technology for TLS, code signing under

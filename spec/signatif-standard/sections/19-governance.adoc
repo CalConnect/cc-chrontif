@@ -6,7 +6,7 @@
 
 This clause specifies the governance requirements for {{root trust authority,root
 trust authorities}} and the trust topology profiles that a
-CHRONTIF deployment may adopt. Topology is declared in the deployment manifest
+SIGNATIF deployment may adopt. Topology is declared in the deployment manifest
 (see <<manifest>>) and determines the structure of the {{trust graph}}
 (<<fig-topologies>>).
 
