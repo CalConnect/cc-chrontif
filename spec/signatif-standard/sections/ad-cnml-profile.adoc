@@ -44,6 +44,7 @@ the following conformance classes:
 A pharmaceutical supply-chain deployment maps its organizational tiers to the
 SIGNATIF delegation model as follows:
 
+.Pharmaceutical supply-chain hierarchy mapping
 [cols="2,2,3,1",options="header"]
 |===
 | Supply-chain tier | SIGNATIF level | Role | Threshold
@@ -100,6 +101,7 @@ identified by a URI and versioned per <<artifact-versioning>>.
 The deployment uses the following scope dimensions (non-exhaustive; additional
 dimensions may be defined by the deployment):
 
+.Deployment scope dimensions
 [cols="2,3,3",options="header"]
 |===
 | Dimension | Values | Example
@@ -144,6 +146,7 @@ The deployment operates a transparency log with the following characteristics
 The deployment uses threshold signing at the regulatory and national levels
 (examples; specific thresholds are deployment decisions):
 
+.Threshold signing configuration by authority
 [cols="2,2,2",options="header"]
 |===
 | Authority | Quorum (example) | Ceremony
@@ -172,6 +175,7 @@ The deployment uses threshold signing at the regulatory and national levels
 Artifacts in this deployment carry the following dimensional attestations
 (examples; the set of dimensions is extensible):
 
+.Dimensional attestation sources
 [cols="2,3",options="header"]
 |===
 | Dimension | Attestation source

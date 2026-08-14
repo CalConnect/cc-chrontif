@@ -62,6 +62,7 @@ logical content model, not on the format-specific canonical bytes.
 Each deployment maintains its own scheme registry (see <<annex-c>>). To enable
 cross-deployment verification, deployments publish a registry mapping:
 
+.Registry mapping between deployments
 [cols="3,2,2",options="header"]
 |===
 | Concept | Deployment A value | Deployment B value

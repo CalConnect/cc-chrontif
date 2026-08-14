@@ -20,6 +20,7 @@ requirements that apply.
 
 A scheme shall maintain at minimum the following registries:
 
+.Required scheme-maintained registries
 [cols="2,3,2",options="header"]
 |===
 | Registry | Purpose | Referenced by

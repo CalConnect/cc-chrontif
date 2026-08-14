@@ -39,6 +39,7 @@ multi-dimensional attestation.
 
 === Structural differences
 
+.Structural differences between traditional PKI and SIGNATIF
 [%header,cols="2,3,3"]
 |===
 | Property | Traditional PKI | SIGNATIF (this document)
@@ -205,6 +206,7 @@ The following properties are hard requirements that determine technology
 choice. If any of these is required, the technology that does not provide it
 structurally cannot be used.
 
+.Hard requirements determining technology choice
 [%header,cols="3,2,2,2"]
 |===
 | Required property | SIGNATIF | PKI | Decision driver
@@ -260,6 +262,7 @@ structurally cannot be used.
 The following properties do not constitute hard requirements; the choice
 depends on deployment context, ecosystem maturity, or operational preference.
 
+.Properties decided by deployment preference
 [%header,cols="3,2,2,3"]
 |===
 | Property | SIGNATIF | PKI | Consideration
