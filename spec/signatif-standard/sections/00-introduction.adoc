@@ -529,3 +529,4 @@ This document is organized as follows:
 * <<annex-f>> describes cross-technology interoperability between heterogeneous
   deployments.
 * <<annex-g>> describes composition with W3C Verifiable Credentials.
+* <<annex-h>> describes composition with the EU Digital Product Passport.
