@@ -141,9 +141,9 @@ groups:
 
     - name: Living artifact accumulation
       identifier_fragment: living-artifact
-      statement: A trusted artifact may accumulate dimension attestations over time,
-        provided each added attestation signs the original canonical payload without
-        modification.
+      statement: A trusted artifact shall support accumulation of dimension
+        attestations over time, provided that each added attestation signs the
+        original canonical payload without modification.
       guidance:
       - As additional dimensions converge, the coverage report gains fields and the
         classification label may improve.
