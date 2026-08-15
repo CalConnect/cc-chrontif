@@ -145,6 +145,8 @@ the requirements that any conforming path-finder shall satisfy (see
 [[architecture-discovery]]
 === Chain discovery
 
+==== General
+
 A verifier shall be able to reconstruct the full delegation chain from an
 artifact to a root anchor. Discovery strategies are recognized; additional strategies may be registered; an
 implementation may support one or more.

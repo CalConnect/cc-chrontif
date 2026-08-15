@@ -83,11 +83,15 @@ image::verification-pipeline.svg[]
 [[verification-pathfinding]]
 === Trust graph path-finding
 
+==== General
+
 The verifier enumerates all valid verification paths from the artifact to root
 anchors in the {{trust anchor bundle}}. The coverage report is computed as a
 pure function of the set of all valid paths, not of any single path. This
 ensures that two conforming verifiers that find the same set of valid paths
 produce identical coverage reports, regardless of path enumeration order.
+
+==== Path enumeration algorithm
 
 The path enumeration algorithm proceeds as follows:
 
@@ -97,6 +101,8 @@ The path enumeration algorithm proceeds as follows:
 .. Let `path` be the singleton path containing `s`.
 .. Call `extend(path, P)`.
 . Return `P`.
+
+==== Path extension procedure
 
 The `extend(path, P)` procedure:
 
@@ -118,6 +124,8 @@ The `extend(path, P)` procedure:
 The set `P` contains all valid verification paths. The cross-domain diversity
 of the artifact is the number of distinct root anchors reached across all
 paths in `P`.
+
+==== Independence of roots and logs
 
 Two root anchors `r1` and `r2` are _independent_ if neither is reachable from
 the other via delegation links in the {{trust graph}} and they do not share a
