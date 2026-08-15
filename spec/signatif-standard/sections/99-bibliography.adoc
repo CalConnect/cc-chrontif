@@ -61,3 +61,5 @@
 * [[[w3c-vc,W3C Recommendation: Verifiable Credentials Data Model 1.1]]], W3C, 2022
 
 * [[[json-ld,W3C Recommendation: JSON-LD 1.1]]], W3C, 2020
+
+* [[[espr,Regulation (EU) 2024/1781]]], _Ecodesign for Sustainable Products Regulation_, European Parliament and Council, 2024
