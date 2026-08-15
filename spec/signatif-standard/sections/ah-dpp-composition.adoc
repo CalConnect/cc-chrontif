@@ -37,7 +37,7 @@ requirements.
 | Data carrier (QR code on the product)
 | Barcode and passport delivery (<<delivery-qr>>, <<delivery-passport>>)
 | The carrier requirements — self-containment, version identification,
-  error correction — are those of clause 16; a connected verifier may
+  error correction — are those of <<delivery>>; a connected verifier may
   instead resolve a compact reference.
 
 | DPP registry
@@ -109,7 +109,7 @@ scheme's registry, not to this document.
 === Composition pattern 2: DPP data carrier
 
 A DPP data carrier on the product is a SIGNATIF barcode or passport in the
-sense of clause 16:
+sense of <<delivery>>:
 
 * Self-contained carriers hold the artifact or its passport — identifier,
   key fingerprint, scope summary, validity period — with error correction
@@ -124,7 +124,7 @@ sense of clause 16:
 === Composition pattern 3: DPP registry as multi-operator transparency
 
 The decentralized-registry intent of the DPP is met by the transparency
-infrastructure of clause 13:
+infrastructure of <<transparency>>:
 
 * Multiple independent log operators record passport issuance; the scheme's
   federated trust authority requires inclusion in M of K logs.
