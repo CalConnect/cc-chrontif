@@ -163,6 +163,8 @@ profile.
 [[artifact-cosignatures]]
 === Co-signatures and multi-party attestation
 
+==== General
+
 A {{co-signature}} is an additional signature on the same {{canonical payload}}
 of a {{trusted artifact}}, produced by a signer from an independent role,
 organization, or {{trust dimension}}. Co-signatures are the mechanism by which
@@ -212,6 +214,8 @@ this document.
 [[artifact-cross-domain]]
 === Cross-domain trust fusion
 
+==== General
+
 {{co-signature,co-signatures}} on a {{trusted artifact}} may originate from
 independent {{trust chain,trust chains}} — different roots, different
 governance frameworks. The artifact becomes a **cross-domain trust junction**:
@@ -243,6 +247,8 @@ Once co-signatures are applied to an artifact, the following properties hold:
 
 [[artifact-multi-dimensional]]
 === Multi-dimensional attestation
+
+==== General
 
 Each {{trust dimension}} is an independently verifiable aspect of reality,
 attested by its own {{dimension attestation}} (a {{co-signature}} tagged with
