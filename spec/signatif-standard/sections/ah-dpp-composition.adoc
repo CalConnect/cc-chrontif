@@ -93,7 +93,7 @@ payload:
     "carbon_footprint_declared": "in-development",
     "economic_operator_id": "urn:eu:eop:vat:DE123456789"
   },
-  "cosignatures": [
+  "co_signatures": [
     { "dimension": "authority", "signer": "end-certificate:operator-key" },
     { "dimension": "time", "signer": "time-key:eu-time-authority" },
     { "dimension": "location", "signer": "location-key:plant-registry" }
