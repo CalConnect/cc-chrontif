@@ -76,4 +76,6 @@ include::sections/af-cross-tech.adoc[]
 
 include::sections/ag-vc-composition.adoc[]
 
+include::sections/ah-dpp-composition.adoc[]
+
 include::sections/99-bibliography.adoc[]

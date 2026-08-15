@@ -1,0 +1,182 @@
+
+[[annex-h]]
+[appendix,obligation=informative]
+== Composition with the EU Digital Product Passport
+
+=== General
+
+The EU Ecodesign for Sustainable Products Regulation <<espr>> establishes
+the Digital Product Passport (DPP): structured product data for regulated
+goods, a data carrier on the product, and a decentralized registry, with
+product-group requirements arriving through delegated acts. Credential-based
+representations of DPP data are under evaluation in the European
+standardization program.
+
+This annex describes how a DPP scheme and the SIGNATIF framework compose.
+The DPP data model, product-group requirements, and delegated acts are
+external to this document; nothing in this annex specifies or anticipates
+them. A DPP deployment is a scheme in the sense of <<annex-c>>: it maintains
+registries, defines scope dimensions and classification policies, and claims
+conformance classes. This annex is informative. It does not specify
+requirements.
+
+
+=== Concept mapping
+
+.Concept mapping between EU DPP and SIGNATIF
+[cols="2,2,3",options="header"]
+|===
+| EU DPP concept | SIGNATIF equivalent | Relationship
+
+| DPP record (structured product data)
+| {{trusted artifact}} payload
+| The DPP data model for a product group is the payload; SIGNATIF wraps and
+  attests it with multi-dimensional {{co-signature,co-signatures}} over the
+  {{canonical payload}}.
+
+| Data carrier (QR code on the product)
+| Barcode and passport delivery (<<delivery-qr>>, <<delivery-passport>>)
+| The carrier requirements — self-containment, version identification,
+  error correction — are those of clause 16; a connected verifier may
+  instead resolve a compact reference.
+
+| DPP registry
+| {{transparency log,transparency logs}} with mirrors
+| Registry function is met by log operators and mirrors; inclusion in M of
+  K independent logs satisfies the multi-log attestation quorum, so no
+  single registry operator controls the record.
+
+| Unique product identifier
+| Artifact identifier and version
+| The product identifier binds to the artifact identifier; successive DPP
+  versions follow the version compatibility rules of the artifact format.
+
+| Economic operator
+| {{delegated trust authority,delegated trust authorities}} and
+  {{end certificate}} holders
+| Operators hold scoped signing authority delegated from the scheme root;
+  the scope narrows to product groups and roles.
+
+| Market surveillance authority
+| Verifier with an acceptance policy
+| Inspection verifies offline from the {{trust anchor bundle}}; the
+  acceptance policy encodes the surveillance risk threshold, and the
+  {{classification label}} carries the graded evidence.
+
+| Operator registration withdrawal
+| Revocation propagation (<<revocation-propagation>>)
+| Withdrawing an operator's recognition revokes its authority state and
+  propagates to every passport artifact transitively bound to it.
+
+| Decade-plus product lifetimes
+| Algorithm agility (<<algorithm-agility-migration>>)
+| Passports signed classically migrate through composite to
+  post-quantum-only phases on a published schedule without re-issuing the
+  trust graph.
+|===
+
+
+=== Composition pattern 1: DPP record as SIGNATIF payload
+
+The DPP record for a product group is the logical payload. The SIGNATIF
+artifact wraps it; each dimension attestation co-signs the same canonical
+payload:
+
+----
+{
+  "version": "1.0",
+  "artifact_id": "dpp-2026-00001",
+  "payload": {
+    "product_group": "textiles",
+    "unique_product_identifier": "urn:dpp:eu:abc-manufacturing:sku-4711",
+    "material_composition": { },
+    "carbon_footprint_declared": "in-development",
+    "economic_operator_id": "urn:eu:eop:vat:DE123456789"
+  },
+  "cosignatures": [
+    { "dimension": "authority", "signer": "end-certificate:operator-key" },
+    { "dimension": "time", "signer": "time-key:eu-time-authority" },
+    { "dimension": "location", "signer": "location-key:plant-registry" }
+  ],
+  "transparency": { "logs": ["log-a", "log-b"], "quorum": "2-of-3" }
+}
+----
+
+Fields shown are illustrative; the payload schema belongs to the DPP
+scheme's registry, not to this document.
+
+
+=== Composition pattern 2: DPP data carrier
+
+A DPP data carrier on the product is a SIGNATIF barcode or passport in the
+sense of clause 16:
+
+* Self-contained carriers hold the artifact or its passport — identifier,
+  key fingerprint, scope summary, validity period — with error correction
+  matched to the scanning environment.
+* Where the artifact exceeds carrier capacity, the carrier holds a compact
+  reference that a connected verifier resolves from a transparency log or
+  mirror on first encounter and caches.
+* Offline inspection verifies from the carrier and the verifier's trust
+  anchor bundle without contacting any registry.
+
+
+=== Composition pattern 3: DPP registry as multi-operator transparency
+
+The decentralized-registry intent of the DPP is met by the transparency
+infrastructure of clause 13:
+
+* Multiple independent log operators record passport issuance; the scheme's
+  federated trust authority requires inclusion in M of K logs.
+* Mirrors replicate log state through gossip, giving every economic
+  operator and surveillance authority third-party evidence of what was
+  issued, independent of any single operator.
+* Inclusion proofs anchor each passport artifact to its log entries; a
+  verifier's cached tree heads suffice for offline re-verification within
+  the freshness window.
+
+
+=== What SIGNATIF adds to the DPP data model
+
+[cols="2,3",options="header"]
+|===
+| Concern | SIGNATIF mechanism
+
+| Who may issue for which product group
+| Cryptographic {{authorization scope}} narrowing at every delegation link
+
+| Evidence quality at inspection
+| Objective coverage report and graduated {{classification label}}
+
+| Registry capture and avoidance
+| Mandatory transparency inclusion with M-of-K multi-log quorum
+
+| Withdrawal of an operator's recognition
+| Threshold-gated revocation propagating to bound artifacts
+
+| Verification without registry access
+| Offline verification from the trust anchor bundle
+
+| Long-lived products
+| Published classical-to-composite-to-post-quantum migration
+|===
+
+
+=== Adoption paths
+
+A DPP scheme may adopt incrementally:
+
+* Start with the authority dimension only — issuer chains, scope
+  narrowing, transparency inclusion — which is PKI-like and sufficient for
+  issuance accountability.
+* Add the time and location dimensions as attestation sources become
+  available, raising dimensional coverage and labels.
+* Introduce multi-root cross-domain co-signatures when several economic
+  operators or notified bodies attest the same passport.
+* Migrate algorithm classes per the deployment's declared migration phase
+  as product lifetimes extend beyond the classical-only horizon.
+
+NOTE: Delegated acts under <<espr>> continue to define DPP data models,
+carriers, and registry interfaces. A conforming DPP scheme tracks those
+external definitions in its registries; the composition described here does
+not depend on their final form.
