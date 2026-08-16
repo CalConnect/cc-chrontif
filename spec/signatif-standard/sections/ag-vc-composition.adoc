@@ -87,11 +87,31 @@ replacing the VC's single `proof` with SIGNATIF multi-dimensional co-signatures:
   },
   "canonical_payload_hash": "<SHA-256 of JCS(payload)>",
   "co_signatures": [
-    { "dimension": "data", ... },
-    { "dimension": "person", ... },
-    { "dimension": "time", ... }
+    {
+      "dimension": "data",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<end certificate of the manufacturer key>",
+      "signature": "<signature over the canonical payload>"
+    },
+    {
+      "dimension": "person",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<end certificate of the certified operator key>",
+      "signature": "<signature over the canonical payload>"
+    },
+    {
+      "dimension": "time",
+      "algorithm": "Ed25519",
+      "signer_cert_ref": "<end certificate of the time authority key>",
+      "signature": "<signature over the canonical payload>"
+    }
   ],
-  "transparency": { ... }
+  "transparency": {
+    "log_refs": [
+      { "log_id": "<operator A>", "tree_size": 53121, "leaf_index": 41807, "inclusion_proof": "<proof>" },
+      { "log_id": "<operator B>", "tree_size": 52888, "leaf_index": 41655, "inclusion_proof": "<proof>" }
+    ]
+  }
 }
 ----
 
@@ -113,7 +133,11 @@ artifact is a standard VC with multiple proofs:
   "type": ["VerifiableCredential", "BatchReleaseCredential"],
   "issuer": "did:web:pharmaco.example",
   "issuanceDate": "2026-08-09T12:00:00Z",
-  "credentialSubject": { ... },
+  "credentialSubject": {
+    "batchId": "LOT-2026-001",
+    "product": "vaccine-batch-A",
+    "quantity": 50000
+  },
   "proof": [
     {
       "type": "SignatifDataSignature",
@@ -162,8 +186,27 @@ A holder creates a Verifiable Presentation that wraps a SIGNATIF artifact:
   "verifiableCredential": [
     {
       "type": ["VerifiableCredential", "SignatifArtifact"],
-      "credentialSubject": { ... },
-      "proof": [ ...SIGNATIF co-signatures... ]
+      "credentialSubject": {
+        "batchId": "LOT-2026-001",
+        "product": "vaccine-batch-A",
+        "quantity": 50000
+      },
+      "proof": [
+        {
+          "type": "SignatifDataSignature",
+          "verificationMethod": "did:web:pharmaco.example#device-key",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "<Ed25519 signature>",
+          "signatif_dimension": "data"
+        },
+        {
+          "type": "SignatifTimeAttestation",
+          "verificationMethod": "did:web:time-authority.example#key-1",
+          "proofPurpose": "assertionMethod",
+          "proofValue": "<Ed25519 signature>",
+          "signatif_dimension": "time"
+        }
+      ]
     }
   ],
   "proof": {
