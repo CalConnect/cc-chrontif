@@ -53,7 +53,7 @@ groups:
       - An end certificate shall not delegate authority further.
       - Scope conditions are executable predicates evaluated at verification time.
 
-    - name: Trust graph path-finding
+    - name: Trust graph path discoverability
       identifier_fragment: trust-graph-pathfinding
       statement: A verifier shall be able to find one or more paths in the trust graph
         from a trusted artifact to a root anchor in the trust anchor bundle, validating
