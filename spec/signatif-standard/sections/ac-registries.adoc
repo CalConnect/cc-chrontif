@@ -18,8 +18,9 @@ requirements that apply.
 
 === Required registries
 
-A scheme shall maintain at minimum the following registries:
+A scheme shall maintain at minimum the following registries. The required registries are listed in <<tab-required-registries>>.
 
+[[tab-required-registries]]
 .Required scheme-maintained registries
 [cols="2,3,2",options="header"]
 |===

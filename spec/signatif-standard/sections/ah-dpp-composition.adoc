@@ -23,6 +23,10 @@ requirements.
 
 === Concept mapping
 
+
+<<tab-dpp-mapping>> maps the EU DPP concepts to SIGNATIF mechanisms.
+
+[[tab-dpp-mapping]]
 .Concept mapping between EU DPP and SIGNATIF
 [cols="2,2,3",options="header"]
 |===

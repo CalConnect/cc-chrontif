@@ -39,6 +39,10 @@ multi-dimensional attestation.
 
 === Structural differences
 
+
+<<tab-pki-structural>> summarizes the structural differences.
+
+[[tab-pki-structural]]
 .Structural differences between traditional PKI and SIGNATIF
 [%header,cols="2,3,3"]
 |===
@@ -204,8 +208,9 @@ deployment context).
 
 The following properties are hard requirements that determine technology
 choice. If any of these is required, the technology that does not provide it
-structurally cannot be used.
+structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requirements.
 
+[[tab-pki-hard-requirements]]
 .Hard requirements determining technology choice
 [%header,cols="3,2,2,2"]
 |===
@@ -260,8 +265,9 @@ structurally cannot be used.
 ==== Decisions driven by preference
 
 The following properties do not constitute hard requirements; the choice
-depends on deployment context, ecosystem maturity, or operational preference.
+depends on deployment context, ecosystem maturity, or operational preference. <<tab-pki-preference>> lists these properties.
 
+[[tab-pki-preference]]
 .Properties decided by deployment preference
 [%header,cols="3,2,2,3"]
 |===

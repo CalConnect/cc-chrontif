@@ -21,8 +21,9 @@ Part 2. In particular:
 
 === Notation
 
-The following notation is used throughout this document:
+The following notation is used throughout this document. The notation is summarized in <<tab-notation>>.
 
+[[tab-notation]]
 .Notation used in this document
 [cols="1,3",options="header"]
 |===

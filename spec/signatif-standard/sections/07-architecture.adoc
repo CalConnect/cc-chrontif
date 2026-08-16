@@ -30,8 +30,10 @@ The architecture consists of four main areas of concern:
 
 ==== The four-level model
 
-Signing authority in the SIGNATIF framework flows through four levels:
+Signing authority in the SIGNATIF framework flows through the four levels
+shown in <<tab-four-levels>>:
 
+[[tab-four-levels]]
 .Four-level delegation model
 [cols="1,3,2,1"]
 |===

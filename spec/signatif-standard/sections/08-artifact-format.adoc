@@ -73,9 +73,10 @@ characteristics:
 The specific canonicalization algorithm is specified by each format profile
 (see <<artifact-format-profiles>>). An implementation claiming a format
 profile shall use the canonicalization algorithm specified by that profile.
-The following are examples of canonicalization algorithms used by initially
-registered profiles:
+Canonicalization algorithms used by the initially registered profiles are
+listed in <<tab-canonicalization-examples>>:
 
+[[tab-canonicalization-examples]]
 .Examples of canonicalization algorithms by format profile
 [cols="2,3",options="header"]
 |===
@@ -107,10 +108,10 @@ is not conforming.
 The choice of signature envelope format is a deployment decision. This document
 does not mandate a specific format. An implementation claiming a format profile
 shall satisfy the binding requirements in <<artifact-binding>> in addition to
-the profile-specific canonicalization characteristics. The following format
-profiles are initially registered; additional profiles may be registered per
-<<annex-c>>.
+the profile-specific canonicalization characteristics. The format profiles listed in <<tab-format-profiles-initial>> are
+initially registered; additional profiles may be registered per <<annex-c>>.
 
+[[tab-format-profiles-initial]]
 .Initially registered format profiles
 [cols="2,3,2"]
 |===
@@ -260,6 +261,10 @@ and root, and no cross-recognition between dimension roots is required
 .Multi-dimensional convergence on a trusted artifact
 image::dimensional-convergence.svg[]
 
+
+<<tab-dimension-examples>> lists examples of trust dimensions and their attestation sources.
+
+[[tab-dimension-examples]]
 .Examples of trust dimensions and their attestations (non-exhaustive; see the scheme's registry)
 [cols="2,3,2"]
 |===

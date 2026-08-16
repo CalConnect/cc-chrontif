@@ -15,8 +15,9 @@ from these principles are specified in clauses 7 through 20. In case of any
 apparent conflict, the normative clauses take precedence.
 
 The name SIGNATIF encodes eight architectural properties. These properties are
-not merely descriptive — each maps to normative requirements in this document:
+not merely descriptive — each maps to normative requirements in this document. <<tab-principles-letters>> lists the eight properties by letter.
 
+[[tab-principles-letters]]
 .SIGNATIF architectural properties by letter
 [cols="1,2,4",options="header"]
 |===

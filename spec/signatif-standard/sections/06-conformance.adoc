@@ -27,8 +27,9 @@ claiming a conformance class shall implement at least the MTI components for
 that class. The baseline specifies algorithm _classes_, not specific
 algorithms, to accommodate deployments with different regulatory or national
 algorithm requirements (e.g., SM2/SM3 in China, FIPS-approved algorithms in
-the United States).
+the United States). <<tab-mti-baseline>> defines the mandatory-to-implement baseline by conformance class.
 
+[[tab-mti-baseline]]
 .Mandatory-to-implement baseline by conformance class
 [cols="2,3",options="header"]
 |===
@@ -77,8 +78,9 @@ the conformance tests defined in the corresponding conformance class in
 === Core conformance classes
 
 The following core requirements classes address the primary roles in the trust
-infrastructure. Dependencies between classes are acyclic.
+infrastructure. Dependencies between classes are acyclic. <<tab-core-req-classes>> lists the core requirements classes.
 
+[[tab-core-req-classes]]
 .Core requirements classes
 [%header,cols="2,3,2,2"]
 |===
@@ -128,8 +130,9 @@ dependencies.
 === Trust topology profiles
 
 A trust infrastructure deployment shall conform to at least one topology
-profile. A deployment may conform to more than one.
+profile. A deployment may conform to more than one. <<tab-topology-profiles>> lists the topology profiles.
 
+[[tab-topology-profiles]]
 .Trust topology profiles
 [%header,cols="2,4,3"]
 |===
@@ -159,8 +162,9 @@ A {{trusted artifact}} may carry {{dimension attestation,dimension attestations}
 from one or more {{trust dimension,trust dimensions}}. Trust dimensions are
 extensible: the set of possible dimensions is not fixed. The following profiles
 are initially defined; additional dimension profiles may be registered per
-<<annex-c>> and claimed by implementations.
+<<annex-c>> and claimed by implementations. <<tab-dimension-profiles>> lists the initially defined dimension profiles.
 
+[[tab-dimension-profiles]]
 .Dimension profiles recognized by the scheme (non-exhaustive)
 [%header,cols="2,3,3"]
 |===
@@ -217,8 +221,9 @@ binding requirements are specified independently of serialization. Format
 profiles follow the pattern `/conf/format-<name>`, where `<name>` identifies a
 specific format registered in the scheme's format profile registry. The
 following are examples of format profiles; schemes may register additional
-profiles.
+profiles. <<tab-format-profiles>> gives examples of format profiles.
 
+[[tab-format-profiles]]
 .Examples of format profiles (non-exhaustive)
 [%header,cols="2,3,3"]
 |===

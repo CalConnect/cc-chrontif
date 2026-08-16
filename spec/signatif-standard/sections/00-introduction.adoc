@@ -435,8 +435,9 @@ This document specifies a trust infrastructure whose design differs from
 traditional PKI (X.509, web TLS) in several structural respects. Each
 difference exists because traditional PKI was designed for a different problem
 — authenticating a server identity in a transient session — and cannot be
-retrofitted to authenticate the trustworthiness of persistent artifacts.
+retrofitted to authenticate the trustworthiness of persistent artifacts. <<tab-intro-pki-differentiation>> summarizes the structural differences.
 
+[[tab-intro-pki-differentiation]]
 .Differentiation from traditional PKI
 [%header,cols="1,2,2"]
 |===
