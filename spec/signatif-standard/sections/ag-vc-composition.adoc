@@ -107,10 +107,17 @@ replacing the VC's single `proof` with SIGNATIF multi-dimensional co-signatures:
     }
   ],
   "transparency": {
-    "log_refs": [
-      { "log_id": "<operator A>", "tree_size": 53121, "leaf_index": 41807, "inclusion_proof": "<proof>" },
-      { "log_id": "<operator B>", "tree_size": 52888, "leaf_index": 41655, "inclusion_proof": "<proof>" }
-    ]
+    "log_seq": 67890,
+    "inclusion_proof": {
+      "leaf_hash": "<base64 SHA-256 of log entry>",
+      "audit_path": ["<base64 sibling hashes>"],
+      "tree_head": {
+        "root_hash": "<base64 Merkle root>",
+        "tree_size": 100000,
+        "timestamp": "2026-08-09T12:00:00Z",
+        "operator_signature": "<base64 Ed25519 signature over tree head>"
+      }
+    }
   }
 }
 ----
