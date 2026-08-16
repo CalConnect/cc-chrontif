@@ -63,7 +63,7 @@ groups:
       guidance:
       - Confirm scope conditions are present when applicable.
 
-    - name: Trust graph path-finding test
+    - name: Trust graph path discoverability test
       identifier_fragment: trust-graph-pathfinding
       targets:
       - /req/architecture/trust-graph-pathfinding
