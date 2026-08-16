@@ -115,7 +115,7 @@ returns false at any link.
 [[scope-conditions]]
 === Authorization scope conditions
 
-A {{scope condition}} is an executable predicate included in a scope, evaluated
+A {{authorization scope condition,scope condition}} is an executable predicate included in a scope, evaluated
 at verification time against the content and context of the {{trusted
 artifact}}. Scope conditions bind signing authority to live state, not merely
 to static identity.
@@ -171,7 +171,7 @@ Scope is enforced at multiple independent layers:
 
 . **Verification pipeline.** The {{verification pipeline}} includes a scope
   check that confirms the artifact's content falls within the scope of the
-  signing key, including evaluation of all {{scope condition,scope conditions}}.
+  signing key, including evaluation of all {{authorization scope condition,scope conditions}}.
 
 . **Transparency log.** The scope is recorded in the public transparency log
   for every certificate, enabling audit and detection of scope violations by

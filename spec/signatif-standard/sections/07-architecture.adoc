@@ -67,12 +67,12 @@ inherits the narrowest scope along its chain.
 ==== Delegation
 
 A delegation is the act by which a parent {{trust authority}} authorizes a child
-to operate within a subset of the parent's {{scope}}. A delegation shall be
+to operate within a subset of the parent's {{authorization scope,scope}}. A delegation shall be
 expressed as a signed credential (a delegation certificate) that binds:
 
 * the child's {{aggregate key}};
 * the {{quorum}} parameters, if the child is a threshold authority;
-* the narrowed {{scope}}, which shall satisfy the {{monotonic narrowing
+* the narrowed {{authorization scope,scope}}, which shall satisfy the {{monotonic narrowing
   invariant}};
 * a reference to the ceremony protocol used, if threshold (see
   <<threshold-signing>>).
@@ -90,8 +90,8 @@ authority further; it binds a key to the authority to sign within its scope.
 An end certificate shall carry:
 
 * the authorized public key or its fingerprint;
-* the {{scope}} under which the key is authorized to sign;
-* the {{scope condition,scope conditions}}, if any, that artifacts signed by
+* the {{authorization scope,scope}} under which the key is authorized to sign;
+* the {{authorization scope condition,scope conditions}}, if any, that artifacts signed by
   this key shall satisfy at verification time;
 * a reference to the issuing {{trust authority}}'s delegation chain.
 

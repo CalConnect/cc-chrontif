@@ -64,7 +64,8 @@ groups:
     - name: Encryption at rest
       identifier_fragment: encryption-at-rest
       statement: Private keys and sensitive data at rest shall be encrypted using an authenticated
-        encryption algorithm with adequate security strength, with the encryption key derived
+        encryption algorithm meeting the minimum security parameters in
+        <<tab-security-parameters>>, with the encryption key derived
         using a password-based key derivation function resistant to brute-force attacks.
       guidance:
       - The choice of specific encryption and key derivation algorithms is an implementation

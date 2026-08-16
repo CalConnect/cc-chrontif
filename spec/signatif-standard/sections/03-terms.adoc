@@ -104,7 +104,7 @@ spanning hierarchies, cross-domain co-signatures, and mutual recognition links.
 ==== end certificate
 
 credential that authorizes a specific signing key to produce {{trusted
-artifact,trusted artifacts}} and that carries the narrowest {{scope}} in its
+artifact,trusted artifacts}} and that carries the narrowest {{authorization scope,scope}} in its
 {{trust chain}}
 
 NOTE: An end certificate does not delegate authority further; it binds a key to

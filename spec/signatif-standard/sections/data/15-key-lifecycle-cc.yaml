@@ -30,7 +30,8 @@ groups:
       - /req/key-lifecycle/encrypted-storage
       purpose: Verify private keys are encrypted at rest.
       method: Inspect stored keys and verify they are encrypted with an authenticated
-        encryption algorithm with adequate security strength. Verify the encryption key
+        encryption algorithm meeting the minimum security parameters in
+        <<tab-security-parameters>>. Verify the encryption key
         is derived using a password-based key derivation function resistant to brute-force
         attacks. Attempt plaintext extraction and verify failure.
       type: Validation
