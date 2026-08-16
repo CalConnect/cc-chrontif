@@ -511,11 +511,11 @@ This document is organized as follows:
 * <<conformance>> defines the conformance class hierarchy and profiles.
 * <<architecture>> specifies the trust graph model and the
   delegation structure.
-* <<algorithms>> specifies the cryptographic algorithms, composite signatures,
-  and algorithm agility.
 * <<artifact-format>> specifies the artifact format and signature binding,
   including co-signatures, cross-domain fusion, and multi-dimensional
   attestation.
+* <<algorithms>> specifies the cryptographic algorithms, composite signatures,
+  and algorithm agility.
 * <<threshold-signing>> through <<algorithm-agility>> specify the operational
   requirements: threshold signing, scope governance, revocation, transparency,
   verification, key lifecycle, delivery, ceremonies, deployment manifest,
