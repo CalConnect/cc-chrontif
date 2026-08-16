@@ -42,8 +42,9 @@ the following conformance classes:
 === Hierarchy mapping
 
 A pharmaceutical supply-chain deployment maps its organizational tiers to the
-SIGNATIF delegation model as follows:
+SIGNATIF delegation model as follows. The mapping is given in <<tab-pharma-hierarchy>>.
 
+[[tab-pharma-hierarchy]]
 .Pharmaceutical supply-chain hierarchy mapping
 [cols="2,2,3,1",options="header"]
 |===
@@ -99,8 +100,9 @@ identified by a URI and versioned per <<artifact-versioning>>.
 === Scope dimensions
 
 The deployment uses the following scope dimensions (non-exhaustive; additional
-dimensions may be defined by the deployment):
+dimensions may be defined by the deployment). The scope dimensions used are listed in <<tab-pharma-scope>>.
 
+[[tab-pharma-scope]]
 .Deployment scope dimensions
 [cols="2,3,3",options="header"]
 |===
@@ -144,8 +146,9 @@ The deployment operates a transparency log with the following characteristics
 === Threshold configuration
 
 The deployment uses threshold signing at the regulatory and national levels
-(examples; specific thresholds are deployment decisions):
+(examples; specific thresholds are deployment decisions). Example configurations are given in <<tab-pharma-thresholds>>.
 
+[[tab-pharma-thresholds]]
 .Threshold signing configuration by authority
 [cols="2,2,2",options="header"]
 |===
@@ -173,8 +176,9 @@ The deployment uses threshold signing at the regulatory and national levels
 === Dimensional attestation model
 
 Artifacts in this deployment carry the following dimensional attestations
-(examples; the set of dimensions is extensible):
+(examples; the set of dimensions is extensible). The dimensional attestations are listed in <<tab-pharma-dimensions>>.
 
+[[tab-pharma-dimensions]]
 .Dimensional attestation sources
 [cols="2,3",options="header"]
 |===

@@ -11,8 +11,9 @@ computation steps, verification examples, and test scenarios — sufficient for
 an implementer to build a conforming system against this stack. All technology
 choices are examples; this annex does not mandate them.
 
-The reference stack:
+The reference stack. The mapping is given in <<tab-reference-mapping>>.
 
+[[tab-reference-mapping]]
 .Reference technology mapping
 [cols="2,3",options="header"]
 |===
@@ -137,8 +138,9 @@ using different format profiles may use different structures.
 }
 ----
 
-Key fields:
+Key fields. The key fields are listed in <<tab-reference-artifact-fields>>.
 
+[[tab-reference-artifact-fields]]
 .Reference artifact key fields
 [cols="2,3",options="header"]
 |===
@@ -367,8 +369,9 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 The following scenarios provide implementable test cases. Each specifies the
 artifact configuration, the verification state, and the expected result.
 Grade labels shown are for the reference stack's example classification
-policy; other schemes may use different labels.
+policy; other schemes may use different labels. <<tab-reference-scenarios>> lists the scenarios and expected grades.
 
+[[tab-reference-scenarios]]
 .Test scenarios and expected grades
 [cols="3,4,2,1",options="header"]
 |===
@@ -466,8 +469,9 @@ and checks the `valid_until` date.
 === Scope condition expressions
 
 The reference stack uses JSON Logic for scope conditions. JSON Logic is
-deterministic, Turing-incomplete, and widely implemented.
+deterministic, Turing-incomplete, and widely implemented. <<tab-reference-scope-conditions>> lists the scope condition expressions.
 
+[[tab-reference-scope-conditions]]
 .Scope condition expressions
 [cols="2,3",options="header"]
 |===

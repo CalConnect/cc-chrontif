@@ -60,8 +60,9 @@ logical content model, not on the format-specific canonical bytes.
 === Registry mapping
 
 Each deployment maintains its own scheme registry (see <<annex-c>>). To enable
-cross-deployment verification, deployments publish a registry mapping:
+cross-deployment verification, deployments publish a registry mapping. The mapping is published as shown in <<tab-registry-mapping>>.
 
+[[tab-registry-mapping]]
 .Registry mapping between deployments
 [cols="3,2,2",options="header"]
 |===

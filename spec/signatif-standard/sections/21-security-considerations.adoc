@@ -391,8 +391,9 @@ minimum security strength of 128 bits. For artifacts with long-term security
 requirements (validity exceeding 10 years), a minimum of 192 bits is
 recommended.
 
-The following minimum parameters apply:
+The following minimum parameters apply. The parameters are given in <<tab-security-parameters>>.
 
+[[tab-security-parameters]]
 .Minimum security parameters
 [cols="2,3",options="header"]
 |===

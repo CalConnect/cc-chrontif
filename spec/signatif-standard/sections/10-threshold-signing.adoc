@@ -20,8 +20,9 @@ is composed from member-contributed shares.
 
 A {{delegated trust authority}} whose members are threshold key holders
 produces signatures under a threshold scheme. The threshold parameters
-propagate through the delegation hierarchy:
+propagate through the delegation hierarchy. Example threshold parameters by authority level are given in <<tab-threshold-parameters>>.
 
+[[tab-threshold-parameters]]
 .Example threshold parameters by authority level
 [cols="3,3,2"]
 |===

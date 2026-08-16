@@ -21,8 +21,9 @@ executable predicates, and the multi-layer enforcement model.
 
 An authorization scope is a multi-dimensional constraint set. Each
 {{authorization scope dimension,scope dimension}} constrains one axis of the
-authorization boundary independently:
+authorization boundary independently. The initially defined scope dimensions are listed in <<tab-scope-dimensions>>.
 
+[[tab-scope-dimensions]]
 .Initially defined authorization scope dimensions (non-exhaustive; additional dimensions may be defined by profiles)
 [cols="2,3,3"]
 |===

@@ -33,6 +33,10 @@ image::verification-pipeline.svg[]
   each that does not pass leaves that field unpopulated. The classification
   policy determines how these fields map to the classification label.
 
+
+<<tab-pipeline-checks>> classifies each check and states its purpose.
+
+[[tab-pipeline-checks]]
 .Verification pipeline checks
 [cols="2,2,3"]
 |===
@@ -149,8 +153,9 @@ state (trust anchor bundle, cached CRLs, cached transparency log tree heads).
 Two conforming verifiers with the same verification state produce identical
 coverage reports.
 
-The coverage report contains the following fields:
+The coverage report contains the following fields. The fields are listed in <<tab-coverage-fields>>.
 
+[[tab-coverage-fields]]
 .Coverage report fields
 [cols="2,3",options="header"]
 |===
@@ -317,8 +322,9 @@ The verification result shall contain:
   the check name and the current value. This field is populated regardless of
   the assigned classification label.
 
-The following typed failure reasons are defined:
+The following typed failure reasons are defined. The defined failure reasons are listed in <<tab-failure-reasons>>.
 
+[[tab-failure-reasons]]
 .Typed failure reasons
 [cols="2,3",options="header"]
 |===
