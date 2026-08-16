@@ -81,7 +81,7 @@ rejected classification label, regardless of other dimensional coverage.
 [[revocation-condition-withdrawal]]
 === Scope condition withdrawal
 
-A {{scope condition}} may reference an external state (e.g., a calibration
+A {{authorization scope condition,scope condition}} may reference an external state (e.g., a calibration
 certificate, a compliance status, an accreditation). When that external state
 is revoked, all artifacts whose scope conditions depend on it shall be flagged.
 
@@ -89,7 +89,7 @@ The withdrawal propagation algorithm:
 
 [arabic]
 . Identify the revoked external state by its hash or identifier.
-. Query the set of artifacts whose {{scope}} includes a condition referencing
+. Query the set of artifacts whose {{authorization scope,scope}} includes a condition referencing
    the revoked state. This query uses the scope encoding in the artifact's
    chain certificates and the transparency log index.
 . For each affected artifact, re-evaluate the scope conditions. If a condition

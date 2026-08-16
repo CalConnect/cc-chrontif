@@ -60,7 +60,7 @@ image::verification-pipeline.svg[]
 
 | Scope conditions
 | Hard
-| All {{scope condition,scope conditions}} evaluate to true at verification time.
+| All {{authorization scope condition,scope conditions}} evaluate to true at verification time.
 
 | Revocation status
 | Hard

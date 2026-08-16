@@ -81,7 +81,7 @@ The issuing {{trust authority}} shall verify the PoP before issuing an
 Keys shall be rotated according to the authority's key rotation policy.
 Rotation of threshold member shares shall preserve the {{aggregate key}} (see
 <<threshold-aggregate-continuity>>). Rotation of end certificate keys shall
-produce a new certificate under the same or narrower {{scope}}.
+produce a new certificate under the same or narrower {{authorization scope,scope}}.
 
 
 [[req-key-lifecycle]]

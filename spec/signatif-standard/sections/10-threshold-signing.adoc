@@ -81,7 +81,7 @@ threshold authority itself. An FTA has:
 
 * its own {{aggregate key}}, composed from member-contributed shares;
 * its own {{quorum}} (M-of-K member organizations);
-* its own {{scope}}, which may span member hierarchies;
+* its own {{authorization scope,scope}}, which may span member hierarchies;
 * its own {{ceremony}} protocol for cross-organization coordination.
 
 No single member organization controls an FTA. The threshold ensures that a

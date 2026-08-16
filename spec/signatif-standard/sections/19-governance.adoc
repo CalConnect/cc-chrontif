@@ -63,7 +63,7 @@ federations and when artifacts carry cross-domain co-signatures.
 
 A {{root trust authority}} shall satisfy the following governance requirements:
 
-* **Defined scope.** The root shall publish its initial {{scope}} and
+* **Defined scope.** The root shall publish its initial {{authorization scope,scope}} and
   delegation policy.
 
 * **Transparency.** All root-level operations (delegation, scope changes,

@@ -36,7 +36,7 @@ A deployment manifest shall declare the following:
   each with its identifier, {{aggregate key}} or fingerprint, {{quorum}}
   parameters (if threshold), and parent reference.
 
-* **Scope.** The root {{scope}} and any delegation narrowing rules.
+* **Scope.** The root {{authorization scope,scope}} and any delegation narrowing rules.
 
 * **Algorithms.** The signature algorithms recognized by the deployment
   (classical, post-quantum, or composite).

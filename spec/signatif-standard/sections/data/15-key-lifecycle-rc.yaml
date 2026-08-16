@@ -24,7 +24,8 @@ groups:
     - name: Encrypted key storage
       identifier_fragment: encrypted-storage
       statement: Private keys shall be stored encrypted at rest using an authenticated
-        encryption algorithm with adequate security strength, with the encryption key
+        encryption algorithm meeting the minimum security parameters in
+        <<tab-security-parameters>>, with the encryption key
         derived from a passphrase using a password-based key derivation function resistant
         to brute-force attacks.
       guidance:

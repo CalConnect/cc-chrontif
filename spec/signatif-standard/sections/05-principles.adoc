@@ -60,7 +60,7 @@ name. See <<threshold-signing>> and <<transparency>>.
 | Anchored
 | Signing authority flows through a delegation hierarchy — {{root trust
 authority}} through {{delegated trust authority,delegated trust authorities}}
-to {{end certificate}} to {{trusted artifact}} — with the {{scope}} narrowing
+to {{end certificate}} to {{trusted artifact}} — with the {{authorization scope,scope}} narrowing
 monotonically at every link, and every verification path terminating at a
 root anchor in the {{trust anchor bundle}}. Verification requires no
 phone-home to the issuer and no proprietary component. See
@@ -101,8 +101,8 @@ use-case suitability guidance.
 
 ==== Cryptographic scope enforcement
 
-The {{scope}} of a {{trust authority}} shall be a first-class signed field,
-cryptographically enforced at every chain link. Widening any {{scope dimension}}
+The {{authorization scope,scope}} of a {{trust authority}} shall be a first-class signed field,
+cryptographically enforced at every chain link. Widening any {{authorization scope dimension,scope dimension}}
 at any delegation point shall cause a hard verification failure. This contrasts with
 traditional PKI, in which a CA's scope is defined by external policy
 (Baseline Requirements) and is not verifiable from the certificate itself.
@@ -156,7 +156,7 @@ artifact level, not solely at the {{trust authority}} level.
 
 ==== Live scope conditions
 
-A {{scope}} shall include {{scope condition,scope conditions}} — executable
+A {{authorization scope,scope}} shall include {{authorization scope condition,scope conditions}} — executable
 predicates evaluated at verification time against the content and context of the
 artifact. An artifact signed by a key whose scope conditions are not met shall
 fail verification, regardless of cryptographic signature validity.
