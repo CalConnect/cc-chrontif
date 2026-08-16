@@ -388,20 +388,31 @@ The abbreviated terms used in this document are given in <<tab-abbreviations>>.
 |===
 | Abbreviation | Meaning
 
-| SIGNATIF | Convergent hierarchical repudiable open network trust infrastructure framework
+| SIGNATIF | Sealed Interoperable Graduated Non-repudiable Anchored Trust Infrastructure Framework
 | CA | Certificate Authority
 | COSE | CBOR Object Signing and Encryption
 | CRL | Certificate Revocation List
+| CSR | Certificate Signing Request
 | CT | Certificate Transparency
+| DAG | Directed Acyclic Graph
+| DPP | Digital Product Passport
 | DTA | Delegated Trust Authority
+| ETSI | European Telecommunications Standards Institute
 | FTA | Federated Trust Authority
+| JCS | JSON Canonicalization Scheme
 | JWS | JSON Web Signature
 | ML-DSA | Module-Lattice-Based Digital Signature Algorithm
+| MTI | Mandatory To Implement
 | OCSP | Online Certificate Status Protocol
+| OIML | International Organization of Legal Metrology
+| PKCS | Public-Key Cryptography Standards
 | PKI | Public Key Infrastructure
 | PQ | Post-Quantum
 | RTA | Root Trust Authority
 | SLH-DSA | Stateless Hash-Based Digital Signature Algorithm
+| SPKI | Subject Public Key Info
+| TLS | Transport Layer Security
 | URI | Uniform Resource Identifier
+| VC | Verifiable Credential
 | XMLDSig | XML Signature
 |===
