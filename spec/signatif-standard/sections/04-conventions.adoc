@@ -29,9 +29,6 @@ The following notation is used throughout this document. The notation is summari
 |===
 | Notation | Meaning
 
-| `H(x)`
-| Cryptographic hash of byte-string `x`
-
 | `(T, N)`
 | Quorum: at least `T` of `N` members shall cooperate
 
