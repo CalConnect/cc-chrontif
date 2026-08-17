@@ -46,7 +46,8 @@ with the following properties:
   verifier to confirm that no entries were removed or modified between two log
   states.
 
-NOTE: Merkle trees as specified in <<rfc6962>> are an example of a log structure
+NOTE: Merkle trees as specified in <<rfc6962>>, continued by the version 2 design
+(<<rfc9162>>), are an example of a log structure
 satisfying these properties. Other append-only log constructions with
 equivalent inclusion proof and consistency proof guarantees may be used.
 
@@ -100,7 +101,8 @@ tree head signature.
 Each tree head shall be anchored to an external, irrefutable time source to
 prove that the log state existed at a specific time. The anchoring shall
 produce a verifiable proof that the tree head hash was committed to the
-external source within the tree head's timestamp window.
+external source within the tree head's timestamp window. Decentralized
+anchoring infrastructures such as <<opentimestamps>> satisfy this requirement.
 
 
 [[transparency-mirrors]]

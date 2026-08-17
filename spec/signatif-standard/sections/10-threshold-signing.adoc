@@ -12,7 +12,8 @@ the delegation hierarchy.
 A threshold authority requires at least T of N designated key holders to
 cooperate to produce a valid signature under the authority's {{aggregate key}}.
 No individual holder possesses the full signing capability; the aggregate key
-is composed from member-contributed shares.
+is composed from member-contributed shares. Schnorr-based signature schemes
+(<<bip340>>) admit compact threshold aggregation under this model.
 
 
 [[threshold-every-level]]

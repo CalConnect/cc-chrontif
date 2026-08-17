@@ -7,7 +7,8 @@
 Algorithm agility ensures that the SIGNATIF framework can adopt new cryptographic
 algorithms and deprecate old ones without breaking existing verifiers. This
 clause specifies the algorithm identifier registry, the deprecation process,
-and the migration governance model.
+and the migration governance model. Comparable algorithm transitions in
+existing infrastructures are treated in <<nist-sp800-131a>>.
 
 
 [[algorithm-agility-registry]]

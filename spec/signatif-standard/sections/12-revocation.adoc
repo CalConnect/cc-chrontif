@@ -4,7 +4,7 @@
 
 === General
 
-PKI provides robust certificate-level revocation through CRLs and OCSP. In the
+PKI provides robust certificate-level revocation through CRLs and OCSP (<<rfc6960>>). In the
 SIGNATIF framework, revocation additionally propagates to artifacts: revoking a
 {{trust authority}} state flags every {{trusted artifact}} transitively bound to
 that state, across all {{trust dimension,trust dimensions}} and all

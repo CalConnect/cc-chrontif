@@ -34,6 +34,7 @@ groups:
         or end certificate, enabling the verifier to locate the key and its delegation
         chain.
       guidance:
+      - "Signer identifiers are URIs (<<rfc3986>>)."
 
     - name: Chain availability
       identifier_fragment: chain-availability
@@ -64,6 +65,9 @@ groups:
         for that profile.
       guidance:
       - Recognized profiles are format-xmldsig, format-jws, and format-cose.
+      - "Format profiles may define payload schemas using JSON Schema (<<jsonschema>>).
+        Format profiles may define payload schemas using JSON Schema (<<jsonschema>>)."
+
 
     - name: Version compatibility rules
       identifier_fragment: version-compatibility
@@ -138,6 +142,9 @@ groups:
         stated time and anchors that record to an external time source.
       guidance:
       - The time dimension is objective, tamper-evident, and cross-domain.
+      - "Timestamps use ISO 8601-1 representation (<<iso8601>>).
+        Timestamps use ISO 8601-1 representation (<<iso8601>>)."
+
 
     - name: Living artifact accumulation
       identifier_fragment: living-artifact
