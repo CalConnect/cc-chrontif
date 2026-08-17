@@ -142,6 +142,11 @@ infrastructure of <<transparency>>:
 
 === What SIGNATIF adds to the DPP data model
 
+<<tab-dpp-additions>> summarizes the concerns the framework addresses
+beyond the DPP data model itself.
+
+[[tab-dpp-additions]]
+.Concerns addressed by SIGNATIF mechanisms
 [cols="2,3",options="header"]
 |===
 | Concern | SIGNATIF mechanism
