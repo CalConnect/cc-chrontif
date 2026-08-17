@@ -32,7 +32,7 @@ groups:
       - Audit attestations shall be published.
 
     - name: Issuing authority organizational assurance
-      identifier_fragment: issuing-authority-isms
+      identifier_fragment: issuing-authority-assurance
       statement: A delegated trust authority that issues end certificates shall maintain an
         information security management system or equivalent organizational assurance
         framework and shall undergo periodic security audits proportionate to its scope

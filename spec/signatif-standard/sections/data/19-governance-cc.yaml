@@ -35,9 +35,9 @@ groups:
       type: Conformance
 
     - name: Issuing authority ISMS test
-      identifier_fragment: issuing-authority-isms
+      identifier_fragment: issuing-authority-assurance
       targets:
-      - /req/governance/issuing-authority-isms
+      - /req/governance/issuing-authority-assurance
       purpose: Verify issuing authorities maintain organizational assurance.
       method: Inspect a delegated trust authority that issues end certificates. Verify it
         maintains an ISMS or equivalent framework and undergoes periodic security audits.
