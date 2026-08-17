@@ -13,7 +13,7 @@ trust fusion, and multi-dimensional attestation.
 
 This document is format-agnostic: the binding requirements are specified
 independently of serialization. Specific signature envelope formats (e.g., XMLDSig,
-JWS, COSE) are defined as conformance profiles in <<artifact-format-profiles>>.
+JWS, COSE) are defined as conformance profiles in <<artifact-format-profiles>>; the COSE profile encodes artifacts as CBOR (<<rfc8949>>).
 
 
 [[artifact-binding]]

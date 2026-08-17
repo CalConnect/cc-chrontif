@@ -20,6 +20,9 @@ groups:
       guidance:
       - Threshold key shares shall be generated using a threshold key generation protocol
         ensuring no individual member possesses the full signing key.
+      - "Random bit generation should follow <<iso18031>>.
+        Random bit generation should follow <<iso18031>>."
+
 
     - name: Encrypted key storage
       identifier_fragment: encrypted-storage
@@ -56,6 +59,10 @@ groups:
         authenticated sessions with PIN or equivalent access control.
       guidance:
       - The HSM shall enforce access policies preventing unauthorized key use.
+      - "An HSM evaluated under <<iso19790>> (methodology <<iso18045>>) satisfies these
+        requirements structurally; the OASIS PKCS #11 interface (<<pkcs11>>) is an example
+        device interface."
+
 
     - name: Certificate signing request with proof of possession
       identifier_fragment: csr-pop
@@ -68,6 +75,9 @@ groups:
       - Additional CSR formats may be registered per Annex C.
       examples:
       - PKCS#10 is an example of a recognized CSR format.
+      - "The PKCS #10 certificate request syntax (<<pkcs10>>) is the reference format.
+        The PKCS #10 certificate request syntax (<<pkcs10>>) is the reference format."
+
 
     - name: Key rotation
       identifier_fragment: key-rotation

@@ -7,7 +7,7 @@
 
 W3C Verifiable Credentials (VC) <<w3c-vc>> provide an internationally
 trust infrastructure. This annex describes how the two compose. It does not
-specify requirements.
+specify requirements. VC documents are JSON-LD documents (<<json-ld>>).
 
 
 === Concept mapping

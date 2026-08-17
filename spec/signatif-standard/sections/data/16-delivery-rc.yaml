@@ -31,6 +31,9 @@ groups:
         and transparency log as the underlying object.
       guidance:
       - A passport is a presentation format, not a separate trust object.
+      - "Check characters per <<iso7064>> may protect the compact encoding.
+        Check characters per <<iso7064>> may protect the compact encoding."
+
 
     - name: Embedded chain delivery
       identifier_fragment: embedded-delivery

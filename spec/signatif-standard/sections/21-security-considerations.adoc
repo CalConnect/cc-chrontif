@@ -521,7 +521,7 @@ provide a decryption or signature-forcing capability.
 === Alignment with ISO/IEC security standards
 
 Organizations operating SIGNATIF trust authorities should maintain an
-information security management system conforming to ISO/IEC 27001, with
+information security management system conforming to <<iso27001>>, with
 SIGNATIF-specific risks (key compromise, ceremony disruption, transparency
 log integrity, scope violation) documented in the risk assessment.
 

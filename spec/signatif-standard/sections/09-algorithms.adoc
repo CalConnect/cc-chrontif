@@ -10,7 +10,10 @@ the algorithm agility framework that governs algorithm identifier assignment,
 negotiation, and deprecation.
 
 The SIGNATIF framework recognizes classical signature algorithms, post-quantum
-signature algorithms, and composite signatures that combine both. An
+signature algorithms, and composite signatures that combine both; stateful
+hash-based schemes such as XMSS and HSS serve long-validity artifacts
+(<<xmss>>, <<lersh>>), and classical mechanisms follow established
+digital-signature standards (<<iso14888>>). An
 implementation may support any subset, subject to the requirements of its
 claimed conformance classes.
 
