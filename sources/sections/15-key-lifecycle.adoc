@@ -88,8 +88,8 @@ produce a new certificate under the same or narrower {{authorization scope,scope
 [[req-key-lifecycle]]
 === Requirements
 
-[data2text,ar=sections/data/15-key-lifecycle-rc.yaml]
+[data2text,ar=data/15-key-lifecycle-rc.yaml]
 ----
 {% assign prefix = "key-lifecycle" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

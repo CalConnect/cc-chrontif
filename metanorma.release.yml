@@ -1,0 +1,5 @@
+# metanorma.release.yml — cc-signatif
+
+documents:
+  - pattern: "document-*"
+    channels: [public/standards]

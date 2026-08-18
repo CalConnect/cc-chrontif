@@ -221,8 +221,8 @@ requirements of this document apply uniformly regardless of the domain.
 [[req-architecture]]
 === Requirements
 
-[data2text,ar=sections/data/07-architecture-rc.yaml]
+[data2text,ar=data/07-architecture-rc.yaml]
 ----
 {% assign prefix = "architecture" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

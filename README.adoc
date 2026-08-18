@@ -1,0 +1,48 @@
+= SIGNATIF — Trust infrastructure framework for verifiable artifacts
+
+This work item belongs to ISO/TC 154 and CalConnect; it is a working
+draft of an international standard for sealing, delegating, and
+verifying artifacts in regulated industries.
+
+From Latin _signare_, "to mark with a seal, to sign": trustworthiness is
+established by what is verifiably signed, not by who is trusted.
+
+* Standard source: `spec/signatif-standard/`
+* Project website: https://www.signatif.org
+
+== Building the document
+
+[source,sh]
+----
+git clone https://github.com/CalConnect/cc-signatif
+cd cc-signatif
+bundle install
+bundle exec metanorma sources/document.adoc
+----
+
+HTML, XML, PDF, and Word outputs are generated next to the source file.
+Every push and pull request is compiled by CI, and the rendered
+documents are published from `main`.
+
+== How the document is organized
+
+* `sources/document.adoc` — the document skeleton and
+  include order.
+* `sections/*.adoc` — clauses and annexes in source order.
+* `sections/data/*-rc.yaml` — requirements classes (`/req/...`), one
+  file per clause.
+* `sections/data/*-cc.yaml` — conformance classes (`/conf/...`) and
+  their abstract tests, targeting the requirements.
+* `sections/templates/*.liquid` — the templates that render the YAML
+  into formal requirement and conformance blocks.
+
+Requirements and conformance tests live in structured YAML so they stay
+machine-readable; edit the YAML to change a requirement, and the clause
+text and Annex A render from it. The registry currently holds 113
+requirements across 14 classes, each paired with a conformance test.
+
+== Contributing
+
+Changes go through pull requests. Keep requirement statements
+self-contained and testable (`shall`), put explanation in guidance, and
+compile locally before pushing.

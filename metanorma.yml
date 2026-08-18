@@ -1,0 +1,8 @@
+---
+metanorma:
+  source:
+    files:
+      - sources/document.adoc
+  collection:
+    name: Trust infrastructure framework for verifiable artifacts
+    organization: CalConnect

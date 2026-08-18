@@ -363,8 +363,8 @@ the `x-` prefix to avoid collision with future standardized reasons.
 [[req-verification]]
 === Requirements
 
-[data2text,ar=sections/data/14-verification-rc.yaml]
+[data2text,ar=data/14-verification-rc.yaml]
 ----
 {% assign prefix = "verification" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

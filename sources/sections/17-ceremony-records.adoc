@@ -82,8 +82,8 @@ consistent and valid:
 [[req-ceremony]]
 === Requirements
 
-[data2text,ar=sections/data/17-ceremony-rc.yaml]
+[data2text,ar=data/17-ceremony-rc.yaml]
 ----
 {% assign prefix = "ceremony" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

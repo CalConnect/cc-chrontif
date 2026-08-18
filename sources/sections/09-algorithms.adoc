@@ -126,8 +126,8 @@ algorithms deprecated without breaking existing verifiers.
 [[req-algorithms]]
 === Requirements
 
-[data2text,ar=sections/data/09-algorithms-rc.yaml]
+[data2text,ar=data/09-algorithms-rc.yaml]
 ----
 {% assign prefix = "algorithms" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

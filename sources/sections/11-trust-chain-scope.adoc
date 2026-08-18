@@ -182,8 +182,8 @@ Scope is enforced at multiple independent layers:
 [[req-scope]]
 === Requirements
 
-[data2text,ar=sections/data/11-scope-rc.yaml]
+[data2text,ar=data/11-scope-rc.yaml]
 ----
 {% assign prefix = "scope" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----
