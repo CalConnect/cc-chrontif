@@ -20,8 +20,6 @@ jobs:
       - name: Install metanorma
         run: gem install metanorma metanorma-iso
       - name: Compile the standard
-        env:
-          MN: ${{ runner.temp }}/mn
         run: |
           MN_BIN="$(ruby -e 'puts Gem.bindir')/metanorma"
           cd spec/signatif-standard
