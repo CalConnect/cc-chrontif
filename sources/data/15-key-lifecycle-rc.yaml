@@ -20,8 +20,7 @@ groups:
       guidance:
       - Threshold key shares shall be generated using a threshold key generation protocol
         ensuring no individual member possesses the full signing key.
-      - "Random bit generation should follow <<iso18031>>.
-        Random bit generation should follow <<iso18031>>."
+      - "Random bit generation should follow <<iso18031>>."
 
 
     - name: Encrypted key storage
