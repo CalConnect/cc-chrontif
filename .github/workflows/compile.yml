@@ -18,7 +18,9 @@ jobs:
         with:
           ruby-version: '3.3'
       - name: Install metanorma
-        run: gem install metanorma metanorma-iso
+        run: |
+          gem install metanorma metanorma-iso
+          echo "$(gem environment gemdir)/bin" >> "$GITHUB_PATH"
       - name: Compile the standard
         run: |
           cd spec/signatif-standard
