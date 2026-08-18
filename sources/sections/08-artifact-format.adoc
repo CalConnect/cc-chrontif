@@ -345,8 +345,8 @@ signs the original canonical payload, not a modified version.
 [[req-artifact-format]]
 === Requirements
 
-[data2text,ar=sections/data/08-artifact-format-rc.yaml]
+[data2text,ar=data/08-artifact-format-rc.yaml]
 ----
 {% assign prefix = "artifact-format" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

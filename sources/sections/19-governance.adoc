@@ -108,8 +108,8 @@ accept artifacts from either hierarchy.
 [[req-governance]]
 === Requirements
 
-[data2text,ar=sections/data/19-governance-rc.yaml]
+[data2text,ar=data/19-governance-rc.yaml]
 ----
 {% assign prefix = "governance" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

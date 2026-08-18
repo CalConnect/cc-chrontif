@@ -152,8 +152,8 @@ that at least M of the K recognized logs include the artifact.
 [[req-transparency]]
 === Requirements
 
-[data2text,ar=sections/data/13-transparency-rc.yaml]
+[data2text,ar=data/13-transparency-rc.yaml]
 ----
 {% assign prefix = "transparency" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

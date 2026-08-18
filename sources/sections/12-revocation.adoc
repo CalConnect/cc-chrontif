@@ -155,8 +155,8 @@ For offline verification, a verifier shall apply a CRL grace period policy:
 [[req-revocation]]
 === Requirements
 
-[data2text,ar=sections/data/12-revocation-rc.yaml]
+[data2text,ar=data/12-revocation-rc.yaml]
 ----
 {% assign prefix = "revocation" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

@@ -61,8 +61,8 @@ post-quantum-only, classical-only signatures shall be rejected.
 [[req-algorithm-agility]]
 === Requirements
 
-[data2text,ar=sections/data/20-algorithm-agility-rc.yaml]
+[data2text,ar=data/20-algorithm-agility-rc.yaml]
 ----
 {% assign prefix = "algorithm-agility" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

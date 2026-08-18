@@ -146,8 +146,8 @@ A ceremony protocol shall:
 [[req-threshold-signing]]
 === Requirements
 
-[data2text,ar=sections/data/10-threshold-signing-rc.yaml]
+[data2text,ar=data/10-threshold-signing-rc.yaml]
 ----
 {% assign prefix = "threshold-signing" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

@@ -95,8 +95,8 @@ migration. The most recent signed manifest is authoritative.
 [[req-manifest]]
 === Requirements
 
-[data2text,ar=sections/data/18-manifest-rc.yaml]
+[data2text,ar=data/18-manifest-rc.yaml]
 ----
 {% assign prefix = "manifest" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----

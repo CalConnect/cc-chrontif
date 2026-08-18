@@ -113,8 +113,8 @@ A challenge-response exchange shall satisfy the following:
 [[req-delivery]]
 === Requirements
 
-[data2text,ar=sections/data/16-delivery-rc.yaml]
+[data2text,ar=data/16-delivery-rc.yaml]
 ----
 {% assign prefix = "delivery" %}
-include::templates/requirements_class.liquid[]
+include::../templates/requirements_class.liquid[]
 ----
