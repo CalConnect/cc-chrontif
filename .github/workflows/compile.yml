@@ -19,13 +19,9 @@ jobs:
           ruby-version: '3.3'
       - name: Install metanorma
         run: gem install metanorma metanorma-iso
-      - name: Where did the gems go
-        run: |
-          gem env | sed -n '1,12p'
-          find "$HOME" /opt/hostedtoolcache -maxdepth 6 -name metanorma -type f 2>/dev/null | head
       - name: Compile the standard
         run: |
-          BINDIR="$HOME/.gem/ruby/$(ruby -e 'puts RbConfig::CONFIG["ruby_version"]')/bin"
+          BINDIR="$HOME/.local/share/gem/ruby/$(ruby -e 'puts RbConfig::CONFIG["ruby_version"]')/bin"
           test -x "$BINDIR/metanorma"
           cd spec/signatif-standard
           "$BINDIR/metanorma" document.adoc
