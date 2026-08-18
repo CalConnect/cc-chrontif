@@ -4,6 +4,14 @@ This work item belongs to ISO/TC 154 and CalConnect; it is a working
 draft of an international standard for sealing, delegating, and
 verifying artifacts in regulated industries.
 
+image:https://github.com/CalConnect/cc-signatif/actions/workflows/generate.yml/badge.svg["Build", link="https://github.com/CalConnect/cc-signatif/actions/workflows/generate.yml"]
+image:https://github.com/CalConnect/cc-signatif/actions/workflows/release.yml/badge.svg["Release", link="https://github.com/CalConnect/cc-signatif/actions/workflows/release.yml"]
+image:https://img.shields.io/badge/published-calconnect.github.io%2Fcc--signatif-25618C["Published standard", link="https://calconnect.github.io/cc-signatif/"]
+
+This document is available in its rendered forms here:
+
+* https://calconnect.github.io/cc-signatif/[SIGNATIF — Trust infrastructure framework for verifiable artifacts]
+
 From Latin _signare_, "to mark with a seal, to sign": trustworthiness is
 established by what is verifiably signed, not by who is trusted.
 
@@ -22,7 +30,10 @@ bundle exec metanorma sources/document.adoc
 
 HTML, XML, PDF, and Word outputs are generated next to the source file.
 Every push and pull request is compiled by CI, and the rendered
-documents are published from `main`.
+documents are published from `main` to
+https://calconnect.github.io/cc-signatif/[calconnect.github.io/cc-signatif].
+An introduction deck for standardization audiences is in
+`presentations/`.
 
 == How the document is organized
 
