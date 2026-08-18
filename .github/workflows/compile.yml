@@ -1,0 +1,30 @@
+name: Compile
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: compile-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: Install metanorma
+        run: gem install metanorma metanorma-iso
+      - name: Compile the standard
+        run: |
+          cd spec/signatif-standard
+          metanorma document.adoc
+      - name: Check the outputs exist
+        run: |
+          test -s spec/signatif-standard/document.html
+          test -s spec/signatif-standard/document.xml
+          test -s spec/signatif-standard/document.pdf
