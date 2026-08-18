@@ -24,7 +24,7 @@ technology or internal architecture.
 To ensure interoperability between independently developed implementations, the
 following mandatory-to-implement (MTI) baseline applies. An implementation
 claiming a conformance class shall implement at least the MTI components for
-that class. The baseline specifies algorithm _classes_, not specific
+that class. The baseline specifies algorithm classes, not specific
 algorithms, to accommodate deployments with different regulatory or national
 algorithm requirements (e.g., SM2/SM3 in China, FIPS-approved algorithms in
 the United States). <<tab-mti-baseline>> defines the mandatory-to-implement baseline by conformance class.

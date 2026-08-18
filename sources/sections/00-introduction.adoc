@@ -60,8 +60,8 @@ metrology certificate system developed under the OIML SMART program, which
 demonstrated multi-dimensional attestation, threshold signing, transparency
 logging, and scope enforcement in a five-tier legal metrology hierarchy.
 
-NOTE: The name SIGNATIF derives from Latin _signare_ ("to mark with a seal, to
-sign"), the root of _sign_, _signature_, and _signet_, combined with the
+NOTE: The name SIGNATIF derives from Latin signare ("to mark with a seal, to
+sign"), the root of sign, signature, and signet, combined with the
 adjectival suffix _-tif_. The signing root captures the framework's premise:
 trustworthiness is established by what is verifiably signed, not by who is
 trusted.
@@ -94,14 +94,14 @@ deficiencies in PKI's implementation; they are consequences of its design
 boundary — PKI validates the key and identity; the application validates the
 content:
 
-* **Threshold is optional, not required.** PKI does not prohibit threshold
+* Threshold is optional, not required. PKI does not prohibit threshold
   signing at intermediate tiers — cryptographic threshold schemes
   implementations exist and HSM-based M-of-N quorum is common at the root.
   However, X.509 does not require threshold, and deployment practice
   overwhelmingly uses single-key intermediates. SIGNATIF makes threshold
   mandatory at every authority level as a conformance requirement.
 
-* **Scope extensions exist but are inconsistently enforced.** X.509 Name
+* Scope extensions exist but are inconsistently enforced. X.509 Name
   Constraints and Extended Key Usage are machine-checkable, signed
   extensions that constrain a CA's authority. However, enforcement is
   implementation-dependent — many verifiers do not check Name Constraints —
@@ -110,7 +110,7 @@ content:
   multi-dimensional scope enforcement as a hard, mandatory verification step
   at every delegation link.
 
-* **Multiple signatures supported but no convergence model.** Several PKI
+* Multiple signatures supported but no convergence model. Several PKI
   signature formats support multiple signatures on one document (CMS multiple
   signerInfos, PAdES, XMLDSig). However, the PKI model provides no
   standardized mechanism to evaluate the combined trustworthiness of
@@ -118,7 +118,7 @@ content:
   independence, or how their convergence should be assessed. SIGNATIF
   provides a coverage report and classification policy for this purpose.
 
-* **Chain validation is binary; trust graduation is policy-interpreted.** A
+* Chain validation is binary; trust graduation is policy-interpreted. A
   certificate is either valid or revoked at the chain-validation level. PKI
   does carry assurance metadata (EV/OV/DV certificate types, Certificate
   Policy OIDs, eIDAS qualified status), and verifiers can apply graduated
@@ -128,7 +128,7 @@ content:
   verifiers compute identical classification labels for the same dimensional
   coverage.
 
-* **Revocation captures key compromise, not condition invalidation.** PKI
+* Revocation captures key compromise, not condition invalidation. PKI
   provides robust certificate-level revocation through CRLs and OCSP, with
   mature deployment. Its revocation model is designed for and effective at
   key-compromise and mis-issuance scenarios: when a CA or end-entity
@@ -144,7 +144,7 @@ content:
   validity but still operate at the certificate/signature level. SIGNATIF
   integrates condition binding into the verification framework itself.
 
-* **Timestamps are available but not required for verification.** RFC 3161
+* Timestamps are available but not required for verification. RFC 3161
   timestamp authorities and X.509 counter-signatures provide strong external
   time evidence and are legally recognized in many jurisdictions (e.g., eIDAS
   qualified electronic timestamps). However, standard PKI path validation
@@ -152,7 +152,7 @@ content:
   issuer-asserted and suffice for chain validation. SIGNATIF makes
   independent time attestation a first-class trust dimension.
 
-* **Transparency is mandatory in web PKI but not in PKI generally.**
+* Transparency is mandatory in web PKI but not in PKI generally.
   Certificate Transparency (<<rfc6962>>) is mandatory for publicly trusted
   TLS certificate issuance, and major browsers reject certificates without
   embedded SCTs. However, CT is specific to the web PKI; code signing,
@@ -160,20 +160,20 @@ content:
   require transparency. SIGNATIF makes transparency log inclusion a
   universal requirement across all deployment types.
 
-* **Authorization is static at the certificate level.** Certificates assert
+* Authorization is static at the certificate level. Certificates assert
   "this key is authorized" as a fact for the certificate's validity period.
   X.509 attribute certificates can bind attributes to a holder, but these
   attributes describe the holder, not conditions about a specific artifact's
   content. SIGNATIF scope conditions are predicates about the artifact's
   content and production context, evaluated at verification time.
 
-* **Possession-based authenticity by default.** A static PKI certificate and
+* Possession-based authenticity by default. A static PKI certificate and
   its signed artifact can be copied and replayed. Challenge-response
   mechanisms exist in PKI ecosystems (mTLS channel binding, nonce-based
   protocols) but are application-layer additions. SIGNATIF specifies
   challenge-response as a conformance capability for device signers.
 
-* **Attributes bind to holders, not to artifact production conditions.** X.509
+* Attributes bind to holders, not to artifact production conditions. X.509
   attribute certificates and qualified certificates carry cryptographically
   signed attributes (roles, clearance levels, qualifications). However,
   these describe the certificate holder, not the conditions under which a
@@ -194,9 +194,9 @@ dimensions of reality.
 Whether SIGNATIF is simpler or more complex than PKI depends on the dimension
 of comparison and the perspective of the stakeholder:
 
-**Where SIGNATIF is simpler:**
+Where SIGNATIF is simpler:
 
-* **Scope enforcement is algorithmic, not policy-interpreted.** PKI constrains
+* Scope enforcement is algorithmic, not policy-interpreted. PKI constrains
   CA authority through dozens of certificate extensions (Name Constraints, EKU,
   Certificate Policies, Policy Mappings, Inhibit Any-Policy) that interact in
   implementation-dependent ways, backed by external policy documents (the CA/B
@@ -205,54 +205,54 @@ of comparison and the perspective of the stakeholder:
   algorithm. The verifier does not interpret policy; it runs an algorithm on
   signed fields.
 
-* **Trust assessment is standardized.** In PKI, deciding how much to trust a
+* Trust assessment is standardized. In PKI, deciding how much to trust a
   certificate requires each application to interpret EV/OV/DV status,
   Certificate Policy OIDs, CT presence, and revocation freshness — each
   application re-derives the logic. SIGNATIF provides one coverage report;
   the application compares the classification to its acceptance threshold.
 
-* **Cross-domain trust is artifact-level, not CA-level.** PKI cross-
+* Cross-domain trust is artifact-level, not CA-level. PKI cross-
   certification involves bridge CA topology, cross-certificates with
   constraints, and path building across multiple hierarchies. SIGNATIF handles
   cross-domain trust through co-signatures on the artifact itself — no bridge
   CAs, no cross-certificate management.
 
-* **Revocation is unified.** PKI offers CRLs, OCSP, OCSP stapling, OCSP
+* Revocation is unified. PKI offers CRLs, OCSP, OCSP stapling, OCSP
   must-staple, CRLite, CRLSets, and short-lived certificates — multiple
   competing mechanisms with different deployment profiles. SIGNATIF has one
   propagation model with one offline strategy (CRL grace period).
 
-**Where SIGNATIF is more complex — or can be, depending on configuration:**
+Where SIGNATIF is more complex — or can be, depending on configuration:
 
-* **Issuance scales with dimensional coverage.** An artifact may carry N
+* Issuance scales with dimensional coverage. An artifact may carry N
   co-signatures from independent trust dimensions. However, a minimal
   deployment with a single data dimension and 1-of-1 threshold at every
   level produces artifacts structurally equivalent to PKI-signed documents.
   Complexity is opt-in: a deployment adds dimensions and threshold only
   where its trust model requires them.
 
-* **Threshold is required at every level — but 1-of-1 is conforming.** PKI's
+* Threshold is required at every level — but 1-of-1 is conforming. PKI's
   single-key CA model is a special case of SIGNATIF's threshold model with
   T = N = 1. A single party holding all signing keys (N-of-N with one party)
   is also conforming. No ceremony infrastructure is needed for 1-of-1.
   SIGNATIF generalizes PKI: PKI-like deployments are one configuration of
   the SIGNATIF framework.
 
-* **Transparency infrastructure is mandatory — but can be minimal.** SIGNATIF
+* Transparency infrastructure is mandatory — but can be minimal. SIGNATIF
   requires a transparency log, but the minimum is a single operator with a
   single mirror and no gossip quorum (a lower classification label). Deployments
   add mirrors, gossip, and multi-log attestation proportionate to their
   risk model.
 
-* **The verification pipeline has more steps — but each is optional except
-  the hard checks.** The minimum verification is: format validity, signature
+* The verification pipeline has more steps — but each is optional except
+  the hard checks. The minimum verification is: format validity, signature
   validity, chain integrity, scope narrowing, and revocation status —
   structurally similar to PKI path validation. Transparency, time anchoring,
   cross-domain diversity, multi-log quorum, and classification are soft
   checks that contribute to the classification label but are not required
   for basic acceptance.
 
-**PKI as a special case of SIGNATIF:** A SIGNATIF deployment configured with
+PKI as a special case of SIGNATIF: A SIGNATIF deployment configured with
 1-of-1 threshold at every level, a single data dimension, no scope conditions,
 transparency with a single log and no gossip, and a binary acceptance policy
 (accept the minimum classification label) is functionally equivalent to a PKI deployment. This
@@ -262,7 +262,7 @@ threshold protection, transparency infrastructure, and graduated trust as
 their requirements evolve. SIGNATIF is not PKI plus extra complexity; it is a
 general framework in which PKI's trust model is one configuration among many.
 
-**The net trade-off:** For simple trust problems — single signer, binary
+The net trade-off: For simple trust problems — single signer, binary
 acceptance, no offline verification beyond cached CRLs — PKI is the simpler
 choice and benefits from decades of ecosystem maturity. For problems requiring
 multi-party attestation, graduated assessment, condition lifecycle management,
@@ -278,19 +278,19 @@ timestamp, an environmental context, and an authorizing party. For a verifier
 to trust this artifact, multiple independent dimensions of reality must
 converge:
 
-* **Authority.** Was the signing key authorized by a legitimate delegation
+* Authority. Was the signing key authorized by a legitimate delegation
   chain whose scope covers this artifact?
 
-* **Person.** Was a specific human operator accountable for the act, bound to
+* Person. Was a specific human operator accountable for the act, bound to
   the artifact by a separate signature?
 
-* **Time.** Can the time of signing be established independently of the
+* Time. Can the time of signing be established independently of the
   signer's own assertion, anchored to an external time source?
 
-* **Location.** Was the artifact produced at a location consistent with its
+* Location. Was the artifact produced at a location consistent with its
   claimed provenance?
 
-* **Environment.** Were the ambient conditions (temperature, humidity, sensor
+* Environment. Were the ambient conditions (temperature, humidity, sensor
   state) at the time of signing consistent with the artifact's validity
   conditions?
 
@@ -340,7 +340,7 @@ However, the result would be non-standardized, non-interoperable, and
 enforced by application policy rather than by cryptographic invariant. The
 following distinctions explain why SIGNATIF exists as a separate framework:
 
-* **Convergence is enforced, not assumed.** Multiple PKI signatures can be
+* Convergence is enforced, not assumed. Multiple PKI signatures can be
   applied to the same document, but nothing in the PKI model ensures all
   signers attest the same canonical bytes. PAdES counter-signatures create
   ordering dependencies (signature 3 signs over signature 2); if signature 2
@@ -348,21 +348,21 @@ following distinctions explain why SIGNATIF exists as a separate framework:
   all co-signatures to attest the same canonical payload hash independently,
   with no ordering dependency, and partial attestation is non-conforming.
 
-* **Scope is cryptographically checked, not policy-defined.** X.509 Name
+* Scope is cryptographically checked, not policy-defined. X.509 Name
   Constraints and Extended Key Usage can restrict a CA's authority, but
   enforcement is implementation-dependent — many verifiers ignore Name
   Constraints. SIGNATIF's scope is checked at every delegation link as a hard
   verification failure. The scope is multi-dimensional (domain, class,
   conditions), not name-based.
 
-* **Conditions bind to artifact content, not certificate holder.** X.509
+* Conditions bind to artifact content, not certificate holder. X.509
   attribute certificates can bind attributes to a holder, and OCSP provides
   real-time certificate status. But neither mechanism can express "this
   attestation is valid only if the measured value in the artifact is within
   tolerance" — a predicate about the artifact's content evaluated at
   verification time. SIGNATIF scope conditions are such predicates.
 
-* **Revocation propagates to conditions, not just keys.** In multiple PKIs,
+* Revocation propagates to conditions, not just keys. In multiple PKIs,
   revoking a calibration certificate tells the verifier the certificate is
   revoked. It does not flag the measurement records that used that
   calibration — there is no hash-binding between the artifact and the
@@ -371,14 +371,14 @@ following distinctions explain why SIGNATIF exists as a separate framework:
   SIGNATIF standardizes the hash-binding and propagates state revocation to
   all dependent artifacts.
 
-* **Combination is standardized, not reinvented.** Multiple PKIs produce N
+* Combination is standardized, not reinvented. Multiple PKIs produce N
   independent pass/fail results. Each application decides what these mean —
   and every application reinvents the logic. SIGNATIF provides a
   coverage report and classification policy that two conforming verifiers compute
   identically, enabling interoperability between independently developed
   verification systems.
 
-* **Transparency covers artifacts, not just certificates.** CT logs track
+* Transparency covers artifacts, not just certificates. CT logs track
   certificate issuance, not artifacts. A multi-PKI deployment would need
   separate, ad-hoc logging for each PKI's signed artifacts. SIGNATIF
   requires every certificate and artifact to be in a transparency log, and
@@ -397,28 +397,28 @@ hierarchies.
 SIGNATIF addresses the persistent-artifact trust problem through five
 integrated mechanisms:
 
-* **Cryptographic scope.** Each authority's authorization boundary is a
+* Cryptographic scope. Each authority's authorization boundary is a
   signed, multi-dimensional field (domain, class, conditions) that narrows
   monotonically at every delegation link. Scope violations are detected at
   verification time, not by after-the-fact audit.
 
-* **Convergent attestation.** Each artifact carries co-signatures from
+* Convergent attestation. Each artifact carries co-signatures from
   multiple independent trust dimensions — authority, person, time, location,
   environment, and extensible others. Trustworthiness is established by the
   convergence of independent attestations, not by a single signer.
 
-* **Threshold at every level.** No single key compromise compromises any
+* Threshold at every level. No single key compromise compromises any
   authority in the hierarchy. Threshold signing is required at every level,
   not just the root.
 
-* **Trust as a lifecycle.** Trust is granted through signing, sustained
+* Trust as a lifecycle. Trust is granted through signing, sustained
   through transparency and time-anchoring, and repudiated through revocation
   that propagates to condition-dependent artifacts. When the real-world
   conditions that made an artifact trustworthy change, the framework detects
   it and flags the affected artifacts — including those signed under still-
   valid keys.
 
-* **Graduated, offline-verifiable trust.** The verifier produces an objective
+* Graduated, offline-verifiable trust. The verifier produces an objective
   coverage report reflecting dimensional coverage and verification path
   robustness, applies the scheme's classification policy to derive a grade
   label, and applies its own acceptance threshold to that label. All of this

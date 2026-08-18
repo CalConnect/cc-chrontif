@@ -122,31 +122,31 @@ multi-dimensional attestation.
 
 SIGNATIF is appropriate when one or more of the following properties are required:
 
-* **Multi-party attestation.** The artifact's trustworthiness depends on
+* Multi-party attestation. The artifact's trustworthiness depends on
   independent attestations from multiple parties (e.g., operator, laboratory,
   regulator). PKI binds one signer per object and cannot express convergence.
 
-* **Cryptographic scope enforcement.** The signing key's authority must be
+* Cryptographic scope enforcement. The signing key's authority must be
   verifiable from the certificate itself, not from external policy. PKI defines
   scope externally; it cannot detect scope violations at verification time.
 
-* **Threshold at every level.** No single key compromise compromises any
+* Threshold at every level. No single key compromise compromises any
   authority. PKI uses single-key CAs; threshold is typically root-only if at
   all.
 
-* **Mandatory transparency.** The artifact's existence is publicly
+* Mandatory transparency. The artifact's existence is publicly
   auditable, and un-logged artifacts are rejected. PKI treats transparency
   as optional.
 
-* **Revocation propagation to artifacts.** Revoking an authority state
+* Revocation propagation to artifacts. Revoking an authority state
   flags all artifacts bound to that state. PKI revokes certificates only;
   prior signatures remain valid.
 
-* **Multi-dimensional reality attestation.** Time, location, or environmental
+* Multi-dimensional reality attestation. Time, location, or environmental
   conditions are cryptographically attested, not carried as metadata. PKI
   has one dimension: authority.
 
-* **Graduated trust assessment.** The verifier needs to distinguish between
+* Graduated trust assessment. The verifier needs to distinguish between
   levels of assurance for risk-based policy. PKI is binary.
 
 [example]
@@ -163,20 +163,20 @@ multi-dimensional convergence model of SIGNATIF is a hard requirement.
 
 Traditional PKI is appropriate when the following conditions hold:
 
-* **Server identity authentication.** The use case is authenticating a server
+* Server identity authentication. The use case is authenticating a server
   to a client in a transport-layer session. TLS <<rfc8446>> with X.509
   certificates is the mature, interoperable solution.
 
-* **Simple key-to-identity binding.** The requirement is to bind a public key
+* Simple key-to-identity binding. The requirement is to bind a public key
   to an identity (person, organization, or device) for signature or encryption.
   X.509 certificates provide this directly.
 
-* **Web PKI ecosystem.** The use case requires interoperability with existing
+* Web PKI ecosystem. The use case requires interoperability with existing
   web browsers, operating systems, and trust stores. The web PKI ecosystem
   (CA/Browser Forum Baseline Requirements, CT monitoring) is specific to this
   domain.
 
-* **Email security.** S/MIME uses X.509 for email signing and encryption. The
+* Email security. S/MIME uses X.509 for email signing and encryption. The
   interoperability ecosystem is mature.
 
 
@@ -185,15 +185,15 @@ Traditional PKI is appropriate when the following conditions hold:
 For the following use cases, both PKI and SIGNATIF are technically viable; the
 choice is a preference decision based on deployment constraints:
 
-* **Code signing.** Both can bind a signing key to a publisher. SIGNATIF adds
+* Code signing. Both can bind a signing key to a publisher. SIGNATIF adds
   multi-party attestation and graduated trust; PKI is simpler and more widely
   deployed.
 
-* **Document signing.** Both can sign documents. SIGNATIF adds scope enforcement
+* Document signing. Both can sign documents. SIGNATIF adds scope enforcement
   and revocation propagation; PKI is interoperable with existing document
   formats.
 
-* **Device identity.** Both can issue device certificates. SIGNATIF adds
+* Device identity. Both can issue device certificates. SIGNATIF adds
   threshold signing and challenge-response authenticity; PKI is simpler.
 
 
@@ -319,17 +319,17 @@ composition is permitted by the format-agnostic binding requirements in
 
 An organization migrating from PKI to SIGNATIF should consider:
 
-* **Key reuse.** Existing PKI keys may be reused as SIGNATIF end certificate keys,
+* Key reuse. Existing PKI keys may be reused as SIGNATIF end certificate keys,
   provided the scope is narrowed appropriately.
 
-* **Certificate mapping.** Existing X.509 certificates map to SIGNATIF end
+* Certificate mapping. Existing X.509 certificates map to SIGNATIF end
   certificates. The X.509 subject and extensions provide initial scope and
   identity information.
 
-* **Transparency log bootstrapping.** A new SIGNATIF deployment starts with an
+* Transparency log bootstrapping. A new SIGNATIF deployment starts with an
   empty transparency log. Existing artifacts may be retroactively logged.
 
-* **Graduated adoption.** An organization may adopt SIGNATIF incrementally — for
+* Graduated adoption. An organization may adopt SIGNATIF incrementally — for
   example, starting with the data dimension only (PKI-compatible) and adding
   person, time, location, and environment dimensions over time as the living
   artifact model permits.

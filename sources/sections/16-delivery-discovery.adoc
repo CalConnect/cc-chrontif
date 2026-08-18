@@ -56,14 +56,14 @@ underlying certificate or artifact remains the authoritative source.
 Chain discovery mechanisms are specified in <<architecture-discovery>>. This
 clause specifies the delivery aspects:
 
-* **Embedded chain delivery.** The artifact carries the full chain inline.
+* Embedded chain delivery. The artifact carries the full chain inline.
   No additional network access is required for discovery.
 
-* **Transparency-log reference delivery.** The artifact carries references
+* Transparency-log reference delivery. The artifact carries references
   (transparency-log sequence numbers). The verifier fetches the referenced
   certificates from a transparency log or mirror on first encounter.
 
-* **Hybrid delivery.** The artifact carries the end certificate and immediate
+* Hybrid delivery. The artifact carries the end certificate and immediate
   chain, with transparency-log references for the remaining chain.
 
 
@@ -92,21 +92,21 @@ produced on demand.
 
 A challenge-response exchange shall satisfy the following:
 
-* **Nonce entropy.** The nonce shall have at least 128 bits of entropy and shall
+* Nonce entropy. The nonce shall have at least 128 bits of entropy and shall
   be generated using a cryptographically secure random source.
 
-* **Freshness window.** The verifier shall apply a time freshness window
+* Freshness window. The verifier shall apply a time freshness window
   (see <<verification-freshness>>) to the challenge-response. A response
   received outside the window shall be rejected.
 
-* **Nonce binding.** The device shall bind the nonce into the {{canonical
+* Nonce binding. The device shall bind the nonce into the {{canonical
   payload}} of the response artifact, such that the signature covers the nonce.
 
-* **Replay rejection.** The verifier shall reject any response whose nonce does
+* Replay rejection. The verifier shall reject any response whose nonce does
   not match the challenge nonce, or whose timestamp falls outside the freshness
   window.
 
-* **Single-use nonce.** The verifier shall not accept two responses for the same
+* Single-use nonce. The verifier shall not accept two responses for the same
   challenge nonce.
 
 

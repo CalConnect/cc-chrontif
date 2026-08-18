@@ -113,16 +113,16 @@ creates trust bridges between otherwise independent roots.
 
 An FTA lifecycle consists of:
 
-* **Formation.** Member organizations contribute shares; the aggregate key is
+* Formation. Member organizations contribute shares; the aggregate key is
   computed and published.
 
-* **Delegation.** The FTA delegates to subordinate delegated trust authorities
+* Delegation. The FTA delegates to subordinate delegated trust authorities
   using its aggregate key.
 
-* **Re-share.** Member organizations join or leave without changing the
+* Re-share. Member organizations join or leave without changing the
   aggregate key (see <<threshold-aggregate-continuity>>).
 
-* **Dissolution.** The aggregate key is retired. Historical artifacts signed
+* Dissolution. The aggregate key is retired. Historical artifacts signed
   before dissolution remain valid if their chains and scope remain valid.
 
 

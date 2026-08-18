@@ -234,29 +234,29 @@ combined with SIGNATIF co-signatures for privacy-preserving presentations.
 VC provides tamper-evidence, issuer identification, and claims structure.
 SIGNATIF adds the trust infrastructure layer that VC does not specify:
 
-* **Delegation hierarchy with scope enforcement.** VC identifies the issuer
+* Delegation hierarchy with scope enforcement. VC identifies the issuer
   but does not specify the chain of authority from root to issuer, nor
   machine-checkable scope constraints. SIGNATIF adds a delegation chain with
   monotonic scope narrowing enforced at every link.
 
-* **Multi-dimensional convergence.** VC supports one proof (or multiple
+* Multi-dimensional convergence. VC supports one proof (or multiple
   proofs, but with no convergence assessment model). SIGNATIF adds independent
   dimension attestations (data, person, time, location, environment, and
   extensible others) with a coverage report and scheme-defined classification.
 
-* **Threshold protection.** VC issuers use single keys. SIGNATIF requires
+* Threshold protection. VC issuers use single keys. SIGNATIF requires
   threshold at every authority level, preventing single-key compromise.
 
-* **Mandatory transparency.** VCs can be issued without any public record.
+* Mandatory transparency. VCs can be issued without any public record.
   SIGNATIF requires every artifact in a recognized transparency log with
   inclusion proofs as a verification input.
 
-* **Trust lifecycle.** VC revocation invalidates the credential. SIGNATIF
+* Trust lifecycle. VC revocation invalidates the credential. SIGNATIF
   revocation propagates to condition-dependent artifacts, including scope
   condition withdrawal — revoking trust when the real-world conditions that
   made the artifact trustworthy no longer hold.
 
-* **Graduated, reproducible assessment.** VC verification is binary (valid or
+* Graduated, reproducible assessment. VC verification is binary (valid or
   invalid). SIGNATIF produces an objective coverage report that the scheme's
   classification policy maps to domain-specific grade labels.
 
@@ -264,16 +264,16 @@ SIGNATIF adds the trust infrastructure layer that VC does not specify:
 
 Organizations already using VCs can adopt SIGNATIF incrementally:
 
-* **Add dimensions.** Keep the existing VC issuance pipeline. Add person,
+* Add dimensions. Keep the existing VC issuance pipeline. Add person,
   time, or environment co-signatures as additional VC proofs (pattern 2). The
   existing VC verifier continues to work; SIGNATIF-aware verifiers get the
   coverage report.
 
-* **Add scope and transparency.** Wrap the VC in a SIGNATIF artifact
+* Add scope and transparency. Wrap the VC in a SIGNATIF artifact
   (pattern 1). Add scope enforcement and transparency logging. The VC
   payload is unchanged; the trust infrastructure is added around it.
 
-* **Full SIGNATIF deployment.** Issue SIGNATIF artifacts natively, using VC
+* Full SIGNATIF deployment. Issue SIGNATIF artifacts natively, using VC
   as the payload format (pattern 3 with native SIGNATIF co-signatures). This
   gives the full feature set: scope, threshold, transparency, convergence,
   revocation propagation, and condition lifecycle.

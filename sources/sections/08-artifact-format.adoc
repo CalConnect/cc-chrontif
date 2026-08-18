@@ -22,24 +22,24 @@ JWS, COSE) are defined as conformance profiles in <<artifact-format-profiles>>; 
 Any conforming signature wrapper shall guarantee the following five binding
 properties:
 
-. **Canonical representation binding.** The signature shall bind to a
+. Canonical representation binding. The signature shall bind to a
   deterministic {{canonical payload}} — a byte-string representation of the
   payload data such that the same logical content always produces the same
   bytes, regardless of serialization format or encoding.
 
-. **Algorithm identification.** The wrapper shall explicitly identify the
+. Algorithm identification. The wrapper shall explicitly identify the
   signing algorithm and its parameters, such that the verifier knows
   unambiguously how to validate the signature.
 
-. **Signer identification.** The wrapper shall reference or embed the signer's
+. Signer identification. The wrapper shall reference or embed the signer's
   public key or {{end certificate}}, enabling the verifier to locate the key
   and its delegation chain.
 
-. **Chain availability.** The wrapper shall carry or reference the full chain
+. Chain availability. The wrapper shall carry or reference the full chain
   from the signer to a root anchor, in accordance with at least one chain
   discovery strategy (see <<architecture-discovery>>).
 
-. **Self-description.** The wrapper shall be self-describing: a verifier shall
+. Self-description. The wrapper shall be self-describing: a verifier shall
   be able to determine all inputs needed for validation from the wrapper and
   the {{trust anchor bundle}} alone, without external convention.
 
@@ -55,18 +55,18 @@ chain — attests the same canonical bytes.
 A conforming canonicalization algorithm shall satisfy the following
 characteristics:
 
-* **Determinism.** The same logical content shall always produce the same
+* Determinism. The same logical content shall always produce the same
   canonical byte string, regardless of the serialization format, encoding, or
   implementation that produced it.
 
-* **Recoverability.** The canonical byte string shall be sufficient to
+* Recoverability. The canonical byte string shall be sufficient to
   reconstruct the logical content without loss.
 
-* **Unambiguity.** The canonicalization rules shall be fully specified, leaving
+* Unambiguity. The canonicalization rules shall be fully specified, leaving
   no implementation-defined behavior that could cause two implementations to
   produce different canonical bytes for the same logical content.
 
-* **Collision resistance.** Two distinct logical contents shall not produce
+* Collision resistance. Two distinct logical contents shall not produce
   the same canonical byte string (subject to the underlying hash function's
   collision resistance).
 
@@ -151,10 +151,10 @@ content shall canonicalize to the same bytes under the schema.
 
 Artifact format versioning follows semantic compatibility rules:
 
-* **Major version** changes are breaking. Verifiers shall reject artifacts
+* Major version changes are breaking. Verifiers shall reject artifacts
   whose major version exceeds the verifier's supported maximum.
 
-* **Minor version** changes are backward and forward compatible. Verifiers
+* Minor version changes are backward and forward compatible. Verifiers
   shall ignore unknown fields introduced in minor versions.
 
 The version is carried explicitly in the wrapper, not implied by the format
@@ -176,18 +176,18 @@ than a single-authority assertion.
 
 Each co-signature block shall contain:
 
-* **Signer identity.** An {{end certificate}} reference or key fingerprint.
+* Signer identity. An {{end certificate}} reference or key fingerprint.
 
-* **Chain reference.** A reference to the signer's root (which may differ from
+* Chain reference. A reference to the signer's root (which may differ from
   the primary signer's root).
 
-* **Algorithm.** The signing algorithm and parameters. Each co-signer may use
+* Algorithm. The signing algorithm and parameters. Each co-signer may use
   a different algorithm.
 
-* **Dimension tag.** The {{trust dimension}} type this co-signature attests
+* Dimension tag. The {{trust dimension}} type this co-signature attests
   (e.g., data, person, time, location, environment).
 
-* **Signature.** The cryptographic signature over the canonical payload.
+* Signature. The cryptographic signature over the canonical payload.
 
 ==== Independent verification
 
@@ -219,7 +219,7 @@ this document.
 
 {{co-signature,co-signatures}} on a {{trusted artifact}} may originate from
 independent {{trust chain,trust chains}} — different roots, different
-governance frameworks. The artifact becomes a **cross-domain trust junction**:
+governance frameworks. The artifact becomes a cross-domain trust junction:
 a single data object on which multiple independent governance frameworks have
 converged.
 

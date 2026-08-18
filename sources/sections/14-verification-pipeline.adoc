@@ -25,10 +25,10 @@ artifact (<<fig-pipeline>>). Checks are classified as hard or soft:
 .Verification pipeline — ordered checks and classification
 image::verification-pipeline.svg[]
 
-* **Hard checks** determine pass or fail of the pipeline. If any hard check
+* Hard checks determine pass or fail of the pipeline. If any hard check
   fails, the pipeline short-circuits; the coverage report hard_checks field is set to fail.
 
-* **Soft checks** populate the coverage report but do not cause outright
+* Soft checks populate the coverage report but do not cause outright
   failure. Each soft check that passes contributes a positive coverage field;
   each that does not pass leaves that field unpopulated. The classification
   policy determines how these fields map to the classification label.
@@ -131,13 +131,13 @@ paths in `P`.
 
 ==== Independence of roots and logs
 
-Two root anchors `r1` and `r2` are _independent_ if neither is reachable from
+Two root anchors `r1` and `r2` are independent if neither is reachable from
 the other via delegation links in the {{trust graph}} and they do not share a
 common delegating ancestor other than themselves. Cross-domain co-signature
 counting for higher classification labels uses the number of distinct independent roots in
 `P`, not the number of paths.
 
-Two transparency logs are _independent_ if they are operated by different
+Two transparency logs are independent if they are operated by different
 organizations and neither organization operates a log that the other
 recognizes. Multi-log attestation quorum (higher classification labels) uses the count of
 independent logs, not total logs.

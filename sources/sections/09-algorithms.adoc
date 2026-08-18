@@ -110,15 +110,15 @@ phase boundaries are deployment decisions.
 Algorithm agility ensures that new algorithms can be introduced and old
 algorithms deprecated without breaking existing verifiers.
 
-* **Identifiers.** Each algorithm shall carry an explicit identifier in the
+* Identifiers. Each algorithm shall carry an explicit identifier in the
   signature wrapper. Verifiers shall use this identifier to select the
   validation method.
 
-* **Negotiation.** An issuer shall use algorithms recognized by its target
+* Negotiation. An issuer shall use algorithms recognized by its target
   verifiers. Algorithm identifiers carry sufficient metadata for verifiers to
   determine support.
 
-* **Deprecation.** Deprecated algorithms shall be announced in advance.
+* Deprecation. Deprecated algorithms shall be announced in advance.
   Verifiers may downgrade or reject artifacts using deprecated algorithms
   according to their policy.
 

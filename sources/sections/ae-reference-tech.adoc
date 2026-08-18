@@ -205,7 +205,7 @@ scheme's classification policy maps to a grade label. The reference stack uses
 these example labels: `unverified`, `basic`, `verified`, `attested`,
 `certified`, `rejected`.
 
-**Minimal valid artifact (data dimension only, no transparency):**
+Minimal valid artifact (data dimension only, no transparency):
 ----
 {
   "coverage": {
@@ -223,7 +223,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**With transparency log inclusion:**
+With transparency log inclusion:
 ----
 {
   "coverage": {
@@ -241,7 +241,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**With external time anchor:**
+With external time anchor:
 ----
 {
   "coverage": {
@@ -259,7 +259,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**With dimensional breadth (person + environment):**
+With dimensional breadth (person + environment):
 ----
 {
   "coverage": {
@@ -277,7 +277,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**With dimensional breadth + cross-domain diversity:**
+With dimensional breadth + cross-domain diversity:
 ----
 {
   "coverage": {
@@ -295,7 +295,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**With multi-log quorum:**
+With multi-log quorum:
 ----
 {
   "coverage": {
@@ -313,7 +313,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**Failed — revoked authority:**
+Failed — revoked authority:
 ----
 {
   "coverage": {
@@ -338,7 +338,7 @@ these example labels: `unverified`, `basic`, `verified`, `attested`,
 }
 ----
 
-**Failed — scope condition not met:**
+Failed — scope condition not met:
 ----
 {
   "coverage": {

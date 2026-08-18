@@ -58,15 +58,15 @@ A scheme may maintain additional registries as needed for its domain.
 
 Each registry maintained by a scheme shall have:
 
-* **Name.** A human-readable name identifying the registry.
-* **Description.** A statement of the registry's purpose and scope.
-* **Entry schema.** The fields that each entry shall contain, including any
+* Name. A human-readable name identifying the registry.
+* Description. A statement of the registry's purpose and scope.
+* Entry schema. The fields that each entry shall contain, including any
   required fields and optional fields.
-* **Registration policy.** The criteria and process for adding, modifying, or
+* Registration policy. The criteria and process for adding, modifying, or
   retiring entries.
-* **Maintainer.** The organization or body responsible for maintaining the
+* Maintainer. The organization or body responsible for maintaining the
   registry and performing registration decisions.
-* **Publication.** A publicly accessible location where the current registry
+* Publication. A publicly accessible location where the current registry
   contents are published.
 
 

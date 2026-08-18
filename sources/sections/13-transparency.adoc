@@ -26,21 +26,21 @@ attestation model.
 A {{transparency log}} shall be implemented as an append-only data structure
 with the following properties:
 
-* **Inclusion proofs.** The log shall support cryptographic proofs that a
+* Inclusion proofs. The log shall support cryptographic proofs that a
   specific entry is included at a specific log state, without requiring the
   verifier to download the entire log.
 
-* **Append-only.** Entries may be added but never modified or removed. The log
+* Append-only. Entries may be added but never modified or removed. The log
   head (a cryptographic commitment to the entire log contents) shall be
   published at each update.
 
-* **Log head signatures.** Each log head shall be signed by the log operator,
+* Log head signatures. Each log head shall be signed by the log operator,
   enabling verifiers to confirm they are viewing an authentic log state.
 
-* **Domain separation.** The log shall prevent second-preimage attacks through
+* Domain separation. The log shall prevent second-preimage attacks through
   domain separation between leaf and internal node data.
 
-* **Consistency proofs.** The log shall support cryptographic proofs that a
+* Consistency proofs. The log shall support cryptographic proofs that a
   new tree head extends a previously published tree head — i.e., the log is
   append-only between any two published states. A consistency proof enables a
   verifier to confirm that no entries were removed or modified between two log
@@ -113,13 +113,13 @@ anchoring infrastructures such as <<opentimestamps>> satisfy this requirement.
 A {{mirror}} is an independent operator that replicates a {{transparency log}}
 and serves inclusion proofs and log entries to verifiers. Mirrors provide:
 
-* **Availability.** If the primary log operator is unavailable, mirrors
+* Availability. If the primary log operator is unavailable, mirrors
   continue to serve the log.
 
-* **Integrity.** Mirrors independently verify the log's append-only property
+* Integrity. Mirrors independently verify the log's append-only property
   by checking that each new tree head extends the previous one.
 
-* **Detection.** Mirrors detect log misbehaviour (e.g., a split view where the
+* Detection. Mirrors detect log misbehaviour (e.g., a split view where the
   log operator presents different tree heads to different verifiers).
 
 ==== Gossip

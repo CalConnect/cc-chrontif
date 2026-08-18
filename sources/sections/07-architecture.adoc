@@ -112,17 +112,17 @@ image::trust-graph-dag.svg[]
 
 The trust graph arises from four structural features:
 
-* **Threshold memberships.** A single delegated trust authority can be reached
+* Threshold memberships. A single delegated trust authority can be reached
   through multiple member key paths.
 
-* **Federated trust authorities.** A {{federated trust authority}} spans
+* Federated trust authorities. A {{federated trust authority}} spans
   multiple independent organizations, creating cross-organization edges.
 
-* **Cross-domain co-signatures.** A {{trusted artifact}} can carry
+* Cross-domain co-signatures. A {{trusted artifact}} can carry
   {{co-signature,co-signatures}} from different trust chains, creating
   horizontal edges at the artifact level.
 
-* **Mutual recognition.** Two {{root trust authority,root trust authorities}}
+* Mutual recognition. Two {{root trust authority,root trust authorities}}
   may mutually recognize each other, creating root-level edges.
 
 ==== Path-finding
@@ -184,14 +184,14 @@ anchor bundle is the starting point for all verification paths.
 
 A trust anchor bundle shall be:
 
-* **Self-contained.** A verifier holding the bundle and the artifact shall
+* Self-contained. A verifier holding the bundle and the artifact shall
   require no additional network access to complete verification (for embedded
   or hybrid chain strategies).
 
-* **Versioned.** Each bundle carries a version identifier and a validity
+* Versioned. Each bundle carries a version identifier and a validity
   period. Bundle updates are themselves transparently logged.
 
-* **Distributable.** The bundle shall be expressible in a deterministic format
+* Distributable. The bundle shall be expressible in a deterministic format
   suitable for out-of-band distribution (e.g., via physical media, secure
   channel, or published fingerprint).
 

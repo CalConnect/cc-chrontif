@@ -11,7 +11,7 @@ server-identity authentication and are structurally inadequate for establishing
 the trustworthiness of persistent artifacts.
 
 NOTE: This clause is motivational. The binding normative requirements derived
-from these principles are specified in clauses 7 through 20. In case of any
+from these principles are specified in clauses 6 through 19. In case of any
 apparent conflict, the normative clauses take precedence.
 
 The name SIGNATIF encodes eight architectural properties. These properties are
