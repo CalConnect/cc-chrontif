@@ -21,9 +21,10 @@ jobs:
         run: gem install metanorma metanorma-iso
       - name: Compile the standard
         run: |
-          MN_BIN="$(ruby -e 'puts Gem.bindir')/metanorma"
+          BINDIR="$HOME/.gem/ruby/$(ruby -e 'puts RbConfig::CONFIG["ruby_version"]')/bin"
+          test -x "$BINDIR/metanorma"
           cd spec/signatif-standard
-          "$MN_BIN" document.adoc
+          "$BINDIR/metanorma" document.adoc
       - name: Check the outputs exist
         run: |
           test -s spec/signatif-standard/document.html
