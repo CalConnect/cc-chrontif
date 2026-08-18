@@ -18,13 +18,14 @@ jobs:
         with:
           ruby-version: '3.3'
       - name: Install metanorma
-        run: |
-          gem install metanorma metanorma-iso
-          echo "$(gem environment gemdir)/bin" >> "$GITHUB_PATH"
+        run: gem install metanorma metanorma-iso
       - name: Compile the standard
+        env:
+          MN: ${{ runner.temp }}/mn
         run: |
+          MN_BIN="$(ruby -e 'puts Gem.bindir')/metanorma"
           cd spec/signatif-standard
-          metanorma document.adoc
+          "$MN_BIN" document.adoc
       - name: Check the outputs exist
         run: |
           test -s spec/signatif-standard/document.html
