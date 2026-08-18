@@ -31,14 +31,14 @@ by conforming verifiers.
 When an algorithm is identified as weak or obsolete, it shall be deprecated
 through the following process:
 
-. **Announcement.** The deprecation shall be announced with a deprecation date
+. Announcement. The deprecation shall be announced with a deprecation date
    and a retirement date.
 
-. **Deprecation period.** During the deprecation period, the algorithm remains
+. Deprecation period. During the deprecation period, the algorithm remains
    usable but verifiers shall downgrade artifacts using the deprecated
    algorithm.
 
-. **Retirement.** After the retirement date, verifiers shall reject artifacts
+. Retirement. After the retirement date, verifiers shall reject artifacts
    using the retired algorithm.
 
 The deprecation and retirement dates shall allow sufficient time for migration

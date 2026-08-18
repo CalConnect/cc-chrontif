@@ -144,13 +144,13 @@ two independent verifiers evaluating the same condition reach the same result.
 
 Scope shall be encoded in a format that is:
 
-* **Machine-checkable.** The narrowing relation and condition evaluation shall
+* Machine-checkable. The narrowing relation and condition evaluation shall
   be verifiable without human interpretation of free text.
 
-* **Compact.** The encoding shall be wire-efficient, as scope is carried in
+* Compact. The encoding shall be wire-efficient, as scope is carried in
   every certificate.
 
-* **Extensible.** New scope dimensions and condition types shall be addable
+* Extensible. New scope dimensions and condition types shall be addable
   without breaking existing verifiers that do not recognize them.
 
 The scope is carried in a certificate extension (the `authorizedScopes`
@@ -164,17 +164,17 @@ supported serialization.
 
 Scope is enforced at multiple independent layers:
 
-. **Certificate extension.** The scope is carried in the certificate, signed
+. Certificate extension. The scope is carried in the certificate, signed
   by the parent authority. Tampering with the scope invalidates the signature.
 
-. **Chain verification.** The {{monotonic narrowing invariant}} is checked at
+. Chain verification. The {{monotonic narrowing invariant}} is checked at
   every delegation link. Widening on any dimension causes rejection.
 
-. **Verification pipeline.** The {{verification pipeline}} includes a scope
+. Verification pipeline. The {{verification pipeline}} includes a scope
   check that confirms the artifact's content falls within the scope of the
   signing key, including evaluation of all {{authorization scope condition,scope conditions}}.
 
-. **Transparency log.** The scope is recorded in the public transparency log
+. Transparency log. The scope is recorded in the public transparency log
   for every certificate, enabling audit and detection of scope violations by
   third parties.
 

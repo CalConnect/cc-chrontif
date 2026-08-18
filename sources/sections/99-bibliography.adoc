@@ -8,15 +8,14 @@
 
 * [[[iso3166-1,ISO 3166-1:2020]]], _Codes for the representation of names of countries and their subdivisions — Part 1: Country codes_
 
-* [[[iso7501,ISO/IEC 7501-1:2005]]], _Identification cards — Machine readable travel documents — Part 1: Machine readable passport_
 
 * [[[iso14888,ISO/IEC 14888]]], _Information technology — Security techniques — Digital signatures with appendix_
 
 * [[[iso11770,ISO/IEC 11770]]], _Information technology — Security techniques — Key management_
 
-* [[[iso19790,ISO/IEC 19790:2012]]], _Information technology — Security techniques — Security requirements for cryptographic modules_
+* [[[iso19790,ISO/IEC 19790:2025]]], _Information security, cybersecurity and privacy protection — Security requirements for cryptographic modules_
 
-* [[[iso18031,ISO/IEC 18031:2011]]], _Information technology — Security techniques — Random bit generation_
+* [[[iso18031,ISO/IEC 18031:2025]]], _Information security, cybersecurity and privacy protection — Random bit generation_
 
 * [[[rfc8949,RFC 8949]]], _Concise Binary Object Representation (CBOR)_, IETF, 2020
 
@@ -30,11 +29,22 @@
 
 * [[[gm-t-0005-2010,GM/T 0005-2010]]], _SM3 Cryptographic Hash Algorithm_, Chinese cryptographic standard
 
-* [[[iso18045,ISO/IEC 18045:2008]]], _Information technology — Security techniques — Methodology for IT security evaluation_
+* [[[iso18045,ISO/IEC 18045:2026]]], _Information security, cybersecurity and privacy protection — Methodology for IT security evaluation_
 
 * [[[iso27001,ISO/IEC 27001:2022]]], _Information security, cybersecurity and privacy protection — Information security management systems — Requirements_
 
 * [[[iso7064,ISO/IEC 7064:2003]]], _Information technology — Security techniques — Check character systems_
+* [[[fips186-4,FIPS 186-4]]], _Digital Signature Standard (DSS)_, NIST, 2013
+* [[[fips204,FIPS 204]]], _Module-Lattice-Based Digital Signature Standard_, NIST, 2024
+* [[[fips205,FIPS 205]]], _Stateless Hash-Based Digital Signature Standard_, NIST, 2024
+* [[[rfc4949,RFC 4949]]], _Internet Security Glossary, Version 2_, IETF, 2007
+* [[[rfc5280,RFC 5280]]], _Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile_, IETF, 2008
+* [[[rfc6962,RFC 6962]]], _Certificate Transparency_, IETF, 2013
+* [[[rfc7515,RFC 7515]]], _JSON Web Signature (JWS)_, IETF, 2015
+* [[[rfc8032,RFC 8032]]], _Edwards-Curve Digital Signature Algorithm (EdDSA)_, IETF, 2017
+* [[[rfc8152,RFC 8152]]], _CBOR Object Signing and Encryption (COSE)_, IETF, 2017
+* [[[w3c-xmldsig,W3C Recommendation: XML Signature Syntax and Processing Version 2.0]]], W3C, 2013
+* [[[w3c-c14n,W3C Recommendation: Exclusive XML Canonicalization Version 1.0]]], W3C, 2002
 
 * [[[rfc6960,RFC 6960]]], _X.509 Internet Public Key Infrastructure Online Certificate Status Protocol — OCSP_, IETF, 2013
 

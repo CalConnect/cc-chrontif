@@ -21,18 +21,18 @@ these foundations undermines the guarantees of the framework.
 
 The threat model assumes the following attacker capabilities:
 
-* **Network control.** The attacker controls the network between the verifier
+* Network control. The attacker controls the network between the verifier
   and all transparency logs, mirrors, and issuing authorities, and may delay,
   replay, or inject messages.
 
-* **Single-key compromise.** The attacker may compromise any single signing
+* Single-key compromise. The attacker may compromise any single signing
   key that is not protected by threshold.
 
-* **Single-authority compromise.** The attacker may compromise a single
+* Single-authority compromise. The attacker may compromise a single
   {{trust authority}} that operates under a threshold scheme, provided the
   compromise does not reach the quorum threshold T.
 
-* **Log operator coercion.** The attacker may coerce a single transparency log
+* Log operator coercion. The attacker may coerce a single transparency log
   operator to present inconsistent views to different verifiers (split-view
   attack).
 
@@ -88,19 +88,19 @@ injection of forged entries.
 
 The mitigation is layered:
 
-* **Multi-log attestation.** Requiring inclusion in M-of-K independent logs
+* Multi-log attestation. Requiring inclusion in M-of-K independent logs
   (see <<transparency-multi-log>>) ensures that compromise of a single log
   operator key does not undermine artifact trustworthiness.
 
-* **Gossip-based detection.** A fraudulent tree head signed with a compromised
+* Gossip-based detection. A fraudulent tree head signed with a compromised
   key is detected when mirrors and verifiers compare their views via gossip
   (see <<transparency-mirrors>>).
 
-* **Operator key protection.** The log operator's signing key shall be
+* Operator key protection. The log operator's signing key shall be
   protected using threshold signing or hardware-backed storage, reducing the
   risk of single-party compromise.
 
-* **Key rotation transparency.** Log operator key rotations shall be recorded
+* Key rotation transparency. Log operator key rotations shall be recorded
   in the log itself, enabling verifiers to audit the history of key changes.
 
 
@@ -268,18 +268,18 @@ reveal information about the signer, the location, the environmental
 conditions, and the device identity. Implementers should consider the privacy
 implications of including these attestations:
 
-* **Location attestations** reveal the geographic position of the signing
+* Location attestations reveal the geographic position of the signing
   event. Implementers should assess whether location precision is necessary or
   whether coarser granularity suffices.
 
-* **Person attestations** reveal the identity of the human operator.
+* Person attestations reveal the identity of the human operator.
   Implementers should consider whether operator pseudonyms suffice.
 
-* **Device identity attestations** reveal the specific device serial number.
+* Device identity attestations reveal the specific device serial number.
   Implementers should assess the correlation risk across multiple artifacts
   from the same device.
 
-* **Transparency log entries** are publicly visible. Artifacts logged in a
+* Transparency log entries are publicly visible. Artifacts logged in a
   transparency log are discoverable by any party with access to the log.
   Implementers should assess whether the artifact content itself is sensitive.
 
@@ -464,13 +464,13 @@ fully eliminated without out-of-band verification channels.
 
 A conforming ceremony protocol shall specify:
 
-* **Identifiable abort.** If the ceremony aborts, the protocol shall identify
+* Identifiable abort. If the ceremony aborts, the protocol shall identify
   which member(s) caused the abort, enabling accountability.
 
-* **Nonce commitment.** Partial signature protocols shall use nonce commitment
+* Nonce commitment. Partial signature protocols shall use nonce commitment
   to prevent nonce bias attacks by malicious members.
 
-* **Censorship resistance.** The authority shall document its policy for
+* Censorship resistance. The authority shall document its policy for
   handling member non-participation, including thresholds for member removal
   for sustained non-participation.
 

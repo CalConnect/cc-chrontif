@@ -110,12 +110,12 @@ live predicates that can fail retroactively.
 
 Revocation propagation uses flag semantics, not deletion:
 
-* The artifact is **marked** as bound to a revoked state, not removed.
+* The artifact is marked as bound to a revoked state, not removed.
 
-* The marking is **queryable**: a verifier can determine whether an artifact
+* The marking is queryable: a verifier can determine whether an artifact
   is affected by querying the revocation status of its bound states.
 
-* The marking is **reversible** if the revocation is itself revoked (e.g., a
+* The marking is reversible if the revocation is itself revoked (e.g., a
   false positive is corrected).
 
 This approach preserves the audit trail while preventing acceptance of

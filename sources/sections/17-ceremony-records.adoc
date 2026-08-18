@@ -19,21 +19,21 @@ persistence, and the audit algorithm.
 A ceremony transcript shall be expressed in a deterministic, machine-readable
 format and shall contain:
 
-* **Ceremony type.** The type of ceremony (e.g., root creation, DTA issuance,
+* Ceremony type. The type of ceremony (e.g., root creation, DTA issuance,
   member rotation, re-share, artifact signing).
 
-* **Participants.** The identities of the participating key holders, with
+* Participants. The identities of the participating key holders, with
   their contribution proofs.
 
-* **Quorum parameters.** The (T, N) threshold parameters and the number of
+* Quorum parameters. The (T, N) threshold parameters and the number of
   participants who contributed.
 
-* **Payload.** The {{canonical payload}} hash that was signed.
+* Payload. The {{canonical payload}} hash that was signed.
 
-* **Signature.** The resulting threshold signature under the authority's
+* Signature. The resulting threshold signature under the authority's
   {{aggregate key}}.
 
-* **Timestamp.** The time of the ceremony, anchored to a {{time key}} or
+* Timestamp. The time of the ceremony, anchored to a {{time key}} or
   external time source where possible.
 
 

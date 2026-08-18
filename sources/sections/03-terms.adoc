@@ -380,39 +380,42 @@ underlying certificate or artifact remains the authoritative source.
 === Abbreviated terms
 
 
-The abbreviated terms used in this document are given in <<tab-abbreviations>>.
+The abbreviated terms are given in <<tab-abbreviations>>. Where an abbreviation is a
+defined term of a published standard, the meaning follows that standard.
 
 [[tab-abbreviations]]
-.Abbreviated terms used in this document
+.Abbreviated terms
 [cols="1,3",options="header"]
 |===
 | Abbreviation | Meaning
 
 | SIGNATIF | Sealed Interoperable Graduated Non-repudiable Anchored Trust Infrastructure Framework
-| CA | Certificate Authority
+| CA | certification authority (ISO/IEC 9594-8)
+| CBOR | Concise Binary Object Representation (RFC 8949)
 | COSE | CBOR Object Signing and Encryption
-| CRL | Certificate Revocation List
-| CSR | Certificate Signing Request
-| CT | Certificate Transparency
-| DAG | Directed Acyclic Graph
-| DPP | Digital Product Passport
-| DTA | Delegated Trust Authority
+| CRL | certificate revocation list
+| CSR | certification request (PKCS #10)
+| CT | certificate transparency
+| DAG | directed acyclic graph
+| DPP | digital product passport
+| DTA | delegated trust authority
 | ETSI | European Telecommunications Standards Institute
-| FTA | Federated Trust Authority
-| JCS | JSON Canonicalization Scheme
+| FTA | federated trust authority
+| JCS | JSON Canonicalization Scheme (RFC 8785)
+| JSON | JavaScript Object Notation (ISO/IEC 21778)
 | JWS | JSON Web Signature
 | ML-DSA | Module-Lattice-Based Digital Signature Algorithm
-| MTI | Mandatory To Implement
-| OCSP | Online Certificate Status Protocol
+| MTI | mandatory to implement
+| OCSP | online certificate status protocol (ISO/IEC 27099)
 | OIML | International Organization of Legal Metrology
 | PKCS | Public-Key Cryptography Standards
-| PKI | Public Key Infrastructure
-| PQ | Post-Quantum
-| RTA | Root Trust Authority
+| PKI | public key infrastructure
+| PQ | post-quantum
+| RTA | root trust authority
 | SLH-DSA | Stateless Hash-Based Digital Signature Algorithm
-| SPKI | Subject Public Key Info
-| TLS | Transport Layer Security
-| URI | Uniform Resource Identifier
-| VC | Verifiable Credential
+| SPKI | subject public key info
+| TLS | transport layer security
+| URI | uniform resource identifier (ISO 5127)
+| VC | verifiable credential
 | XMLDSig | XML Signature
 |===
