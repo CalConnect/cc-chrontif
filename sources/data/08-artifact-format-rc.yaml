@@ -146,6 +146,18 @@ groups:
         Timestamps use ISO 8601-1 representation (<<iso8601>>)."
 
 
+    - name: Dimension extensibility
+      identifier_fragment: dimension-extensibility
+      statement: A scheme may define trust dimensions beyond the initially registered set;
+        each such dimension shall be attested by a co-signature carrying its registered
+        dimension tag over the same canonical payload, shall be verified by the same
+        pipeline as the initially registered dimensions, and shall be claimed through a
+        dimension profile registered per Annex C.
+      guidance:
+      - "The set of trust dimensions is open for extension and closed for modification:
+        registered dimensions and their semantics are not redefined by later profiles."
+
+
     - name: Living artifact accumulation
       identifier_fragment: living-artifact
       statement: A trusted artifact shall support accumulation of dimension

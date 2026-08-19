@@ -170,6 +170,18 @@ groups:
         Verify the external time anchor is present and verifiable.
       type: Conformance
 
+    - name: Dimension extensibility test
+      identifier_fragment: dimension-extensibility
+      targets:
+      - /req/artifact-format/dimension-extensibility
+      purpose: Verify a scheme-defined dimension attests and verifies through the standard
+        machinery.
+      method: Register a test dimension profile with a tag, issuer, and attestation source.
+        Produce an artifact carrying a co-signature under that tag over the canonical
+        payload. Verify the standard pipeline processes it identically to a built-in
+        dimension and the coverage report lists it.
+      type: Conformance
+
     - name: Living artifact accumulation test
       identifier_fragment: living-artifact
       targets:
