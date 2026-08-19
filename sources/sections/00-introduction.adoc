@@ -434,8 +434,8 @@ entire framework.
 This document specifies a trust infrastructure whose design differs from
 traditional PKI (X.509, web TLS) in several structural respects. Each
 difference exists because traditional PKI was designed for a different problem
-— authenticating a server identity in a transient session — and cannot be
-retrofitted to authenticate the trustworthiness of persistent artifacts. <<tab-intro-pki-differentiation>> summarizes the structural differences.
+— authenticating a server identity in a transient session — and was not
+designed to authenticate the trustworthiness of persistent artifacts. <<tab-intro-pki-differentiation>> summarizes the structural differences.
 
 [[tab-intro-pki-differentiation]]
 .Differentiation from traditional PKI
@@ -476,7 +476,7 @@ retrofitted to authenticate the trustworthiness of persistent artifacts. <<tab-i
 | Artifacts anchored to an external time source; independent proof of existence at a time.
 
 | 9
-| One root per hierarchy; cross-certification is awkward and CA-level.
+| One root per hierarchy; cross-certification operates at CA level.
 | Hierarchical, federated, cross-recognized, and mesh topologies are first-class conformance profiles.
 
 | 10

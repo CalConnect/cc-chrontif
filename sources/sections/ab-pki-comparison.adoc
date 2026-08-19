@@ -8,7 +8,10 @@
 This annex describes how the trust infrastructure specified in this document
 differs from traditional public key infrastructure (PKI) as specified in
 ISO/IEC 9594-8 (X.509) <<iso9594-8>> and the IETF PKI certificate profile
-<<rfc5280>>. It identifies the use cases for which each technology is
+<<rfc5280>>. The comparison describes design intent, not deficiency: PKI is
+mature and appropriate for the server-identity and identity-binding problems
+it was designed for, and the differences below exist because those problems
+differ from the regulated-artifact problem this document addresses. It identifies the use cases for which each technology is
 appropriate and distinguishes decisions driven by hard technical requirements
 from those driven by deployment preference.
 
@@ -86,7 +89,7 @@ multi-dimensional attestation.
   (<<time-dimension>>)
 
 | Topology
-| Strict hierarchy (with awkward cross-certification)
+| Strict hierarchy (cross-certification at CA level)
 | Hierarchical, federated, cross-recognized, and mesh as first-class profiles
   (<<governance-topologies>>)
 
@@ -207,8 +210,8 @@ deployment context).
 ==== Decisions driven by hard requirements
 
 The following properties are hard requirements that determine technology
-choice. If any of these is required, the technology that does not provide it
-structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requirements.
+choice. If any of these is required, a technology for which the property is outside the design
+scope does not serve the requirement. <<tab-pki-hard-requirements>> lists the hard requirements.
 
 [[tab-pki-hard-requirements]]
 .Hard requirements determining technology choice
@@ -218,12 +221,12 @@ structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requir
 
 | Multi-party co-signed artifacts
 | Provides
-| Does not provide
+| Not specified — outside design intent
 | Hard requirement for SIGNATIF
 
 | Cryptographic scope enforcement
 | Provides
-| Does not provide
+| Not specified — outside design intent
 | Hard requirement for SIGNATIF
 
 | Threshold at every authority level
@@ -238,12 +241,12 @@ structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requir
 
 | Revocation propagation to artifacts
 | Provides
-| Does not provide
+| Not specified — outside design intent
 | Hard requirement for SIGNATIF
 
 | Multi-dimensional attestation
 | Provides
-| Does not provide
+| Not specified — outside design intent
 | Hard requirement for SIGNATIF
 
 | Graduated classification labels
@@ -252,12 +255,12 @@ structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requir
 | Hard requirement for SIGNATIF
 
 | Web browser interoperability
-| Does not provide
+| Not specified — outside design intent
 | Provides
 | Hard requirement for PKI
 
 | TLS session authentication
-| Does not provide
+| Not specified — outside design intent
 | Provides
 | Hard requirement for PKI
 |===
