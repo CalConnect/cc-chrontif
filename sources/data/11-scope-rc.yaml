@@ -45,6 +45,9 @@ groups:
       guidance:
       - An artifact signed by a key whose scope conditions are not met shall fail
         verification, regardless of cryptographic signature validity.
+      - "The condition language and its version are registered per Annex C; the registered subset shall avoid operators whose coercion or evaluation order is implementation-defined."
+      - "Condition sets are compared for narrowing by byte-equality of their canonically serialized form."
+
 
     - name: Scope condition determinism
       identifier_fragment: condition-determinism
@@ -54,6 +57,8 @@ groups:
       guidance:
       - External state references in conditions shall be resolved to deterministic,
         verifiable inputs (e.g., transparency log entries, timestamp anchors).
+      - "Offline evaluation uses verifier-cached external state pinned to the verification time; the coverage report records the cache age of each condition input."
+
 
     - name: Scope encoding properties
       identifier_fragment: scope-encoding

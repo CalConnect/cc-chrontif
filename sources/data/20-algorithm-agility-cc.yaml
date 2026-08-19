@@ -42,6 +42,25 @@ groups:
         migration phase (classical-only, composite, or post-quantum-only).
       type: Validation
 
+    - name: Archive validation test
+      identifier_fragment: archive-validation
+      targets:
+      - /req/algorithm-agility/archive-validation
+      purpose: Verify retired-algorithm artifacts with contemporaneous evidence verify under the archive label.
+      method: Construct an artifact signed with a deprecated-then-retired algorithm carrying
+        a contemporaneous time attestation and transparency inclusion proof. Verify it
+        classifies under the scheme's archive label rather than being rejected outright.
+      type: Conformance
+    - name: Circulation migration path test
+      identifier_fragment: reissuance-path
+      targets:
+      - /req/algorithm-agility/reissuance-path
+      purpose: Verify the deprecation process provides a migration path before retirement.
+      method: Inspect the published deprecation process. Verify it defines re-issuance,
+        re-signing, or archival classification for artifacts still in circulation, and that
+        the path is available throughout the deprecation window.
+      type: Conformance
+
     - name: Composite backward compatibility test
       identifier_fragment: composite-backward-compatibility
       targets:

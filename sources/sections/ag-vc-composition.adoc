@@ -6,7 +6,8 @@
 === General
 
 W3C Verifiable Credentials (VC) <<w3c-vc>> provide an internationally
-trust infrastructure. This annex describes how the two compose. It does not
+standardized credential model; the claims here address the VC Data Model 1.1
+cited above; VC 2.0 (<<w3c-vc2>>) extends the model with multi-proof and status-list machinery that narrows but does not close these gaps. This annex describes how the two compose. It does not
 specify requirements. VC documents are JSON-LD documents (<<json-ld>>).
 
 

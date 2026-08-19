@@ -101,54 +101,54 @@ use-case suitability guidance.
 
 ==== Cryptographic scope enforcement
 
-The {{authorization scope,scope}} of a {{trust authority}} shall be a first-class signed field,
+The {{authorization scope,scope}} of a {{trust authority}} is a first-class signed field,
 cryptographically enforced at every chain link. Widening any {{authorization scope dimension,scope dimension}}
-at any delegation point shall cause a hard verification failure. This contrasts with
+at any delegation point causes a hard verification failure. This contrasts with
 traditional PKI, in which a CA's scope is defined by external policy
 (Baseline Requirements) and is not verifiable from the certificate itself.
 
 ==== Threshold at every level
 
-A {{quorum}} of cooperating key holders shall be required to exercise the
+A {{quorum}} of cooperating key holders is needed to exercise the
 signing authority of any {{trust authority}}, including but not limited to the
-{{root trust authority}}. There shall be no single point of cryptographic
+{{root trust authority}}. There is no single point of cryptographic
 compromise at any level of the {{trust graph}}.
 
 ==== Federated trust authorities
 
-A {{federated trust authority}} shall be a threshold group of independent
+A {{federated trust authority}} is a threshold group of independent
 organizations sharing a single {{aggregate key}}, such that no single
 organization controls the authority. This contrasts with traditional PKI bridge
 CAs, which are single entities.
 
 ==== Topology flexibility
 
-The {{trust graph}} shall admit hierarchical, federated, cross-recognized, and
-mesh topologies as first-class conformance profiles. An implementation shall not
-be required to assume a single-root hierarchy.
+The {{trust graph}} admits hierarchical, federated, cross-recognized, and
+mesh topologies as first-class conformance profiles. No implementation
+is required to assume a single-root hierarchy.
 
 
 === Multi-party and multi-dimensional attestation
 
 ==== Multi-party co-signed artifacts
 
-A {{trusted artifact}} shall carry one or more {{co-signature,co-signatures}},
+A {{trusted artifact}} carries one or more {{co-signature,co-signatures}},
 each from a different signer, attesting the same {{canonical payload}}. The
-artifact shall be a convergence point of independent attestations rather than a
+artifact is a convergence point of independent attestations rather than a
 single-authority assertion.
 
 ==== Multi-dimensional reality attestation
 
-Time, location, and environment shall be cryptographic {{trust dimension,trust
+Time, location, and environment are cryptographic {{trust dimension,trust
 dimensions}}, each backed by its own trust tree and each producing its own
-{{dimension attestation}}. These dimensions shall not be carried as unsigned
+{{dimension attestation}}. These dimensions are not carried as unsigned
 metadata.
 
 ==== Cross-domain trust fusion
 
 {{co-signature,co-signatures}} from independent {{trust chain,trust chains}} or
-independent {{root trust authority,root trust authorities}} shall be carried on
-the same {{trusted artifact}}. Cross-domain trust recognition shall occur at the
+independent {{root trust authority,root trust authorities}} are carried on
+the same {{trusted artifact}}. Cross-domain trust recognition occurs at the
 artifact level, not solely at the {{trust authority}} level.
 
 
@@ -156,23 +156,23 @@ artifact level, not solely at the {{trust authority}} level.
 
 ==== Live scope conditions
 
-A {{authorization scope,scope}} shall include {{authorization scope condition,scope conditions}} — executable
+A {{authorization scope,scope}} includes {{authorization scope condition,scope conditions}} — executable
 predicates evaluated at verification time against the content and context of the
-artifact. An artifact signed by a key whose scope conditions are not met shall
-fail verification, regardless of cryptographic signature validity.
+artifact. An artifact signed by a key whose scope conditions are not met
+fails verification, regardless of cryptographic signature validity.
 
 ==== Revocation propagation
 
-Revocation of a {{trust authority}} state shall propagate to every {{trusted
+Revocation of a {{trust authority}} state propagates to every {{trusted
 artifact}} transitively bound to that state, across all {{trust
 dimension,trust dimensions}} and all {{trust chain,trust chains}}. A revoked
-authority's prior signatures shall not remain valid.
+authority's prior signatures do not remain valid.
 
 ==== Challenge-response authenticity
 
-A verifier shall be able to challenge a device for a fresh {{trusted artifact}}
+A verifier is able to challenge a device for a fresh {{trusted artifact}}
 bound to a nonce, such that a static copy of a prior artifact cannot satisfy the
-challenge. Authenticity shall be established by the ability to produce a
+challenge. Authenticity is established by the ability to produce a
 timely, nonce-bound response, not by possession of a static credential.
 
 
@@ -181,27 +181,27 @@ timely, nonce-bound response, not by possession of a static credential.
 ==== Mandatory transparency
 
 Inclusion of every {{end certificate}} and every {{trusted artifact}} in a
-{{transparency log}} shall be a verification requirement. Artifacts not provably
-included in a recognized log shall be downgraded or rejected.
+{{transparency log}} is a verification requirement. Artifacts not provably
+included in a recognized log are downgraded or rejected.
 
 ==== Multi-log attestation
 
-A {{federated trust authority}} shall require inclusion of its artifacts in at
+A {{federated trust authority}} requires inclusion of its artifacts in at
 least M of K independent {{transparency log,transparency logs}}, such that no
 single log operator controls the record.
 
 ==== External time anchoring
 
-The time of signing shall be established by an independent {{time key}} or by
+The time of signing is established by an independent {{time key}} or by
 anchoring to an external, irrefutable time source. The signer's self-asserted
-timestamp shall not be the sole evidence of when an artifact was signed.
+timestamp is not the sole evidence of when an artifact was signed.
 
 
 === Trust assessment
 
 ==== Graduated trust
 
-The {{classification label}} of a {{trusted artifact}} shall reflect the depth and
+The {{classification label}} of a {{trusted artifact}} reflects the depth and
 breadth of its {{dimensional coverage}}, not merely the binary validity of its
-primary signature. A verifier shall be able to apply risk-based policy to the
+primary signature. A verifier is able to apply risk-based policy to the
 classification label.

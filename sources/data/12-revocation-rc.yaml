@@ -43,6 +43,8 @@ groups:
       guidance:
       - Propagation uses the transparency log index to discover bound artifacts.
       - An artifact flagged as bound to a revoked state shall receive the scheme's rejected classification label.
+      - "Propagation shall be verifiable from signed CRLs and inclusion proofs alone, without depending on the log operator's active behaviour."
+
 
     - name: Flag semantics (marked not deleted)
       identifier_fragment: flag-semantics
@@ -66,6 +68,9 @@ groups:
       statement: A verifier shall apply a CRL grace period policy for offline verification,
         accepting a stale CRL within a configurable grace period with a classification
         downgrade, and rejecting artifacts whose CRL is expired beyond the grace period.
+        The grace period shall not exceed the scheme's published maximum, and acceptance
+        within the grace period shall carry a label that identifies the revocation state
+        as stale.
       guidance:
 
     - name: Scope condition withdrawal propagation

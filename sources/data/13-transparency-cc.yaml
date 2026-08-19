@@ -82,6 +82,16 @@ groups:
         is validated independently.
       type: Conformance
 
+    - name: Log retention test
+      identifier_fragment: log-retention
+      targets:
+      - /req/transparency/log-retention
+      purpose: Verify the log and its mirrors retain append-only history for the served period.
+      method: Inspect the log's retention policy against the deployment's maximum artifact
+        validity plus grace periods. Request historical tree heads and inclusion proofs from
+        the log and from a mirror. Verify both serve entries from the required period.
+      type: Conformance
+
     - name: Consistency proof validation
       identifier_fragment: consistency-proofs
       targets:

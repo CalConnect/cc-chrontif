@@ -37,8 +37,11 @@ groups:
     - name: Composite signature AND semantics
       identifier_fragment: composite-and-semantics
       statement: A composite signature shall be the AND-composition of two or more signature
-        algorithms over the same canonical payload, and all component signatures shall
-        verify for the composite to be valid.
+        algorithms over the same canonical payload under a composite algorithm identifier
+        that binds the component public keys and domain-separates the composite from its
+        components; all component signatures shall verify for the composite to be valid,
+        and a component signature shall not be valid as a standalone signature on the
+        artifact.
       guidance:
       - The primary use case for composite signatures is combining a classical algorithm
         with a post-quantum algorithm for transition security during post-quantum migration.

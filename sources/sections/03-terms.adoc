@@ -26,6 +26,12 @@ the following addresses:
 
 === Trust authorities
 
+==== trust infrastructure
+
+shared set of trust anchors, transparency logs, and registries that multiple
+applications rely on when verifying artifacts
+
+
 ==== trust authority
 
 entity that holds signing authority within a {{trust graph}} under an
@@ -77,8 +83,8 @@ signing key or composed from multiple keys under a threshold scheme
 
 ==== quorum
 
-pair of parameters (T, N) specifying that at least T of N members shall
-cooperate to produce a valid {{threshold signing}} signature
+pair of parameters (T, N) specifying the number of members of a threshold group
+that are needed to produce a valid {{threshold signing}} signature
 
 
 === Trust chains and graphs
@@ -309,6 +315,15 @@ signature validation, {{trust chain}} or {{trust graph}} path-finding,
 {{authorization scope,scope}} enforcement, {{transparency log}} inclusion proof,
 revocation status, coverage report production, and classification policy
 application
+
+==== scheme
+
+organization that instantiates this framework for a domain by maintaining its
+registries, defining scope dimensions and classification policies, and
+publishing a deployment manifest
+
+NOTE: The scheme is the registration authority for the registries of <<annex-c>>.
+
 
 ==== classification label
 alt:[grade label]

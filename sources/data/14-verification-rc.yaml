@@ -78,7 +78,10 @@ groups:
       statement: A verifier shall apply a configurable time freshness window to time dimension
         attestations and shall reject any time attestation whose timestamp falls outside the
         configured window. Artifacts whose time attestations are within a secondary grace period
-        may be accepted at a downgraded classification label as determined by the acceptance policy.
+        may be accepted at a downgraded classification label as determined by the acceptance
+        policy. Timestamps shall be UTC representations per <<iso8601>>; the verifier shall
+        apply a clock-skew tolerance, and the default freshness window shall be declared in
+        the deployment manifest.
       guidance:
       - The freshness window parameter is declared in the verifier's acceptance policy.
       - The default freshness window is scheme-defined.

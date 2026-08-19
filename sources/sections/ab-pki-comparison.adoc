@@ -228,12 +228,12 @@ structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requir
 
 | Threshold at every authority level
 | Provides
-| Does not provide
+| Partial — rare in CA practice
 | Hard requirement for SIGNATIF
 
 | Transparency as verification requirement
 | Provides
-| Does not provide (CT is optional)
+| Partial — mandatory in web PKI only
 | Hard requirement for SIGNATIF
 
 | Revocation propagation to artifacts
@@ -248,7 +248,7 @@ structurally cannot be used. <<tab-pki-hard-requirements>> lists the hard requir
 
 | Graduated classification labels
 | Provides
-| Does not provide
+| Partial — certificate policy classes
 | Hard requirement for SIGNATIF
 
 | Web browser interoperability

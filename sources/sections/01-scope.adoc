@@ -3,7 +3,7 @@
 == Scope
 
 This document specifies a trust infrastructure for the issuance and verification
-of verifiable artifacts — signed data objects whose trustworthiness is
+of trusted artifacts — verifiable signed data objects whose trustworthiness is
 established by the convergence of multiple independent trust dimensions, each
 backed by its own trust tree.
 
@@ -62,7 +62,7 @@ The following are out of scope of this document:
   protocol;
 
 * the governance procedures of any specific root trust authority, except for
-  the structural requirements that all root trust authorities shall satisfy;
+  the structural requirements on all root trust authorities, which are specified in the governance clause;
 
 * network transport protocols for artifact delivery, except for the
   requirements on chain resolution and discovery;
