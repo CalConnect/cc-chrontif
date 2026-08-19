@@ -130,6 +130,31 @@ initially registered; additional profiles may be registered per <<annex-c>>.
 | <<rfc8152>>
 |===
 
+The co-signature encodings for the initially registered profiles are listed in
+<<tab-profile-cosignature-encodings>>.
+
+[[tab-profile-cosignature-encodings]]
+.Co-signature encodings of the initially registered format profiles
+[cols="2,4"]
+|===
+| Profile | Co-signature encoding
+
+| `/conf/format-jws`
+| General JSON serialization with one signature per co-signer; the dimension tag,
+signer identity, and chain reference are carried in the protected header, and the
+signing input is `BASE64URL(sha256(canonical payload))` as the detached payload
+
+| `/conf/format-cose`
+| COSE_Sign with one signature recipient per co-signer; the dimension tag, signer
+identity, and chain reference are carried in the protected bucket, and the
+detached payload is the digest of the canonical payload
+
+| `/conf/format-xmldsig`
+| One `ds:Signature` element per co-signer over the same `ds:Reference` to the
+canonicalized payload; the dimension tag, signer identity, and chain reference are
+carried as signed `ds:Object` properties of that reference
+|===
+
 Future formats may be registered upon demonstration of conformance to the five
 binding requirements and specification of their canonicalization algorithm.
 

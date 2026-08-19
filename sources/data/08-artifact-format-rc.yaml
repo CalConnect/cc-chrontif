@@ -16,9 +16,13 @@ groups:
       identifier_fragment: canonical-binding
       statement: A signature wrapper shall bind the signature to a deterministic canonical
         payload — a byte-string representation of the payload data such that the same
-        logical content always produces the same bytes.
+        logical content always produces the same bytes — and the signature input shall be
+        the digest of that canonical payload, computed with the digest algorithm specified
+        by the applicable format profile.
       guidance:
-      - The canonicalization algorithm is specified by the applicable format profile.
+      - The canonicalization and digest algorithms are specified by the applicable format
+        profile. Signing the digest rather than the payload bytes is what lets independent
+        co-signers over large payloads converge on the same signed input.
 
     - name: Algorithm identification
       identifier_fragment: algorithm-identification
