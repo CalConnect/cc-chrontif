@@ -47,7 +47,8 @@ with the following properties:
   states.
 
 NOTE: Merkle trees as specified in <<rfc6962>>, continued by the version 2 design
-(<<rfc9162>>), are an example of a log structure
+(<<rfc9162>>), are an example of a log structure; the IETF SCITT work applies
+comparable signed transparency to supply-chain artifacts
 satisfying these properties. Other append-only log constructions with
 equivalent inclusion proof and consistency proof guarantees may be used.
 

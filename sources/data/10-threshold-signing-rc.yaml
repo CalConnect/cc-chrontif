@@ -39,6 +39,8 @@ groups:
       guidance:
       - This is achieved through threshold re-share protocols that preserve the aggregate
         public key while redistributing secret shares.
+      - "Re-share and dissolution ceremonies shall be transparency-logged and epoch-stamped; dissolution shall revoke the aggregate key state."
+
 
     - name: Nested threshold
       identifier_fragment: nested-threshold

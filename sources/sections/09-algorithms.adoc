@@ -22,7 +22,7 @@ claimed conformance classes.
 === Classical signature algorithms
 
 Classical signature algorithms registered in the algorithm identifier registry
-(<<annex-c>>) are recognized. The initial registry includes. The initial registry contents are listed in <<tab-classical-algorithms>>.
+(<<annex-c>>) are recognized. The initial registry contents are listed in <<tab-classical-algorithms>>.
 
 [[tab-classical-algorithms]]
 .Examples of classical signature algorithms (scheme registry may include others)
@@ -51,7 +51,7 @@ should migrate to post-quantum or composite algorithms.
 === Post-quantum signature algorithms
 
 Post-quantum signature algorithms registered in the algorithm identifier
-registry maintained by the scheme (see <<annex-c>>) are recognized. The initial registry includes. The initial registry contents are listed in <<tab-pqc-algorithms>>.
+registry maintained by the scheme (see <<annex-c>>) are recognized. The initial registry contents are listed in <<tab-pqc-algorithms>>.
 
 [[tab-pqc-algorithms]]
 .Examples of post-quantum signature algorithms (scheme registry may include others)

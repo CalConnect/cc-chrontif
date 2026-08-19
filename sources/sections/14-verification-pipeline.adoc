@@ -118,8 +118,8 @@ The `extend(path, P)` procedure:
 .. Validate the signature on the delegation link. If invalid, skip this link.
 .. Validate that `narrowed(scope(parent), scope(node))` holds
    (see <<scope-monotonic-narrowing>>). If not, skip this link.
-.. Validate transparency log inclusion for the delegation certificate. If
-   not included, skip this link.
+.. If the verifier's policy requires chain-link transparency, validate log
+   inclusion for the delegation certificate; if not included, skip this link.
 .. Validate revocation status for `parent`. If revoked, skip this link.
 .. Let `extended` be `path` with `parent` appended.
 .. If `extended` does not contain a cycle (no repeated node), call

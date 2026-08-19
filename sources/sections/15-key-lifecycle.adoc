@@ -11,7 +11,8 @@ security module interfaces, and certificate signing requests.
 Key lifecycle requirements apply to all signing keys: root {{aggregate
 key,aggregate keys}}, threshold member shares, {{end certificate}} keys, and
 {{time key,time keys}}. Key management follows established practice
-(<<iso11770>>, <<nist-sp800-57>>).
+(<<iso11770>>, <<nist-sp800-57>>); this clause specifies the SIGNATIF-specific
+lifecycle duties and does not restate general key-management practice.
 
 
 [[key-generation]]

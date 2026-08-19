@@ -20,10 +20,10 @@ tested by an accredited laboratory, and calibrated against traceable standards
 — and that this entire chain of authority remains valid at the time and place
 of verification.
 
-No existing trust infrastructure addresses this problem. Traditional public key
+No existing framework combines all of these properties. Traditional public key
 infrastructure (PKI) binds a key to an identity; it does not bind an artifact
 to the real-world conditions under which it was produced. Blockchain-based
-attestation systems provide immutability but no scope enforcement, no condition
+attestation systems (<<iso22739>>) provide immutability but no scope enforcement, no condition
 lifecycle, and no revocation propagation to bound artifacts. Software signing
 transparency systems (e.g., Sigstore) address code provenance but not
 multi-dimensional convergence. The result is that regulated industries rely on
@@ -121,7 +121,7 @@ content:
 * Chain validation is binary; trust graduation is policy-interpreted. A
   certificate is either valid or revoked at the chain-validation level. PKI
   does carry assurance metadata (EV/OV/DV certificate types, Certificate
-  Policy OIDs, eIDAS qualified status), and verifiers can apply graduated
+  Policy OIDs, eIDAS (<<eidas2>>) qualified status), and verifiers can apply graduated
   policies based on these. However, the graduation is policy-interpreted and
   non-standardized in its computation. SIGNATIF provides a normatively
   specified coverage report and classification policy so that two conforming

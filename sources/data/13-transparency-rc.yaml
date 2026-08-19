@@ -38,6 +38,8 @@ groups:
       guidance:
       - The anchoring proves that the log state existed at a specific time, independently
         of the log operator's own assertion.
+      - "Log policy should bound the maximum interval between signed tree heads so that a stale head is detectable within the freshness window; witness cosigning over tree heads or out-of-band fingerprint exchange strengthens the bound."
+
 
     - name: Mirror replication and integrity
       identifier_fragment: mirror-integrity
@@ -54,6 +56,8 @@ groups:
         that tree head.
       guidance:
       - A gossip quorum of at least 2-of-3 independent sources provides strong assurance.
+      - "The gossip quorum's independence and source discovery are scheme-declared; witness cosignatures over tree heads satisfy the intent."
+
 
     - name: Mandatory transparency inclusion
       identifier_fragment: mandatory-inclusion
@@ -70,6 +74,14 @@ groups:
       guidance:
       - Each inclusion proof is validated independently.
       - No single log operator controls the record.
+
+    - name: Log retention
+      identifier_fragment: log-retention
+      statement: A recognized transparency log shall retain its append-only history, and its
+        mirrors shall retain replicated history, for the maximum artifact validity period
+        plus grace periods that the deployment serves.
+      guidance:
+      - Retention obligations transfer with log succession per the scheme's governance.
 
     - name: Consistency proofs
       identifier_fragment: consistency-proofs

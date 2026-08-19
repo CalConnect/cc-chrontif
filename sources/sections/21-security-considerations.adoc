@@ -412,7 +412,7 @@ The following minimum parameters apply. The parameters are given in <<tab-securi
 | Minimum 128-bit key (e.g., AES-128); 256-bit recommended
 
 | Password-based key derivation
-| Minimum 100,000 iterations (PBKDF2) or equivalent work factor
+| Minimum 600,000 iterations (PBKDF2-HMAC-SHA256) or equivalent work factor; memory-hard KDFs (e.g., Argon2id) preferred
 |===
 
 Implementations shall not generate or accept keys, signatures, or hashes

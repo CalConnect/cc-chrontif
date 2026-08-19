@@ -32,7 +32,9 @@ groups:
       identifier_fragment: transcript-persistence
       statement: Ceremony transcripts shall be persisted to durable storage and retained for
         the validity period of the artifacts they produced, exceeding the maximum possible
-        artifact lifetime including grace periods.
+        artifact lifetime including grace periods. On dissolution of a trust authority,
+        transcript custody shall transfer to a successor or escrow designated by the
+        scheme's governance.
       guidance:
 
     - name: Transcript transparency log cross-reference

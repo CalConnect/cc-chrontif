@@ -36,6 +36,24 @@ groups:
       guidance:
       - Migration between phases shall follow a published schedule.
 
+    - name: Archive validation
+      identifier_fragment: archive-validation
+      statement: An artifact whose signatures were valid under an algorithm retired after
+        issuance, evidenced by contemporaneous timestamps and transparency inclusion proofs,
+        shall remain verifiable as a historical record under an archive classification label
+        defined by the scheme.
+      guidance:
+      - Archive validation does not restore acceptance for current transactions; it preserves
+        evidential value for retention and audit regimes.
+
+    - name: Circulation migration path
+      identifier_fragment: reissuance-path
+      statement: The deprecation process shall provide a migration path for artifacts still in
+        circulation — re-issuance, re-signing, or archival classification — before retirement
+        takes effect.
+      guidance:
+      - The path taken is a scheme policy published with the deprecation schedule.
+
     - name: Composite phase backward compatibility
       identifier_fragment: composite-backward-compatibility
       statement: During the composite migration phase, new artifacts shall use composite

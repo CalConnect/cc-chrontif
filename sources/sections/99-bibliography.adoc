@@ -32,6 +32,7 @@
 * [[[iso18045,ISO/IEC 18045:2026]]], _Information security, cybersecurity and privacy protection — Methodology for IT security evaluation_
 
 * [[[iso27001,ISO/IEC 27001:2022]]], _Information security, cybersecurity and privacy protection — Information security management systems — Requirements_
+* [[[iso22739,ISO 22739:2020]]], _Blockchain and distributed ledger technologies — Vocabulary_
 
 * [[[iso7064,ISO/IEC 7064:2003]]], _Information technology — Security techniques — Check character systems_
 * [[[fips186-4,FIPS 186-4]]], _Digital Signature Standard (DSS)_, NIST, 2013
@@ -69,7 +70,9 @@
 * [[[lersh,RFC 8554]]], _Leighton-Micali Hash-Based Signatures_, IETF, 2019
 
 * [[[w3c-vc,W3C Recommendation: Verifiable Credentials Data Model 1.1]]], W3C, 2022
+* [[[w3c-vc2,W3C Recommendation: Verifiable Credentials Data Model 2.0]]], W3C, 2025
 
 * [[[json-ld,W3C Recommendation: JSON-LD 1.1]]], W3C, 2020
 
 * [[[espr,Regulation (EU) 2024/1781]]], _Ecodesign for Sustainable Products Regulation_, European Parliament and Council, 2024
+* [[[eidas2,Regulation (EU) 2024/1183]]], _Establishing the European Digital Identity Framework_, European Parliament and Council, 2024

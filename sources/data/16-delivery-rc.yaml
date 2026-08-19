@@ -17,7 +17,9 @@ groups:
       identifier_fragment: barcode-encoding
       statement: A trusted artifact or passport delivered as a two-dimensional barcode shall
         be self-contained, carry a version identifier, and include error correction
-        sufficient for the expected scanning environment.
+        sufficient for the expected scanning environment; artifacts exceeding the capacity
+        of the barcode format shall fall back to the compact transparency-log reference
+        encoding.
       guidance:
       - The maximum data capacity of the barcode format constrains artifact size.
       - For larger artifacts, the barcode may carry a compact reference resolvable by a
@@ -27,8 +29,10 @@ groups:
       identifier_fragment: passport-format
       statement: A passport shall carry the certificate or artifact identifier, key fingerprint,
         scope summary, and validity period, shall be expressible in a deterministic
-        machine-readable format, and shall be verifiable against the same trust anchor bundle
-        and transparency log as the underlying object.
+        machine-readable format, shall be verifiable against the same trust anchor bundle
+        and transparency log as the underlying object, and shall present a human-readable
+        summary of the classification label and unresolved failures for non-specialist
+        inspectors.
       guidance:
       - A passport is a presentation format, not a separate trust object.
       - "Check characters per <<iso7064>> may protect the compact encoding.

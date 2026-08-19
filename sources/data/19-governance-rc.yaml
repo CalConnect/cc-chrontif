@@ -44,7 +44,8 @@ groups:
       identifier_fragment: mutual-recognition
       statement: Mutual recognition between two root trust authorities shall be expressed as
         signed cross-recognition credentials in which each root attests the other's aggregate
-        key and scope, recorded in both roots' transparency logs.
+        key and scope, recorded in both roots' transparency logs. Recognition agreements
+        shall state the mapping between the parties' classification labels.
       guidance:
       - Mutual recognition does not merge hierarchies; each root retains its own governance.
 
