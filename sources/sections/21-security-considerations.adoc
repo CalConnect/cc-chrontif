@@ -288,7 +288,9 @@ minimize personal data exposure, deployments should log only the artifact hash
 and metadata (dimensions present, classification label at issuance time), not
 the full payload.
 Full artifact content distribution is a separate concern from transparency
-logging. The framework does not mandate any particular privacy-preserving technique.
+logging. The framework does not mandate any particular privacy-preserving technique;
+the normative anchors are the pseudonymous signer identification of the artifact
+format clause and the log content minimization of the transparency clause.
 Profiles of this document may specify privacy enhancements (e.g., zero-knowledge
 attestations, selective disclosure) appropriate to their domain.
 

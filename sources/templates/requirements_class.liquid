@@ -7,7 +7,7 @@
 {{ scope.name }} has its formalized requirements class described in <<rc-{{prefix}}-{{rc_count}}>>{% if scope.requirements.size > 0 %}, with its requirements listed from <<r-{{prefix}}-{{rc_count}}-1>> to <<r-{{prefix}}-{{rc_count}}-{{scope.requirements.size}}>>{% endif %}.
 
 [[rc-{{prefix}}-{{rc_count}}]]
-.{{scope.name}}
+.{{scope.name}} ({{scope.identifier}})
 [requirements_class]
 ====
 [%metadata]
@@ -45,7 +45,7 @@ guidance::
 {% assign r_count = r_count | plus: 1 %}
 {% assign req_id = scope.identifier | append: "/" | append: requirement.identifier_fragment %}
 {% if requirement.name %}
-.{{requirement.name}}
+.{{requirement.name}} ({{req_id}})
 {% endif %}
 [[r-{{prefix}}-{{rc_count}}-{{r_count}}]]
 [requirement]
