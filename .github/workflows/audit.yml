@@ -1,0 +1,22 @@
+name: Registry audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths: ['sources/**', 'scripts/**']
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - run: ruby scripts/registry_audit.rb
