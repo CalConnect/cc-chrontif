@@ -30,6 +30,8 @@ groups:
       guidance:
       - ISO/IEC 27001, WebTrust for CAs, and ETSI EN 319 411 are recognized ISMS frameworks.
       - Audit attestations shall be published.
+      - "Schemes processing personal data define a privacy policy covering lawful basis, information duties to attesting subjects, and the retention schedule."
+
 
     - name: Issuing authority organizational assurance
       identifier_fragment: issuing-authority-assurance

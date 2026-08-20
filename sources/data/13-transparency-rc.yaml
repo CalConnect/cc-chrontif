@@ -21,6 +21,8 @@ groups:
       - Domain separation prevents second-preimage attacks. RFC 6962 uses 0x00
         prefix for leaves and 0x01 prefix for internal nodes.
       - The Merkle tree semantics follow RFC 6962.
+      - "Append-only history records that attestations were issued, not that their content remains accurate; rectification flows through supersession and the revocation propagation of clause 11."
+
 
     - name: Inclusion proof format
       identifier_fragment: inclusion-proof
@@ -75,6 +77,17 @@ groups:
       - Each inclusion proof is validated independently.
       - No single log operator controls the record.
 
+    - name: Log content minimization
+      identifier_fragment: log-content-minimization
+      statement: Log leaves, inclusion proofs, and tree heads shall contain no directly
+        identifying personal data; personal data referenced by an artifact shall be held in
+        access-controlled registers by the responsible authority, with revocation and key
+        rotation serving as the mechanism for withdrawal of validity.
+      guidance:
+      - "The log records issuance, not truth: corrections are made by superseding
+        attestations and re-issuance, never by editing history."
+
+
     - name: Log retention
       identifier_fragment: log-retention
       statement: A recognized transparency log shall retain its append-only history, and its
@@ -82,6 +95,8 @@ groups:
         plus grace periods that the deployment serves.
       guidance:
       - Retention obligations transfer with log succession per the scheme's governance.
+      - "Retention is bounded by purpose: the scheme's retention policy defines deletion and suppression criteria once the served validity period ends."
+
 
     - name: Consistency proofs
       identifier_fragment: consistency-proofs

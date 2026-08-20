@@ -43,6 +43,8 @@ groups:
         mirrors with their endpoints and public keys, and the multi-log attestation policy
         parameters if applicable.
       guidance:
+      - "The manifest documents the jurisdictional scope of log operators and mirrors and the basis for any cross-border transfer of personal data."
+
 
     - name: Manifest validation — acyclic graph
       identifier_fragment: manifest-validation-acyclic

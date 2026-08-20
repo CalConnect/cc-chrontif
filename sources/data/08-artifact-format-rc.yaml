@@ -36,7 +36,10 @@ groups:
       identifier_fragment: signer-identification
       statement: A signature wrapper shall reference or embed the signer's public key
         or end certificate, enabling the verifier to locate the key and its delegation
-        chain.
+        chain. In publicly presentable artifacts and passports, the signer identity of a
+        co-signature block shall be a key fingerprint or pseudonym; named-identity
+        binding shall be held in an access-controlled register by the responsible
+        authority.
       guidance:
       - "Signer identifiers are URIs (<<rfc3986>>)."
 
@@ -88,6 +91,8 @@ groups:
         algorithm and parameters, dimension tag, and signature over the canonical payload.
       guidance:
       - The dimension tag identifies the trust dimension this co-signature attests.
+      - "Schemes whose attesting subjects are individuals should use rotating or purpose-bound operator keys, or privacy-preserving credentials, to limit cross-artifact linkability."
+
 
     - name: Co-signature independent verification
       identifier_fragment: cosignature-independent-verification

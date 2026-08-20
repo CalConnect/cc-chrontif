@@ -36,6 +36,8 @@ groups:
         transcript custody shall transfer to a successor or escrow designated by the
         scheme's governance.
       guidance:
+      - "Transcript retention follows the scheme's retention policy, which defines deletion and suppression criteria for personal data of key holders once the served period ends."
+
 
     - name: Transcript transparency log cross-reference
       identifier_fragment: transcript-log-cross-reference
