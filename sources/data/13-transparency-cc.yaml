@@ -82,6 +82,18 @@ groups:
         is validated independently.
       type: Conformance
 
+    - name: Log content minimization test
+      identifier_fragment: log-content-minimization
+      targets:
+      - /req/transparency/log-content-minimization
+      purpose: Verify log structures carry no directly identifying personal data and that
+        named-identity binding sits in access-controlled registers.
+      method: Inspect serialized log leaves, inclusion proofs, and tree heads for names,
+        identifiers, or linkable personal data; verify only digests and tags appear.
+        Attempt to resolve a signer from a public artifact without the authority register
+        and confirm the register is access-controlled.
+      type: Conformance
+
     - name: Log retention test
       identifier_fragment: log-retention
       targets:
