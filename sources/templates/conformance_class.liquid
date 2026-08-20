@@ -7,7 +7,7 @@
 {{ scope.name }} has its formalized conformance class described in <<cc-{{prefix}}-{{cc_count}}>>{% if scope.tests.size > 0 %}, with its conformance tests listed from <<ct-{{prefix}}-{{cc_count}}-1>> to <<ct-{{prefix}}-{{cc_count}}-{{scope.tests.size}}>>{% endif %}.
 
 [[cc-{{prefix}}-{{cc_count}}]]
-.{{scope.name}}
+.{{scope.name}} ({{scope.identifier}})
 [conformance_class]
 ====
 [%metadata]
@@ -53,13 +53,13 @@ Clause::
 {% assign ct_count = 0 %}
 {% for test in scope.tests %}
 {% assign ct_count = ct_count | plus: 1 %}
-{% if test.name %}
-.{{test.name}}
-{% endif %}
 {% if test.identifier_fragment %}
 {% assign test_id = scope.identifier | append: "/" | append: test.identifier_fragment %}
 {% else %}
 {% assign test_id = test.identifier %}
+{% endif %}
+{% if test.name %}
+.{{test.name}} ({{test_id}})
 {% endif %}
 [[ct-{{prefix}}-{{cc_count}}-{{ct_count}}]]
 [conformance_test]

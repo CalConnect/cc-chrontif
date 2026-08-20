@@ -8,7 +8,10 @@ A deployment manifest is a declarative description of a SIGNATIF deployment's
 topology, authorities, algorithms, and transparency endpoints. It enables a
 deployer to declare the structure of their trust infrastructure in a
 machine-checkable format, and enables verifiers to understand the deployment's
-configuration.
+configuration. It is also the assembly point for scheme instantiation: a scheme
+maintains the registries of <<annex-c>>, defines its scope dimensions and
+classification policy (see <<conformance>>), and publishes the manifest
+specified in this clause.
 
 This clause specifies the manifest format, required fields, validation rules,
 and versioning.

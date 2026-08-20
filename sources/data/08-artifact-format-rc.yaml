@@ -42,6 +42,8 @@ groups:
         authority.
       guidance:
       - "Signer identifiers are URIs (<<rfc3986>>)."
+      - "See also the privacy considerations (<<security-privacy>>) and the log content minimization requirement of <<transparency>>."
+
 
     - name: Chain availability
       identifier_fragment: chain-availability
